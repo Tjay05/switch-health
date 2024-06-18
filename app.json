@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "switch-health",
-    "slug": "switch-health",
+    "name": "Switch Health",
+    "slug": "Switch-Health",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icons/logo.png",

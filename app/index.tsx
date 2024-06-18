@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, ScrollView, SafeAreaView } from "react-native";
 import { styled } from "styled-components";
 
 export default function Index() {
@@ -14,21 +14,28 @@ export default function Index() {
   const Overview = styled.View`
     flex: 1;
     justify-content: center;
-    background-color: red;
+    background-color: #ffffff;
     align-items: center;
   `;
 
   const Paragraph = styled.Text`
     color: blue;
-    width: 60%;
-    margin-inline: auto;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
   `;
 
   return (
     <Overview>
-      <Paragraph>Hello world😁 Lorem ipsumm tenetur quaerat, dolorum odit nemo deleniti cum, tempore officia, voluptas illum ullam natus perferenduas ipsum veniam, at incidunt qui omnis nam voluptate iste totam?
-      </Paragraph>
-      <Text style={styles.box}>balablooo </Text>
+      <SafeAreaView>
+        <ScrollView>
+
+        <Paragraph>
+          Lorem ipsum dolortationem id obcaecati, fugiat quo rerum recusandae quisquam distinctio maiores veniam nihil asperiores doloribus adipisci tempore similique nesciunt totam placeat atque fuga? Sunt volhic vel rem aliquid quia. Ratione odio deleniti rerum voluptates dolorum, illo expedita! Neque ex voluptatibus quis aliquam doloribus rerum natus, similique porro harum laborum aut accusamus dolore voluptates dolorem vero mollitia dolorum optio, adipisci quo corrupti?
+        </Paragraph>
+        <Paragraph>Helo</Paragraph>
+        </ScrollView>
+      </SafeAreaView>
     </Overview>
   );
 }

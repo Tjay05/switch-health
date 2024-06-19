@@ -1,41 +1,30 @@
-import { Text, View, StyleSheet, ScrollView, SafeAreaView } from "react-native";
-import { styled } from "styled-components";
+import { createStackNavigator } from "@react-navigation/stack";
+
+const Stack = createStackNavigator();
+
+import OnboardScreen from "../src/screens/Onboarding.Screen";
+import AccountScreen from "../src/feautures/account/screens/Account.Screen";
+import Welcome from "@/src/screens";
+import Login from "@/src/feautures/account/screens/Login.screen";
+import SignUp from "@/src/feautures/account/screens/SignUp.screen";
 
 export default function Index() {
-  const styles = StyleSheet.create({
-    box: {
-      // flex: 1, 
-      color: '#ffffff',
-      textAlign: 'left',
-      textDecorationLine: 'underline line-through'  
-    }
-  })
-
-  const Overview = styled.View`
-    flex: 1;
-    justify-content: center;
-    background-color: #ffffff;
-    align-items: center;
-  `;
-
-  const Paragraph = styled.Text`
-    color: blue;
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-  `;
-
+  // const Overview = styled.View`
+  //   flex: 1;
+  //   justify-content: center;
+  //   background-color: #ffffff;
+  //   align-items: center;
+  // `;
+  
   return (
-    <Overview>
-      <SafeAreaView>
-        <ScrollView>
-
-        <Paragraph>
-          Lorem ipsum dolortationem id obcaecati, fugiat quo rerum recusandae quisquam distinctio maiores veniam nihil asperiores doloribus adipisci tempore similique nesciunt totam placeat atque fuga? Sunt volhic vel rem aliquid quia. Ratione odio deleniti rerum voluptates dolorum, illo expedita! Neque ex voluptatibus quis aliquam doloribus rerum natus, similique porro harum laborum aut accusamus dolore voluptates dolorem vero mollitia dolorum optio, adipisci quo corrupti?
-        </Paragraph>
-        <Paragraph>Helo</Paragraph>
-        </ScrollView>
-      </SafeAreaView>
-    </Overview>
+      <Stack.Navigator initialRouteName="Welcome">
+        <Stack.Screen name="Welcome" component={Welcome} />
+        <Stack.Screen name="Onboarding" component={OnboardScreen} />
+        <Stack.Screen name="Main" component={AccountScreen}/>
+        <Stack.Screen name='Login' component={Login} />
+        <Stack.Screen name='Sign Up' component={SignUp} />
+      </Stack.Navigator>
   );
 }
+
+// screenOptions={{headerShown: false}}

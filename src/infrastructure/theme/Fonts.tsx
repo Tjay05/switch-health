@@ -1,6 +1,10 @@
 export const fonts = {
-  inter: 'Inter_400REgular',
-  poppins: 'Poppins_400REgular',
+  interRegular: 'Inter_400Regular',
+  poppinsRegular: 'Poppins_400Regular',
+  interMedium: 'Inter_500Medium',
+  poppinsMedium: 'Poppins_500Medium',
+  interBold: 'Inter_700Bold',
+  poppinsBold: 'Poppins_700Bold',
 }
 
 export const fontWeights = {

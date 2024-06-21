@@ -26,6 +26,12 @@ const shade = (theme:any) => `
 
 const error = (theme:any) => `
   color: ${theme.Colors.text.error};
+  font-family: ${theme.fonts.poppinsRegular};
+`;
+
+const place = (theme:any) => `
+  font-size: ${theme.fontSizes.placeholder};
+  font-family: ${theme.fonts.poppinsRegular};
 `;
 
 const caption = (theme:any) => `
@@ -58,6 +64,7 @@ const variants = {
   caption,
   error,
   hint,
+  place,
   shade,
   main,
   head

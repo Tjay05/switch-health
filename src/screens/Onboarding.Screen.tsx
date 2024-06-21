@@ -22,7 +22,7 @@ const Container = styled(View)`
 `;
 
 const Info = styled(Text)`
-  align-self: flex-start;
+  align-self: flex-end;
 `;
 
 const HeadingContainer = styled(View)`

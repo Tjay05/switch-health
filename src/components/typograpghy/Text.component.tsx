@@ -30,7 +30,7 @@ const error = (theme:any) => `
 
 const caption = (theme:any) => `
   font-size: ${theme.fontSizes.caption};
-  font-weight: ${theme.fontWeights.bold};
+  font-family: ${theme.fonts.interBold};
 `;
 
 const label =(theme:any) => `
@@ -39,22 +39,25 @@ const label =(theme:any) => `
   font-weight: ${theme.fontWeights.medium};
 `;
 
+const main = (theme:any) =>`
+  font-family: ${theme.fonts.poppinsBold};
+  font-size: ${theme.fontSizes.caption};
+  text-align: left;
+`;
+
 const variants = {
   body,
   label,
   caption,
   error,
   hint,
-  shade
+  shade,
+  main
 };
 
 const Text = styled.Text`
   ${({ theme }) => defaultTextStyles(theme)}
-  ${({ variant, theme }) => variants[variant](theme)}
+  ${({ variant = 'body', theme }) => variants[variant](theme)}
 `;
-
-Text.defaultProps = {
-  variant: 'body',
-};
 
 export default Text;

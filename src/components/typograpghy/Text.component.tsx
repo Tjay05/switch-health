@@ -45,6 +45,13 @@ const main = (theme:any) =>`
   text-align: left;
 `;
 
+const head = (theme:any) =>`
+  color: ${theme.Colors.brand.tetiary};
+  font-size: ${theme.fontSizes.title};
+  font-family: ${theme.fonts.poppinsBold};
+`;
+
+
 const variants = {
   body,
   label,
@@ -52,7 +59,8 @@ const variants = {
   error,
   hint,
   shade,
-  main
+  main,
+  head
 };
 
 const Text = styled.Text`

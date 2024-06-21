@@ -25,6 +25,10 @@ const Info = styled(Text)`
   align-self: flex-start;
 `;
 
+const HeadingContainer = styled(View)`
+  align-self: flex-start;
+`;
+
 const OnboardScreen = ({ navigation }) => {
   const swiperRef = useRef(null);
 
@@ -46,9 +50,11 @@ const OnboardScreen = ({ navigation }) => {
 
   return (
     <Container>
-      <TouchableOpacity onPress={() => navigation.navigate('Main')}>
-        <Text>Skip</Text>
-      </TouchableOpacity>
+      <HeadingContainer>
+        <TouchableOpacity onPress={() => navigation.navigate('Main')}>
+          <Text>Skip</Text>
+        </TouchableOpacity>
+      </HeadingContainer>
       <Swiper 
         showsButtons={false} 
         loop={false}

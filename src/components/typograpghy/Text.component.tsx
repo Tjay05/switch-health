@@ -15,7 +15,7 @@ const body =(theme:any) => `
 
 const hint = (theme:any) => `
   font-family: ${theme.fonts.interMedium};
-  font-size: ${theme.fontSizes.placeholder};
+  font-size: ${theme.fontSizes.button};
   color: ${theme.Colors.text.light};
 `;
 
@@ -37,7 +37,7 @@ const place = (theme:any) => `
 `;
 
 const caption = (theme:any) => `
-  font-size: ${theme.fontSizes.caption};
+  font-size: ${theme.fontSizes.num};
   font-family: ${theme.fonts.interBold};
 `;
 
@@ -49,7 +49,7 @@ const label =(theme:any) => `
 
 const main = (theme:any) =>`
   font-family: ${theme.fonts.poppinsBold};
-  font-size: ${theme.fontSizes.caption};
+  font-size: ${theme.fontSizes.title};
   text-align: left;
 `;
 

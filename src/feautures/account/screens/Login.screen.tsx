@@ -1,9 +1,16 @@
 import { useState } from "react";
 import { View } from "react-native";
-import { TextInput, Button } from "react-native-paper";
 import { styled } from "styled-components";
 import Text from "@/src/components/typograpghy/Text.component";
 import Spacer from "@/src/components/spacer/Spacer.component";
+import { 
+  IconContainer, 
+  InputContainer,
+  InputField,
+  LogBtn 
+} from "../components/account.styles";
+import { ScrollView } from "react-native-gesture-handler";
+import { Ionicons, SimpleLineIcons } from "@expo/vector-icons";
 
 const Container = styled(View)`
   width: 85%;
@@ -25,56 +32,60 @@ const CenteredText = styled(Text)`
   text-align: center;
 `;
 
-const LogBtn = styled(Button).attrs((props) => ({
-  color: 'white',
-  mode: 'contained',
-  contentStyle: {
-    backgroundColor: props.theme.Colors.bg.dark,
-  },
-}))`
-  margin-top: 8px;
-`;
-
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   return (
-    <Container>
-      <Spacer position="top" size="medium">
-        <CenteredText variant='main'>Sign In</CenteredText>
-      </Spacer>
-      <Spacer position="top" size="extraLarge" />
-      <TextInput
-        label='Enter your email'
-        value={email}
-        textContentType='emailAddress'
-        keyboardType="email-address"
-        autoCapitalize="none"
-        onChangeText={(e) => setEmail(e)}
-      />
-      <Spacer position="top" size="large" />
-      <TextInput
-        label='Enter your password'
-        value={password}
-        textContentType='password'
-        secureTextEntry
-        autoCapitalize="none"
-        onChangeText={(e) => setPassword(e)}
-      />
-      <Spacer position="top" size="medium">
-        <RighText variant='label'>Forgot password?</RighText>
-      </Spacer>
-      {/* {error &&{<Spacer position="top" size="XXL" >
-        <CenteredText variant='error'>hello</CenteredText>
-      </Spacer>} } */}
-      <Spacer position="top" size='extraLarge'>
-        <LogBtn>Sign In</LogBtn>
-      </Spacer>
-      <Spacer position="top" size="medium">
-        <CenteredText variant='place' onPress={() => navigation.navigate('Sign Up')} >Don't have an account? <BluText>Signup</BluText></CenteredText>
-      </Spacer>
-    </Container>
+    <ScrollView>
+      <Container>
+        <Spacer position="top" size="medium">
+          <CenteredText variant='main'>Sign In</CenteredText>
+        </Spacer>
+        <Spacer position="top" size="extraLarge" />
+        <InputContainer>
+          <IconContainer>
+            <Ionicons name="mail-outline" size={20} color='#757575'/>
+          </IconContainer>
+          <InputField
+            placeholder='Enter your email'
+            placeholderTextColor='#757575'
+            value={email}
+            textContentType='emailAddress'
+            keyboardType="email-address"
+            autoCapitalize="none"
+            onChangeText={(e) => setEmail(e)}
+          />
+        </InputContainer>
+        <Spacer position="top" size="large" />
+        <InputContainer>
+          <IconContainer>
+            <SimpleLineIcons name="lock" size={20} color='#757575' />
+          </IconContainer>
+          <InputField
+            placeholder='Enter your password'
+            placeholderTextColor='#757575'
+            value={password}
+            textContentType='password'
+            secureTextEntry
+            autoCapitalize="none"
+            onChangeText={(e) => setPassword(e)}
+          />
+        </InputContainer>
+        <Spacer position="top" size="medium">
+          <RighText variant='label' onPress={() => navigation.navigate("Forgot Password")}>Forgot password?</RighText>
+        </Spacer>
+        {/* {error &&{<Spacer position="top" size="XXL" >
+          <CenteredText variant='error'>hello</CenteredText>
+        </Spacer>} } */}
+        <Spacer position="top" size='extraLarge'>
+          <LogBtn>Sign In</LogBtn>
+        </Spacer>
+        <Spacer position="top" size="medium">
+          <CenteredText variant='place' onPress={() => navigation.navigate('Sign Up')} >Don't have an account? <BluText>Signup</BluText></CenteredText>
+        </Spacer>
+      </Container>
+    </ScrollView>
   );
 }
  

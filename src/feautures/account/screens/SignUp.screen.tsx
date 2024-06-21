@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { ScrollView, View } from "react-native";
-import { TextInput, Button } from "react-native-paper";
 import { styled } from "styled-components";
+import { Feather, Ionicons, SimpleLineIcons } from "@expo/vector-icons";
+
 import Text from "@/src/components/typograpghy/Text.component";
 import Spacer from "@/src/components/spacer/Spacer.component";
+import { IconContainer, InputContainer, InputField, LogBtn } from "../components/account.styles";
 
 const Container = styled(View)`
   width: 85%;
@@ -15,24 +17,8 @@ const BluText = styled(Text)`
   color: ${(props) => props.theme.Colors.bg.dark};
 `;
 
-const RighText = styled(Text)`
-  text-align: right;
-  color: ${(props) => props.theme.Colors.bg.dark};
-  font-size: ${(props) => props.theme.fontSizes.min};
-`;
-
 const CenteredText = styled(Text)`
   text-align: center;
-`;
-
-const LogBtn = styled(Button).attrs((props) => ({
-  color: 'white',
-  mode: 'contained',
-  contentStyle: {
-    backgroundColor: props.theme.Colors.bg.dark,
-  },
-}))`
-  margin-top: 8px;
 `;
 
 const SignUp = ({ navigation }) => {
@@ -48,40 +34,64 @@ const SignUp = ({ navigation }) => {
           <CenteredText variant='main'>Sign Up</CenteredText>
         </Spacer>
         <Spacer position="top" size="large" />
-        <TextInput
-          label='Enter your name'
-          value={name}
-          textContentType='name'
-          keyboardType='default'
-          autoCapitalize="none"
-          onChangeText={(e) => setName(e)}
-        />
+        <InputContainer>
+          <IconContainer>
+            <Feather name="user" size={20} color='#757575'/>
+          </IconContainer>
+          <InputField
+            placeholder='Enter your name'
+            placeholderTextColor='#757575'
+            value={name}
+            textContentType='name'
+            keyboardType='default'
+            autoCapitalize="none"
+            onChangeText={(e) => setName(e)}
+          />
+        </InputContainer>
         <Spacer position="top" size="large" />
-        <TextInput
-          label='Enter your email'
-          value={email}
-          textContentType='emailAddress'
-          keyboardType="email-address"
-          autoCapitalize="none"
-          onChangeText={(e) => setEmail(e)}
-        />
+        <InputContainer>
+          <IconContainer>
+            <Ionicons name="mail-outline" size={20} color='#757575'/>
+          </IconContainer>
+          <InputField
+            placeholder='Enter your email'
+            placeholderTextColor='#757575'
+            value={email}
+            textContentType='emailAddress'
+            keyboardType="email-address"
+            autoCapitalize="none"
+            onChangeText={(e) => setEmail(e)}
+          />
+        </InputContainer>
         <Spacer position="top" size="large" />
-        <TextInput
-          label='Enter your phone number'
-          value={number}
-          textContentType='telephoneNumber'
-          keyboardType='number-pad'
-          onChangeText={(e) => setNumber(e)}
-        />
+        <InputContainer>
+          <IconContainer>
+            <Feather name='phone' size={20} color='#757575'/>
+          </IconContainer>
+          <InputField
+            placeholder='Enter your phone number'
+            placeholderTextColor='#757575'
+            value={number}
+            textContentType='telephoneNumber'
+            keyboardType='number-pad'
+            onChangeText={(e) => setNumber(e)}
+          />
+        </InputContainer>
         <Spacer position="top" size="large" />
-        <TextInput
-          label='Enter your password'
-          value={password}
-          textContentType='password'
-          secureTextEntry
-          autoCapitalize="none"
-          onChangeText={(e) => setPassword(e)}
-        />
+        <InputContainer>
+          <IconContainer>
+            <SimpleLineIcons name="lock" size={20} color='#757575' />
+          </IconContainer>
+          <InputField
+            placeholder='Enter your password'
+            placeholderTextColor='#757575'
+            value={password}
+            textContentType='password'
+            secureTextEntry
+            autoCapitalize="none"
+            onChangeText={(e) => setPassword(e)}
+          />
+        </InputContainer>
         <Spacer position="top" size="large" />
         <Text variant='place'>I agree to the healthcare <BluText>Terms of Service</BluText> and <BluText>Privacy Policy</BluText></Text>
         {/* {error &&{<Spacer position="top" size="XXL" >

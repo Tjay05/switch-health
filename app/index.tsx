@@ -16,6 +16,7 @@ import SignUp from "@/src/feautures/account/screens/SignUp.screen";
 import { theme } from "@/src/infrastructure/theme";
 import OTPage from "@/src/feautures/account/screens/Otp.Screen";
 import SuccessPage from "@/src/feautures/account/screens/Success.screen";
+import ForgotPassword from "@/src/feautures/account/screens/ForgotPword";
 
 export default function Index() {
   const [interLoaded] = useInter({
@@ -55,6 +56,11 @@ export default function Index() {
         <Stack.Screen 
           name='Login' 
           component={Login} 
+          options={{cardStyle: { backgroundColor:'white' }}}
+        />
+        <Stack.Screen 
+          name='Forgot Password' 
+          component={ForgotPassword} 
           options={{cardStyle: { backgroundColor:'white' }}}
         />
         <Stack.Screen 

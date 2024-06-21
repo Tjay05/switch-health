@@ -5,6 +5,7 @@ import Text from "@/src/components/typograpghy/Text.component";
 
 import Logo from '../../../../assets/icons/logo.png';
 import Spacer from "@/src/components/spacer/Spacer.component";
+import { LogBtn } from "../components/account.styles";
 
 const Container = styled(View)`
   flex: 1;
@@ -13,16 +14,6 @@ const Container = styled(View)`
   width: 90%;
   margin-left: auto;
   margin-right: auto;
-`;
-
-const LogBtn = styled(Button).attrs((props) => ({
-  color: 'white',
-  mode: 'contained',
-  contentStyle: {
-    backgroundColor: props.theme.Colors.bg.dark,
-  },
-}))`
-  margin-top: 8px;
 `;
 
 const SignBtn = styled(Button).attrs((props) => ({

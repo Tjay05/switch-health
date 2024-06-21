@@ -22,11 +22,11 @@ const Container = styled(View)`
 `;
 
 const Info = styled(Text)`
-  align-self: flex-end;
+  align-self: flex-start;
 `;
 
 const HeadingContainer = styled(View)`
-  align-self: flex-start;
+  align-self: flex-end;
 `;
 
 const OnboardScreen = ({ navigation }) => {

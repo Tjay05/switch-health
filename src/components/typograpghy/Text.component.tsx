@@ -14,7 +14,9 @@ const body =(theme:any) => `
 `;
 
 const hint = (theme:any) => `
-  font-size: ${theme.fontSizes.body};
+  font-family: ${theme.fonts.interMedium};
+  font-size: ${theme.fontSizes.placeholder};
+  color: ${theme.Colors.text.light};
 `;
 
 const shade = (theme:any) => `

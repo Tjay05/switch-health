@@ -23,5 +23,6 @@ export const Colors = {
     disabled: '#221F1F',
     error: '#B62424',
     light: '#B6B6B6',
+    lite: '#4E4D4D',
   }
 }

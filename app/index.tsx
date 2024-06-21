@@ -14,6 +14,8 @@ import Welcome from "@/src/screens";
 import Login from "@/src/feautures/account/screens/Login.screen";
 import SignUp from "@/src/feautures/account/screens/SignUp.screen";
 import { theme } from "@/src/infrastructure/theme";
+import OTPage from "@/src/feautures/account/screens/Otp.Screen";
+import SuccessPage from "@/src/feautures/account/screens/Success.screen";
 
 export default function Index() {
   const [interLoaded] = useInter({
@@ -58,6 +60,16 @@ export default function Index() {
         <Stack.Screen 
           name='Sign Up' 
           component={SignUp} 
+          options={{cardStyle: { backgroundColor:'white' }}}
+        />
+        <Stack.Screen 
+          name='Otp' 
+          component={OTPage} 
+          options={{cardStyle: { backgroundColor:'white' }}}
+        />
+        <Stack.Screen 
+          name='Success' 
+          component={SuccessPage} 
           options={{cardStyle: { backgroundColor:'white' }}}
         />
       </Stack.Navigator>

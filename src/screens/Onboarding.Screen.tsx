@@ -1,16 +1,16 @@
-import { useRef } from 'react';
-import Swiper from 'react-native-swiper';
-import { Image, View, Button, StyleSheet } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { useRef } from "react";
+import Swiper from "react-native-swiper";
+import { Image, View, StyleSheet } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
-import Text from '../components/typograpghy/Text.component';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import Text from "../components/typograpghy/Text.component";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 // Pic Imports
-import FindSpecImg from '../../assets/images/findSpecialist.png';
-import getAdviceImg from '../../assets/images/getAdvice.png';
-import { styled } from 'styled-components';
-import Spacer from '../components/spacer/Spacer.component';
+import FindSpecImg from "../../assets/images/findSpecialist.png";
+import getAdviceImg from "../../assets/images/getAdvice.png";
+import { styled } from "styled-components";
+import Spacer from "../components/spacer/Spacer.component";
 
 const Container = styled(View)`
   flex: 1;
@@ -23,6 +23,7 @@ const Container = styled(View)`
 
 const Info = styled(Text)`
   align-self: flex-start;
+  text-align: center;
 `;
 
 const HeadingContainer = styled(View)`
@@ -36,7 +37,7 @@ const OnboardScreen = ({ navigation }) => {
   const renderPagination = (index, total) => {
     return (
       <View style={styles.paginationContainer}>
-        {Array.from({ length:total }).map((_, i) => (
+        {Array.from({ length: total }).map((_, i) => (
           <View
             key={i}
             style={[
@@ -52,48 +53,54 @@ const OnboardScreen = ({ navigation }) => {
   return (
     <Container>
       <HeadingContainer>
-        <TouchableOpacity onPress={() => navigation.navigate('Main')}>
-          <Text variant='place'>Skip</Text>
+        <TouchableOpacity onPress={() => navigation.navigate("Main")}>
+          <Text variant="place">Skip</Text>
         </TouchableOpacity>
       </HeadingContainer>
-      <Swiper 
-        showsButtons={false} 
+      <Swiper
+        showsButtons={false}
         loop={false}
         ref={swiperRef}
         renderPagination={renderPagination}
       >
-        <Container>
-          <Spacer position='bottom' size='small'>
+        <View style={styles.slideContainer}>
+          <Spacer position="bottom" size="small">
             <Image source={FindSpecImg} />
           </Spacer>
-          <Spacer position='top' size='medium'/>
-          <Info variant='main' >Find a lot of specialist doctors in one place</Info>
-          <Spacer position='bottom' size='XXL' />
-          <TouchableOpacity 
-            onPress={() => swiperRef.current.scrollBy(1)}
-            style={styles.nextButton}
-          >
-            <Ionicons name='arrow-forward-circle' size={60} color='#1A1F71' />
-          </TouchableOpacity>
-        </Container>
-        <Container>
-          <Container></Container>
-          <Image source={getAdviceImg} />
-          <Spacer position='bottom' size='XXL'/>
-          <Spacer position='bottom' size='XXL'/>
-          <Spacer position='bottom' size='extraLarge'/>
-          <Info variant='main' >Get advice only from a doctor you believe in.</Info>        
-          <Spacer position='bottom' size='XXL'/>
-          <TouchableOpacity 
-            onPress={() => navigation.navigate('Main')} 
-            style={styles.nextButton}
-          >
-            <Ionicons name='arrow-forward-circle' size={60} color='#1A1F71' />
-          </TouchableOpacity>
-          <Spacer position='bottom' size='large'/>
-          <Spacer position='bottom' size='small'/>
-          <Spacer position='bottom' size='medium'/>
-        </Container>
+          <Spacer position="top" size="medium" />
+          <Info variant="main">
+            Find a lot of specialist doctors in one place
+          </Info>
+          <Spacer position="bottom" size="XXL" />
+          <View style={styles.navigationContainer}>
+            <View style={styles.paginationWrapper}>{renderPagination()}</View>
+            <TouchableOpacity
+              onPress={() => swiperRef.current.scrollBy(1)}
+              style={styles.nextButton}
+            >
+              <Ionicons name="arrow-forward-circle" size={60} color="#1A1F71" />
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={styles.slideContainer}>
+          <Spacer position="bottom" size="large">
+            <Image source={getAdviceImg} />
+          </Spacer>
+          <Spacer position="top" size="medium" />
+          <Info variant="main">
+            Get advice only from a doctor you believe in.
+          </Info>
+          <Spacer position="bottom" size="XXL" />
+          <View style={styles.navigationContainer}>
+            <View style={styles.paginationWrapper}>{renderPagination()}</View>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Main")}
+              style={styles.nextButton}
+            >
+              <Ionicons name="arrow-forward-circle" size={60} color="#1A1F71" />
+            </TouchableOpacity>
+          </View>
+        </View>
       </Swiper>
     </Container>
   );
@@ -101,29 +108,44 @@ const OnboardScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   paginationContainer: {
-    position: 'absolute',
-    bottom: 50,
-    left: -250,
-    right: 0,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 40, 
+  },
+  paginationWrapper: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "flex-start",
   },
   paginationRectangle: {
     width: 15,
     height: 4,
-    backgroundColor: '#ccc',
+    backgroundColor: "#ccc",
     marginHorizontal: 2,
     borderRadius: 3,
   },
   activePaginationRectangle: {
-    backgroundColor: '#2178EA'
+    backgroundColor: "#2178EA",
+  },
+  navigationContainer: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    position: "absolute",
+    bottom: 40,
+    paddingHorizontal: 20,
   },
   nextButton: {
-    position: 'absolute',
-    bottom: 3,
-    right: -150,
-  }
-})
- 
+    flex: 1,
+    alignItems: "flex-end",
+  },
+  slideContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingBottom: 50,
+  },
+});
+
 export default OnboardScreen;

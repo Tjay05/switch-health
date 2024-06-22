@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { styled } from "styled-components";
 import Text from "@/src/components/typograpghy/Text.component";
 import Spacer from "@/src/components/spacer/Spacer.component";
@@ -7,10 +7,11 @@ import {
   IconContainer, 
   InputContainer,
   InputField,
-  LogBtn 
+  LogBtn, 
+  ORstyles as styles
 } from "../components/account.styles";
 import { ScrollView } from "react-native-gesture-handler";
-import { Ionicons, SimpleLineIcons } from "@expo/vector-icons";
+import { AntDesign, Ionicons, SimpleLineIcons } from "@expo/vector-icons";
 
 const Container = styled(View)`
   width: 85%;
@@ -25,7 +26,7 @@ const BluText = styled(Text)`
 const RighText = styled(Text)`
   text-align: right;
   color: ${(props) => props.theme.Colors.bg.dark};
-  font-size: ${(props) => props.theme.fontSizes.min};
+  font-size: ${(props) => props.theme.fontSizes.placeholder};
 `;
 
 const CenteredText = styled(Text)`
@@ -35,17 +36,19 @@ const CenteredText = styled(Text)`
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('wrong password');
 
   return (
     <ScrollView>
       <Container>
-        <Spacer position="top" size="medium">
+        <Spacer position="top" size="large">
           <CenteredText variant='main'>Sign In</CenteredText>
         </Spacer>
         <Spacer position="top" size="extraLarge" />
+        <Spacer position="top" size="large" />
         <InputContainer>
           <IconContainer>
-            <Ionicons name="mail-outline" size={20} color='#757575'/>
+            <Ionicons name="mail-outline" size={25} color='#757575'/>
           </IconContainer>
           <InputField
             placeholder='Enter your email'
@@ -57,10 +60,10 @@ const Login = ({ navigation }) => {
             onChangeText={(e) => setEmail(e)}
           />
         </InputContainer>
-        <Spacer position="top" size="large" />
+        <Spacer position="top" size="extraLarge" />
         <InputContainer>
           <IconContainer>
-            <SimpleLineIcons name="lock" size={20} color='#757575' />
+            <SimpleLineIcons name="lock" size={25} color='#757575' />
           </IconContainer>
           <InputField
             placeholder='Enter your password'
@@ -72,18 +75,36 @@ const Login = ({ navigation }) => {
             onChangeText={(e) => setPassword(e)}
           />
         </InputContainer>
-        <Spacer position="top" size="medium">
+        <Spacer position="top" size="large">
           <RighText variant='label' onPress={() => navigation.navigate("Forgot Password")}>Forgot password?</RighText>
         </Spacer>
-        {/* {error &&{<Spacer position="top" size="XXL" >
-          <CenteredText variant='error'>hello</CenteredText>
-        </Spacer>} } */}
-        <Spacer position="top" size='extraLarge'>
-          <LogBtn>Sign In</LogBtn>
+        {/* ERROR */}
+        {error && <Spacer position="top" size="extraLarge" >
+          <CenteredText variant='error'>{error}</CenteredText>
+        </Spacer>} 
+        <Spacer position="top" size='large'>
+          <LogBtn 
+            labelStyle={styles.buttonText} 
+            contentStyle={styles.buttonContent}
+          >
+            Sign In
+          </LogBtn>
         </Spacer>
+
         <Spacer position="top" size="medium">
           <CenteredText variant='place' onPress={() => navigation.navigate('Sign Up')} >Don't have an account? <BluText>Signup</BluText></CenteredText>
         </Spacer>
+
+        <View style={styles.orContainer}>
+          <View style={styles.line}></View>
+          <Text style={styles.orText}>OR</Text>
+          <View style={styles.line}></View>
+        </View>
+
+        <TouchableOpacity style={styles.googleBtn}>
+          <AntDesign style={styles.icon} name="google" size={24} />
+          <Text variant="place" style={styles.btnText}>Sign in with Google</Text>
+        </TouchableOpacity>
       </Container>
     </ScrollView>
   );

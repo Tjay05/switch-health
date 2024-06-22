@@ -14,14 +14,14 @@ const body =(theme:any) => `
 `;
 
 const hint = (theme:any) => `
-  font-family: ${theme.fonts.interMedium};
+  font-family: ${theme.fonts.outfitMedium};
   font-size: ${theme.fontSizes.button};
   color: ${theme.Colors.text.light};
 `;
 
 const shade = (theme:any) => `
   color: ${theme.Colors.text.light};
-  font-size: ${theme.fontSizes.info};
+  font-size: ${theme.fontSizes.h6};
   text-align: center;
   font-family: ${theme.fonts.poppinsRegular};
 `;
@@ -32,18 +32,24 @@ const error = (theme:any) => `
 `;
 
 const place = (theme:any) => `
-  font-size: ${theme.fontSizes.placeholder};
+  font-size: ${theme.fontSizes.info};
   font-family: ${theme.fonts.poppinsRegular};
 `;
 
 const caption = (theme:any) => `
-  font-size: ${theme.fontSizes.num};
+  font-size: ${theme.fontSizes.h3};
   font-family: ${theme.fonts.interBold};
+  text-align: center;
+`;
+
+const headText = (theme:any) => `
+  font-size: ${theme.fontSizes.h3};
+  font-family: ${theme.fonts.outfitBold};
 `;
 
 const label =(theme:any) => `
   font-family: ${theme.fonts.poppinsBold};
-  font-size: ${theme.fontSizes.body};
+  font-size: ${theme.fontSizes.caption};
   font-weight: ${theme.fontWeights.medium};
 `;
 
@@ -69,6 +75,7 @@ const variants = {
   place,
   shade,
   main,
+  headText,
   head
 };
 

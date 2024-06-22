@@ -26,6 +26,7 @@ const Info = styled(Text)`
 `;
 
 const HeadingContainer = styled(View)`
+  padding-top: 16px;
   align-self: flex-end;
 `;
 
@@ -52,7 +53,7 @@ const OnboardScreen = ({ navigation }) => {
     <Container>
       <HeadingContainer>
         <TouchableOpacity onPress={() => navigation.navigate('Main')}>
-          <Text>Skip</Text>
+          <Text variant='place'>Skip</Text>
         </TouchableOpacity>
       </HeadingContainer>
       <Swiper 
@@ -67,17 +68,31 @@ const OnboardScreen = ({ navigation }) => {
           </Spacer>
           <Spacer position='top' size='medium'/>
           <Info variant='main' >Find a lot of specialist doctors in one place</Info>
+          <Spacer position='bottom' size='XXL' />
+          <TouchableOpacity 
+            onPress={() => swiperRef.current.scrollBy(1)}
+            style={styles.nextButton}
+          >
+            <Ionicons name='arrow-forward-circle' size={60} color='#1A1F71' />
+          </TouchableOpacity>
         </Container>
         <Container>
-          <Spacer position='bottom' size='XXL'>
-            <Image source={getAdviceImg} />
-          </Spacer>
+          <Container></Container>
+          <Image source={getAdviceImg} />
+          <Spacer position='bottom' size='XXL'/>
           <Spacer position='bottom' size='XXL'/>
           <Spacer position='bottom' size='extraLarge'/>
           <Info variant='main' >Get advice only from a doctor you believe in.</Info>        
-          <Spacer position='top' size='extraLarge'>
-            <Button title='Start' onPress={() => navigation.navigate('Main')} />
-          </Spacer>
+          <Spacer position='bottom' size='XXL'/>
+          <TouchableOpacity 
+            onPress={() => navigation.navigate('Main')} 
+            style={styles.nextButton}
+          >
+            <Ionicons name='arrow-forward-circle' size={60} color='#1A1F71' />
+          </TouchableOpacity>
+          <Spacer position='bottom' size='large'/>
+          <Spacer position='bottom' size='small'/>
+          <Spacer position='bottom' size='medium'/>
         </Container>
       </Swiper>
     </Container>
@@ -103,6 +118,11 @@ const styles = StyleSheet.create({
   },
   activePaginationRectangle: {
     backgroundColor: '#2178EA'
+  },
+  nextButton: {
+    position: 'absolute',
+    bottom: 3,
+    right: -150,
   }
 })
  

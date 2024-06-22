@@ -30,30 +30,6 @@ const HeadingContainer = styled(View)`
 `;
 
 const Welcome = ({ navigation }) => {
-  const [remainingTime, setRemainingTime] = useState( 7*60 ); // Initial time in seconds
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setRemainingTime((prevTime) => {
-        if (prevTime === 0) {
-          clearInterval(timer);
-          // Handle timer expiry here (e.g., show a message, disable submit button)
-          return 0; // Or any other action you want to perform on expiry
-        } else {
-          return prevTime - 1;
-        }
-      });
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
-  const formatTime = (timeInSeconds) => {
-    const minutes = Math.floor(timeInSeconds / 60);
-    const seconds = timeInSeconds % 60;
-    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
-      2,
-      "0"
-    )}`;
-  };
   return (
     <Container>
       <Spacer position="bottom" size="large">
@@ -62,7 +38,6 @@ const Welcome = ({ navigation }) => {
       <Spacer position="bottom" size="extraLarge">
         <Text variant="caption">Welcome to Switch Health</Text>
       </Spacer>
-      <Text variant="shade">{formatTime(remainingTime)}</Text>
       <Spacer position="bottom" size="XXL">
         <Text variant="shade">
           Welcome to Switch Health! We're thrilled to have you on board. Let's

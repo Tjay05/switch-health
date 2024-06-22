@@ -16,8 +16,10 @@
   },
   "dependencies": {
     "@expo-google-fonts/inter": "^0.2.3",
+    "@expo-google-fonts/outfit": "^0.2.3",
     "@expo-google-fonts/poppins": "^0.2.3",
     "@expo/vector-icons": "^14.0.0",
+    "@react-native-community/checkbox": "^0.5.17",
     "@react-navigation/bottom-tabs": "^6.5.20",
     "@react-navigation/native": "^6.0.2",
     "@react-navigation/stack": "^6.3.29",

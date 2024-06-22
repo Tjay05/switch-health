@@ -7,7 +7,13 @@ import Spacer from '@/src/components/spacer/Spacer.component';
 
 // Pic Imports
 import ForgotImg from '../../../../assets/images/forgotPword.png';
-import { IconContainer, InputContainer, InputField, LogBtn } from "../components/account.styles";
+import { 
+  IconContainer, 
+  InputContainer, 
+  InputField, 
+  LogBtn,
+  ORstyles as styles
+} from "../components/account.styles";
 import { Ionicons, SimpleLineIcons } from "@expo/vector-icons";
 
 const Container = styled(View)`
@@ -22,12 +28,14 @@ const Container = styled(View)`
 const HeadingContainer = styled(View)`
   width: 55%;
   align-self: flex-start;
+  tetx-align: left;
   font-weight: 700;
 `;
 
 const ForgotPassword = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('wrong password');
 
   return (
     <ScrollView>
@@ -36,15 +44,15 @@ const ForgotPassword = ({ navigation }) => {
           <Image source={ForgotImg} />
         </Spacer>
         <HeadingContainer>
-          <Text variant='caption'>Forgot Password?</Text>
+          <Text variant='headText'>Forgot Password?</Text>
         </HeadingContainer>
         <Spacer position="bottom" size="medium"/>
         <Spacer position="bottom" size="large">
-          <Text variant='hint'>Don’t worry! It happens. Please enter your email address, so we will send the OTP</Text>
+          <Text variant='hint'>Don’t worry! It happens. Please enter your email address, to receive an OTP</Text>
         </Spacer>
         <InputContainer>
           <IconContainer>
-            <Ionicons name="mail-outline" size={20} color='#757575'/>
+            <Ionicons name="mail-outline" size={24} color='#757575'/>
           </IconContainer>
           <InputField
             placeholder='Enter your email'
@@ -56,10 +64,10 @@ const ForgotPassword = ({ navigation }) => {
             onChangeText={(e) => setEmail(e)}
           />
         </InputContainer>
-        <Spacer position="top" size="large" />
+        <Spacer position="top" size="extraLarge" />
         <InputContainer>
           <IconContainer>
-            <SimpleLineIcons name="lock" size={20} color='#757575' />
+            <SimpleLineIcons name="lock" size={24} color='#757575' />
           </IconContainer>
           <InputField
             placeholder='Enter your new password'
@@ -72,11 +80,17 @@ const ForgotPassword = ({ navigation }) => {
           />
         </InputContainer>
         <Spacer position="top" size="medium"/>
-        {/* {error && <Spacer position="top" size="medium" >
-          <Text variant='error'>hello</Text>
-        </Spacer>}  */}
+        {error && <Spacer position="top" size="medium" >
+          <Text variant='error'>{error}</Text>
+        </Spacer>} 
         <Spacer position="bottom" size="large">
-          <LogBtn onPress={() => navigation.navigate('Success')}>Continue</LogBtn> 
+          <LogBtn
+            labelStyle={styles.buttonText} 
+            contentStyle={styles.buttonContent}  
+            onPress={() => navigation.navigate('Success')}
+          >
+            Continue
+          </LogBtn> 
         </Spacer>
       </Container>
     </ScrollView>

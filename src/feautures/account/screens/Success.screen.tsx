@@ -19,6 +19,7 @@ const WelImg = styled(Image)`
   width: 245px;
 `;
 
+
 const SuccessPage = ({ navigation }) => {
   return (
     <>

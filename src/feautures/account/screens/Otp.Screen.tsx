@@ -1,6 +1,12 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Image, ScrollView, TextInput, View } from "react-native";
-import styled from "styled-components/native"; // Import styled from styled-components/native
+import {
+  Image,
+  ScrollView,
+  TextInput,
+  View,
+  TouchableOpacity,
+} from "react-native";
+import styled from "styled-components/native";
 import Text from "@/src/components/typograpghy/Text.component";
 import Spacer from "@/src/components/spacer/Spacer.component";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -19,7 +25,6 @@ const Container = styled(View)`
 const EText = styled(Text)`
   color: black;
   font-weight: 600;
-  
 `;
 
 const BluText = styled(Text)`
@@ -49,9 +54,8 @@ const OtpContainer = styled(View)`
   justify-content: center;
 `;
 
-// Style the Image component with margin
 const StyledImage = styled(Image)`
-  margin-vertical: 50px; 
+  margin-vertical: 50px;
 `;
 
 const OTPage = ({ navigation }) => {
@@ -59,41 +63,45 @@ const OTPage = ({ navigation }) => {
   const [error, setError] = useState("");
   const [isFocused, setIsFocused] = useState([false, false, false, false]);
   const otpRefs = useRef([]);
-  const [email, setEmail] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-    const [remainingTime, setRemainingTime] = useState(7 * 60); 
-    useEffect(() => {
-      const timer = setInterval(() => {
-        setRemainingTime((prevTime) => {
-          if (prevTime === 0) {
-            clearInterval(timer);
-           
-            return 0; 
-          } else {
-            return prevTime - 1;
-          }
-        });
-      }, 1000);
+  const [emailData, setEmail] = useState("");
 
-      return () => clearInterval(timer);
-    }, []);
-    const formatTime = (timeInSeconds) => {
-      const minutes = Math.floor(timeInSeconds / 60);
-      const seconds = timeInSeconds % 60;
-      return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
-        2,
-        "0"
-      )} Secs`;
-    };
+  const [isLoading, setIsLoading] = useState(false);
+  const [remainingTime, setRemainingTime] = useState(7 * 60);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setRemainingTime((prevTime) => {
+        if (prevTime === 0) {
+          clearInterval(timer);
+          return 0;
+        } else {
+          return prevTime - 1;
+        }
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const formatTime = (timeInSeconds) => {
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = timeInSeconds % 60;
+    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
+      2,
+      "0"
+    )} Secs`;
+  };
+
   useEffect(() => {
     getEmailFromStorage();
   }, []);
 
   const getEmailFromStorage = async () => {
     try {
-      const storedEmail = await AsyncStorage.getItem("email");
-      if (storedEmail !== null) {
-        setEmail(storedEmail);
+      const storedData = await AsyncStorage.getItem("data");
+      if (storedData !== null) {
+        const emailData = JSON.parse(storedData);
+        setEmail(emailData.email);
       }
     } catch (error) {
       console.log("Error retrieving email from AsyncStorage:", error);
@@ -118,14 +126,14 @@ const OTPage = ({ navigation }) => {
       const data = await response.json();
       if (response.ok) {
         navigation.navigate("Success");
-        setIsLoading(false);
       } else {
-        setIsLoading(false);
         setError(data.message);
       }
     } catch (error) {
       console.log("Error:", error);
       setError("Something went wrong. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -153,11 +161,57 @@ const OTPage = ({ navigation }) => {
     setIsFocused(newFocus);
   };
 
+  const handleKeyPress = (e, index) => {
+    if (e.nativeEvent.key === "Backspace") {
+      const newOtp = [...otp];
+      if (index > 0) {
+        if (otp[index] === "") {
+          otpRefs.current[index - 1].focus();
+          newOtp[index - 1] = "";
+        } else {
+          newOtp[index] = "";
+        }
+        setOtp(newOtp);
+      }
+    }
+  };
+
+  const handleResend = async () => {
+    setRemainingTime(7 * 60);
+    setOtp(["", "", "", ""]);
+    otpRefs.current[0].focus();
+    try {
+      const storedData = await AsyncStorage.getItem("data");
+      if (storedData !== null) {
+        const userData = JSON.parse(storedData);
+        const response = await fetch(
+          "https://switch-health.onrender.com/patient/new-otp",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              phone: userData.phone,
+              email: userData.email,
+            }),
+          }
+        );
+        const data = await response.json();
+        if (!response.ok) {
+          setError(data.message);
+        }
+      }
+    } catch (error) {
+      console.log("Error:", error);
+      setError("Something went wrong. Please try again.");
+    }
+  };
+
   return (
     <ScrollView>
       <Container>
         <Spacer position="bottom" size="large">
-          {/* Apply the styled Image component */}
           <StyledImage source={OtpImg} />
         </Spacer>
         <Spacer position="bottom" size="medium">
@@ -165,7 +219,7 @@ const OTPage = ({ navigation }) => {
         </Spacer>
         <Spacer position="bottom" size="large">
           <Text variant="hint">
-            Enter the OTP sent to <EText>{email}</EText>
+            Enter the OTP sent to <EText>{emailData}</EText>
           </Text>
           <BluTimerText>{formatTime(remainingTime)}</BluTimerText>
         </Spacer>
@@ -182,12 +236,13 @@ const OTPage = ({ navigation }) => {
                 isFocused={isFocused[index]}
                 onFocus={() => handleFocus(index)}
                 onBlur={() => handleBlur(index)}
+                onKeyPress={(e) => handleKeyPress(e, index)}
               />
             ))}
           </OtpContainer>
         </Spacer>
         <Text variant="place">
-          Didn’t receive code? <BluText>Re-send</BluText>
+          Didn’t receive code? <BluText onPress={handleResend}>Re-send</BluText>
         </Text>
         {error && (
           <Spacer position="top" size="medium">
@@ -199,6 +254,7 @@ const OTPage = ({ navigation }) => {
             labelStyle={styles.buttonText}
             contentStyle={styles.buttonContent}
             onPress={handleSubmit}
+            disabled={isLoading}
           >
             {isLoading ? "Submitting..." : "Submit"}
           </LogBtn>

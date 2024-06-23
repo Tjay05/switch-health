@@ -12,7 +12,6 @@ import {
 } from "../components/account.styles";
 import { ScrollView } from "react-native-gesture-handler";
 import { AntDesign, Ionicons, SimpleLineIcons } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Container = styled(View)`
   width: 85%;
@@ -39,19 +38,14 @@ const Login = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState(' ');
   const [isLoading, setIsLoading] = useState(false);
-  
-
-    const handleSetData = async (data) => {
-      try {
-        await AsyncStorage.setItem("data", data);
-      } catch (error) {
-        console.error("Error storing email:", error);
-      }
-    };
-
-    const handleSubmit = async () => {
+    
+  const handleSubmit = async () => {
 
       setIsLoading(true);
+      const userData = {
+        email,
+        password,
+      };
 
       try {
         const response = await fetch(
@@ -61,16 +55,14 @@ const Login = ({ navigation }) => {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({
-              email,
-              password,
-            }),
+            body: JSON.stringify(userData),
           }
         );
         const data = await response.json();
         if (response.ok) {
-          handleSetData(response);
-        } else {
+          Alert.alert("Logged in Successfully")
+        } 
+        else {
           setError(data.message);
         }
       } catch (error) {
@@ -138,7 +130,7 @@ const Login = ({ navigation }) => {
             contentStyle={styles.buttonContent}
             onPress={handleSubmit}
           >
-            {isLoading ? "Signing in..." : "Sign In"}
+            {isLoading ? "Signing in..." : "Sign in"}
           </LogBtn>
         </Spacer>
 

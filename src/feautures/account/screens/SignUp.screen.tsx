@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { ScrollView, TouchableOpacity, View , Alert } from "react-native";
+import React, { useState } from "react";
+import { ScrollView, TouchableOpacity, View, Alert } from "react-native";
 import { styled } from "styled-components/native";
 import {
   AntDesign,
@@ -43,25 +43,30 @@ const SignUp = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isChecked, setIsChecked] = useState(false);
-  const [data, setData] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-    const handleSetEmail = async () => {
-      try {
-        await AsyncStorage.setItem("email", email);
-      } catch (error) {
-        console.error("Error storing email:", error);
-      }
-    };
+  const handleSetData = async (data) => {
+    try {
+      await AsyncStorage.setItem("data", JSON.stringify(data));
+    } catch (error) {
+      console.error("Error storing data:", error);
+    }
+  };
 
   const handleSubmit = async () => {
     if (!isChecked) {
       setError("You must agree to the terms and conditions");
       return;
     }
-    
 
     setIsLoading(true);
+
+    const userData = {
+      fullName: name,
+      email,
+      phone: `+234${phone}`,
+      password,
+    };
 
     try {
       const response = await fetch(
@@ -71,22 +76,14 @@ const SignUp = ({ navigation }) => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            fullName:name,
-            email,
-            phone:`+234 ${phone}`,
-            password,
-          }),
+          body: JSON.stringify(userData),
         }
       );
       const data = await response.json();
-      setData(data);
       if (response.ok) {
-        handleSetEmail();
+        handleSetData(userData);
         navigation.navigate("Otp");
-      }
-      
-      else {
+      } else {
         setError(data.message);
       }
     } catch (error) {

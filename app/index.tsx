@@ -1,4 +1,3 @@
-import { createStackNavigator } from "@react-navigation/stack";
 import { ThemeProvider } from "styled-components";
 
 // Font Imports
@@ -6,18 +5,9 @@ import { useFonts as useInter, Inter_400Regular, Inter_500Medium, Inter_700Bold 
 import { useFonts as usePoppins, Poppins_400Regular, Poppins_500Medium, Poppins_700Bold } from '@expo-google-fonts/poppins';
 import { useFonts as useOutfit, Outfit_400Regular, Outfit_500Medium, Outfit_700Bold } from '@expo-google-fonts/outfit';
 
-const Stack = createStackNavigator();
-
 // Page Imports
-import OnboardScreen from "../src/screens/Onboarding.Screen";
-import AccountScreen from "../src/feautures/account/screens/Account.Screen";
-import Welcome from "@/src/screens";
-import Login from "@/src/feautures/account/screens/Login.screen";
-import SignUp from "@/src/feautures/account/screens/SignUp.screen";
 import { theme } from "@/src/infrastructure/theme";
-import OTPage from "@/src/feautures/account/screens/Otp.Screen";
-import SuccessPage from "@/src/feautures/account/screens/Success.screen";
-import ForgotPassword from "@/src/feautures/account/screens/ForgotPword";
+import Navigation from "@/src/infrastructure/navigation";
 
 export default function Index() {
   const [interLoaded] = useInter({
@@ -44,50 +34,7 @@ export default function Index() {
   
   return (
     <ThemeProvider theme={theme}>
-      <Stack.Navigator initialRouteName="Welcome" screenOptions={{headerShown: false}}>
-        <Stack.Screen 
-          name="Welcome" 
-          component={Welcome} 
-          options={{cardStyle: { backgroundColor:'white' }}}
-        />
-        <Stack.Screen 
-          name="Onboarding" 
-          component={OnboardScreen}
-          options={{cardStyle: { backgroundColor:'white' }}}
-        />
-        <Stack.Screen 
-          name="Main" 
-          component={AccountScreen}
-          options={{cardStyle: { backgroundColor:'white' }}}
-        />
-        <Stack.Screen 
-          name='Login' 
-          component={Login} 
-          options={{cardStyle: { backgroundColor:'white' }}}
-        />
-        <Stack.Screen 
-          name='Forgot Password' 
-          component={ForgotPassword} 
-          options={{cardStyle: { backgroundColor:'white' }}}
-        />
-        <Stack.Screen 
-          name='Sign Up' 
-          component={SignUp} 
-          options={{cardStyle: { backgroundColor:'white' }}}
-        />
-        <Stack.Screen 
-          name='Otp' 
-          component={OTPage} 
-          options={{cardStyle: { backgroundColor:'white' }}}
-        />
-        <Stack.Screen 
-          name='Success' 
-          component={SuccessPage} 
-          options={{cardStyle: { backgroundColor:'white' }}}
-        />
-      </Stack.Navigator>
+      <Navigation/>
     </ThemeProvider>
   );
 }
-
-// screenOptions={{headerShown: false}}

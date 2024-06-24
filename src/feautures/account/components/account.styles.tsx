@@ -21,7 +21,7 @@ export const LogBtn = styled(Button).attrs((props) => ({
     width: '100%',
   },
 }))`
-  margin-vertical: 16px;
+  margin-vertical: 30px;
   font-size: 300px;
 `;
 

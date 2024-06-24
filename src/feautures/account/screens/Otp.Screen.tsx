@@ -13,6 +13,7 @@ import Spacer from "@/src/components/spacer/Spacer.component";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import OtpImg from "../../../../assets/images/otpPic.png";
 import { LogBtn, ORstyles as styles } from "../components/account.styles";
+import OtpSVG from "@/assets/icons/OtpSVG";
 
 const Container = styled(View)`
   flex: 1;
@@ -53,10 +54,6 @@ const OtpInput = styled(TextInput)`
 const OtpContainer = styled(View)`
   flex-direction: row;
   justify-content: center;
-`;
-
-const StyledImage = styled(Image)`
-  margin-vertical: 50px;
 `;
 
 const OTPage = ({ navigation }) => {
@@ -213,7 +210,9 @@ const OTPage = ({ navigation }) => {
     <ScrollView>
       <Container>
         <Spacer position="bottom" size="large">
-          <StyledImage source={OtpImg} />
+          <Spacer position="top" size="large">
+            <OtpSVG/>
+          </Spacer>
         </Spacer>
         <Spacer position="bottom" size="medium">
           <Text variant="caption">OTP VERIFICATION</Text>

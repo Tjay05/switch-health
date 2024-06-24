@@ -1,3 +1,4 @@
+import SuccSVG from '@/assets/icons/SuccSVG';
 import Spacer from '@/src/components/spacer/Spacer.component';
 import Text from '@/src/components/typograpghy/Text.component';
 import { Image, View, Button } from 'react-native';
@@ -25,7 +26,8 @@ const SuccessPage = ({ navigation }) => {
     <>
       <Container>
         <Spacer position='bottom' size='large'>
-          <WelImg source={successImg} />
+          <SuccSVG/>
+          {/* <WelImg source={successImg} /> */}
         </Spacer>
         <Spacer position='bottom' size='extraLarge' >
           <Text variant='caption' >Success!</Text>

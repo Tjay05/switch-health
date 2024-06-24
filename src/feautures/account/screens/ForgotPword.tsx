@@ -5,8 +5,6 @@ import { styled } from 'styled-components';
 import Text from "@/src/components/typograpghy/Text.component";
 import Spacer from '@/src/components/spacer/Spacer.component';
 
-// Pic Imports
-import ForgotImg from '../../../../assets/images/forgotPword.png';
 import { 
   IconContainer, 
   InputContainer, 
@@ -15,6 +13,7 @@ import {
   ORstyles as styles
 } from "../components/account.styles";
 import { Ionicons, SimpleLineIcons } from "@expo/vector-icons";
+import PassSVG from "@/assets/icons/PassSVG";
 
 const Container = styled(View)`
   flex: 1;
@@ -40,8 +39,10 @@ const ForgotPassword = ({ navigation }) => {
   return (
     <ScrollView>
       <Container>
-        <Spacer position="bottom" size="XXL">
-          <Image source={ForgotImg} />
+        <Spacer position="bottom" size="large">
+          <Spacer position="top" size="large">
+            <PassSVG/>
+          </Spacer>
         </Spacer>
         <HeadingContainer>
           <Text variant='headText'>Forgot Password?</Text>

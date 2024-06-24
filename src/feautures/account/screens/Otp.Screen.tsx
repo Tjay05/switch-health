@@ -5,6 +5,7 @@ import {
   TextInput,
   View,
   TouchableOpacity,
+  Alert
 } from "react-native";
 import styled from "styled-components/native";
 import Text from "@/src/components/typograpghy/Text.component";
@@ -177,9 +178,6 @@ const OTPage = ({ navigation }) => {
   };
 
   const handleResend = async () => {
-    setRemainingTime(7 * 60);
-    setOtp(["", "", "", ""]);
-    otpRefs.current[0].focus();
     try {
       const storedData = await AsyncStorage.getItem("data");
       if (storedData !== null) {
@@ -192,12 +190,15 @@ const OTPage = ({ navigation }) => {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              phone: userData.phone,
-              email: userData.email,
+              phone: userData.phone
             }),
           }
         );
         const data = await response.json();
+        setRemainingTime(7 * 60);
+        setOtp(["", "", "", ""]);
+        otpRefs.current[0].focus();
+        Alert.alert("A new otp has been sent")
         if (!response.ok) {
           setError(data.message);
         }

@@ -21,7 +21,7 @@ export const LogBtn = styled(Button).attrs((props) => ({
     width: '100%',
   },
 }))`
-  margin-vertical: 30px;
+  margin-vertical: 8px;
   font-size: 300px;
 `;
 
@@ -76,12 +76,12 @@ export const ORstyles = StyleSheet.create({
   },
   checkboxContainer: {
     flexDirection: 'row',
-    marginVertical: 10,
+    marginVertical: 8,
     // alignItems: 'center',
-    width: '91%'
+    width: '99%'
   },
   checkboxLabel: {
-    fontSize: 16
+    fontSize: 14
   },
   buttonText: {
     fontSize: 18,

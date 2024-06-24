@@ -8,22 +8,19 @@ import { LogBtn, ORstyles as styles } from '../feautures/account/components/acco
 
 const Container = styled(View)`
   flex: 1;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
   width: 90%;
   margin-left: auto;
   margin-right: auto;
-`;
-
-const WelImg = styled(Image)`
-  height: 245px;
-  width: 245px;
+  margin-vertical: 32px;
 `;
 
 const HeadingContainer = styled(View)`
-  width: 100%;
+  width: 90%;
   align-self: stretch;
-  font-weight: 700;
+  margin-left: auto;
+  margin-right: auto;
 `;
 
 const Welcome = ({ navigation }) => {
@@ -38,6 +35,8 @@ const Welcome = ({ navigation }) => {
           <Text variant='shade'>Welcome to Switch Health! We're thrilled to have you on board. Let's unlock a healthier you together.</Text>
         </Spacer>
       </Spacer>
+      <HeadingContainer>
+
       <LogBtn 
         labelStyle={styles.buttonText} 
         contentStyle={styles.buttonContent} 
@@ -45,6 +44,7 @@ const Welcome = ({ navigation }) => {
       >
         Continue
       </LogBtn>
+      </HeadingContainer>
     </Container>
   );
 }

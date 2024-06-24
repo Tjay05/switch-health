@@ -6,7 +6,6 @@ import { Ionicons } from '@expo/vector-icons';
 import Text from '../components/typograpghy/Text.component';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-// Pic Imports
 import { styled } from 'styled-components';
 import Spacer from '../components/spacer/Spacer.component';
 import SpecialSVG from '@/assets/icons/SpecialSVG';
@@ -15,10 +14,10 @@ import AdviceSVG from '@/assets/icons/AdviceSVG';
 const Container = styled(View)`
   flex: 1;
   justify-content: center;
-  align-items: center;
   width: 90%;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 8px;
 `;
 
 const Info = styled(Text)`
@@ -26,14 +25,23 @@ const Info = styled(Text)`
 `;
 
 const HeadingContainer = styled(View)`
-  padding-top: 16px;
+  margin-vertical: 16px;
   align-self: flex-end;
 `;
 
 const OnboardScreen = ({ navigation }) => {
   const swiperRef = useRef(null);
+  const totalSlides = 2;
 
   const renderPagination = (index, total) => {
+    const handlePress = () => {
+      if (index === totalSlides - 1) {
+        navigation.navigate('Main');
+      } else {
+        swiperRef.current.scrollBy(1);
+      }
+    };
+
     return (
       <View style={styles.paginationContainer}>
         {Array.from({ length:total }).map((_, i) => (
@@ -45,6 +53,12 @@ const OnboardScreen = ({ navigation }) => {
             ]}
           />
         ))}
+        <TouchableOpacity 
+            onPress={handlePress}
+            style={styles.nextButton}
+          >
+            <Ionicons name='arrow-forward-circle' size={60} color='#1A1F71' />
+          </TouchableOpacity>
       </View>
     );
   };
@@ -64,32 +78,24 @@ const OnboardScreen = ({ navigation }) => {
       >
         <Container>
           <Spacer position='bottom' size='small'>
-            <SpecialSVG/>
+            <View style={{alignItems: 'center'}}>
+              <SpecialSVG/>
+            </View>
           </Spacer>
-          <Spacer position='top' size='medium'/>
-          <Info variant='main' >Find a lot of specialist doctors in one place</Info>
-          <Spacer position='bottom' size='XXL' />
-          <TouchableOpacity 
-            onPress={() => swiperRef.current.scrollBy(1)}
-            style={styles.nextButton}
-          >
-            <Ionicons name='arrow-forward-circle' size={60} color='#1A1F71' />
-          </TouchableOpacity>
+          <Spacer position='bottom' size='XXL'>
+            <Info variant='main' >Find a lot of specialist doctors in one place</Info>
+          </Spacer>          
         </Container>
         <Container>
-          <Container></Container>
-          <AdviceSVG/>
-          <Spacer position='bottom' size='XXL'/>
-          <Spacer position='bottom' size='XXL'/>
-          <Info variant='main' >Get advice only from a doctor you believe in.</Info>        
-          <Spacer position='bottom' size='XXL'/>
-          <TouchableOpacity 
-            onPress={() => navigation.navigate('Main')} 
-            style={styles.nextButton}
-          >
-            <Ionicons name='arrow-forward-circle' size={60} color='#1A1F71' />
-          </TouchableOpacity>
-          <Spacer position='bottom' size='large'/>
+          <Spacer position='bottom' size='small'>
+            <View style={{alignItems: 'center'}}>
+              <AdviceSVG />
+            </View>
+          </Spacer>
+            <Info style={{position: 'absolute', bottom: 70}} variant='main' >Get advice only from a doctor you believe in.</Info>        
+          <Spacer position='bottom' size='XXL'>
+            <Spacer position='top' size='XXL'></Spacer>
+          </Spacer>
         </Container>
       </Swiper>
     </Container>
@@ -118,9 +124,11 @@ const styles = StyleSheet.create({
   },
   nextButton: {
     position: 'absolute',
-    bottom: 3,
-    right: -150,
+    bottom: -30,
+    right: -275,
   }
 })
  
 export default OnboardScreen;
+
+// onPress={() => navigation.navigate('Main')} 

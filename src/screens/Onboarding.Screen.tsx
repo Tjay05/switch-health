@@ -1,16 +1,16 @@
 import { useRef } from 'react';
 import Swiper from 'react-native-swiper';
-import { Image, View, Button, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 import Text from '../components/typograpghy/Text.component';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 // Pic Imports
-import FindSpecImg from '../../assets/images/findSpecialist.png';
-import getAdviceImg from '../../assets/images/getAdvice.png';
 import { styled } from 'styled-components';
 import Spacer from '../components/spacer/Spacer.component';
+import SpecialSVG from '@/assets/icons/SpecialSVG';
+import AdviceSVG from '@/assets/icons/AdviceSVG';
 
 const Container = styled(View)`
   flex: 1;
@@ -64,7 +64,7 @@ const OnboardScreen = ({ navigation }) => {
       >
         <Container>
           <Spacer position='bottom' size='small'>
-            <Image source={FindSpecImg} />
+            <SpecialSVG/>
           </Spacer>
           <Spacer position='top' size='medium'/>
           <Info variant='main' >Find a lot of specialist doctors in one place</Info>
@@ -78,10 +78,9 @@ const OnboardScreen = ({ navigation }) => {
         </Container>
         <Container>
           <Container></Container>
-          <Image source={getAdviceImg} />
+          <AdviceSVG/>
           <Spacer position='bottom' size='XXL'/>
           <Spacer position='bottom' size='XXL'/>
-          <Spacer position='bottom' size='extraLarge'/>
           <Info variant='main' >Get advice only from a doctor you believe in.</Info>        
           <Spacer position='bottom' size='XXL'/>
           <TouchableOpacity 
@@ -91,8 +90,6 @@ const OnboardScreen = ({ navigation }) => {
             <Ionicons name='arrow-forward-circle' size={60} color='#1A1F71' />
           </TouchableOpacity>
           <Spacer position='bottom' size='large'/>
-          <Spacer position='bottom' size='small'/>
-          <Spacer position='bottom' size='medium'/>
         </Container>
       </Swiper>
     </Container>

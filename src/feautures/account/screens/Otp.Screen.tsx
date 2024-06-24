@@ -8,6 +8,7 @@ import Spacer from '@/src/components/spacer/Spacer.component';
 import OtpImg from '../../../../assets/images/otpPic.png';
 import { useRef, useState } from "react";
 import { LogBtn, ORstyles as styles } from "../components/account.styles";
+import OtpSVG from "@/assets/icons/OtpSVG";
 
 const Container = styled(View)`
   flex: 1;
@@ -77,7 +78,9 @@ const OTPage = ({ navigation }) => {
     <ScrollView>
       <Container>
         <Spacer position="bottom" size="large">
-          <Image source={OtpImg} />
+          <Spacer position="top" size="large">
+            <OtpSVG/>
+          </Spacer>
         </Spacer>
         <Spacer position="bottom" size="medium">
           <Text variant='caption'>OTP VERIFICATION</Text>

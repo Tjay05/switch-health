@@ -1,7 +1,7 @@
+import WelSVg from '@/assets/icons/WelSVG';
 import { Image, View } from 'react-native';
 import { styled } from 'styled-components';
 
-import welcomeImg from '../../assets/images/welcome.png';
 import Spacer from '../components/spacer/Spacer.component';
 import Text from '../components/typograpghy/Text.component';
 import { LogBtn, ORstyles as styles } from '../feautures/account/components/account.styles';
@@ -29,24 +29,22 @@ const HeadingContainer = styled(View)`
 const Welcome = ({ navigation }) => {
   return (
     <Container>
+      <Spacer position="top" size="extraLarge">
+        <WelSVg/>
+      </Spacer>
       <Spacer position='bottom' size='large'>
-        <WelImg source={welcomeImg} />
-      </Spacer>
-      <Spacer position='bottom' size='extraLarge' >
         <Text variant='caption' >Welcome to Switch Health</Text>
+        <Spacer position="top" size="medium">
+          <Text variant='shade'>Welcome to Switch Health! We're thrilled to have you on board. Let's unlock a healthier you together.</Text>
+        </Spacer>
       </Spacer>
-      <Spacer position='bottom' size='XXL' >
-        <Text variant='shade'>Welcome to Switch Health! We're thrilled to have you on board. Let's unlock a healthier you together.</Text>
-      </Spacer>
-      <HeadingContainer>
-        <LogBtn 
-          labelStyle={styles.buttonText} 
-          contentStyle={styles.buttonContent} 
-          onPress={() => navigation.navigate('Onboarding')} 
-        >
-          Continue
-        </LogBtn>
-      </HeadingContainer>
+      <LogBtn 
+        labelStyle={styles.buttonText} 
+        contentStyle={styles.buttonContent} 
+        onPress={() => navigation.navigate('Onboarding')} 
+      >
+        Continue
+      </LogBtn>
     </Container>
   );
 }

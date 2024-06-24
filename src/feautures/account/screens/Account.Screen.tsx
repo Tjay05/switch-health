@@ -3,9 +3,9 @@ import { styled } from "styled-components";
 import { Button } from "react-native-paper";
 import Text from "@/src/components/typograpghy/Text.component";
 
-import Logo from '../../../../assets/icons/logo.png';
 import Spacer from "@/src/components/spacer/Spacer.component";
 import { LogBtn, ORstyles as styles } from "../components/account.styles";
+import LogoSVG from "@/assets/icons/LogoSVG";
 
 const Container = styled(View)`
   flex: 1;
@@ -30,7 +30,7 @@ const SignBtn = styled(Button).attrs((props) => ({
 const AccountScreen = ({ navigation }) => {
   return (
     <Container>
-      <Image source={Logo} />
+      <LogoSVG/>
       <Spacer position="bottom" size="extraLarge">
         <Text variant='head'>Switch Health</Text>
       </Spacer>

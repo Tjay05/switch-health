@@ -1,5 +1,5 @@
 import { FontAwesome5, FontAwesome6, Ionicons, MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
-import { View, ScrollView, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, ScrollView, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
 import { 
   AppContainer,
@@ -28,23 +28,26 @@ import CovidPic from '../../../../assets/images/covid.png';
 import DocImg from '../../../../assets/images/doctor.png';
 import Text from '@/src/components/typograpghy/Text.component';
 import Spacer from '@/src/components/spacer/Spacer.component';
+import AvatarSVG from '@/assets/icons/Avatar';
 
 export const Home = () => {
   return (
-    <ScrollView>
-      <AppContainer>
-        <Spacer position='top' size='extraLarge'>
+    <View>
+      <ScrollView style={styles.whiteWrapper}>
+        <AppContainer>
           <HeaderContainer>
-            <Header>
-              <ProfileContainer>
-                <Image/>
-                <GreetContainer>
-                  <Text style={styles.greeting}>Hello,</Text>
-                  <Text style={styles.name}>Tosin Poppins</Text>
-                </GreetContainer>
-              </ProfileContainer>
-              <Ionicons name='notifications' size={24} color='#1A1F71' />
-            </Header>
+            <Spacer>
+              <Header>
+                <ProfileContainer>
+                  <AvatarSVG width={50} height={50}/>
+                  <GreetContainer>
+                    <Text style={styles.greeting}>Hello,</Text>
+                    <Text style={styles.name}>Tosin Poppins</Text>
+                  </GreetContainer>
+                </ProfileContainer>
+                <Ionicons name='notifications' size={28} color='#1A1F71' />
+              </Header>
+            </Spacer>
             <Spacer position='top' size='extraLarge'>
               <Text variant='main'>Indexes</Text>
               <Spacer position='bottom' size='large'/>
@@ -68,56 +71,54 @@ export const Home = () => {
               </IndexBox>
             </IndexContainer>
           </HeaderContainer>
-        </Spacer>
-        <Spacer position='top' size='extraLarge'/>
-        <Spacer position='bottom' size='large'>
-          <SearchInput placeholder="Search doctor, drugs, articles..." />
-        </Spacer>
-        <Spacer position='bottom' size='large'>
-          <CategoriesContainer>
-            <Spacer position='bottom' size='small'>
-              <Text variant='main'>Categories</Text>
-            </Spacer>
-            <CategoryScroll 
-              horizontal 
-              showsHorizontalScrollIndicator={false} 
-              contentContainerStyle={scrollStyle.tstyles}
-            >
-              <TouchableCategory>
-                <CatIcon>
-                  <FontAwesome6 name='user-doctor' size={20} color='##1A1F71'/>
-                </CatIcon>
-                <Text style={styles.categoryText}>Top Doctors</Text>
-              </TouchableCategory>
-              <TouchableCategory>
-                <CatIcon>
-                  <MaterialCommunityIcons name='pill' size={20} color='##1A1F71'/>
-                </CatIcon>
-                <Text style={styles.categoryText}>Pharmacy</Text>
-              </TouchableCategory>
-              <TouchableCategory>
-                <CatIcon>
-                  <MaterialCommunityIcons name='clipboard-text-outline' size={20} color='##1A1F71'/>
-                </CatIcon>
-                <Text style={styles.categoryText}>Appointments</Text>
-              </TouchableCategory>
-              <TouchableCategory>
-                <CatIcon>
-                  <FontAwesome5 name='ambulance' size={20} color='##1A1F71'/>
-                </CatIcon>
-                <Text style={styles.categoryText}>Ambulance</Text>
-              </TouchableCategory>
-              <TouchableCategory>
-                <CatIcon>
-                  <Ionicons name='footsteps-outline' size={20} color='##1A1F71'/>
-                </CatIcon>
-                <Text style={styles.categoryText}>Step metrics</Text>
-              </TouchableCategory>
-            </CategoryScroll>
-          </CategoriesContainer>
-        </Spacer>
+          <Spacer position='top' size='extraLarge'/>
+          <Spacer position='bottom' size='extraLarge'>
+            <SearchInput placeholder="Search doctor, drugs, articles..." />
+          </Spacer>
+          <Spacer position='bottom' size='extraLarge'>
+            <CategoriesContainer>
+              <Spacer position='bottom' size='medium'>
+                <Text variant='main'>Categories</Text>
+              </Spacer>
+              <CategoryScroll 
+                horizontal 
+                showsHorizontalScrollIndicator={false} 
+                contentContainerStyle={scrollStyle.tstyles}
+              >
+                <TouchableCategory>
+                  <CatIcon>
+                    <FontAwesome6 name='user-doctor' size={20} color='##1A1F71'/>
+                  </CatIcon>
+                  <Text style={styles.categoryText}>Top Doctors</Text>
+                </TouchableCategory>
+                <TouchableCategory>
+                  <CatIcon>
+                    <MaterialCommunityIcons name='pill' size={20} color='##1A1F71'/>
+                  </CatIcon>
+                  <Text style={styles.categoryText}>Pharmacy</Text>
+                </TouchableCategory>
+                <TouchableCategory>
+                  <CatIcon>
+                    <MaterialCommunityIcons name='clipboard-text-outline' size={20} color='##1A1F71'/>
+                  </CatIcon>
+                  <Text style={styles.categoryText}>Appointments</Text>
+                </TouchableCategory>
+                <TouchableCategory>
+                  <CatIcon>
+                    <FontAwesome5 name='ambulance' size={20} color='##1A1F71'/>
+                  </CatIcon>
+                  <Text style={styles.categoryText}>Ambulance</Text>
+                </TouchableCategory>
+                <TouchableCategory>
+                  <CatIcon>
+                    <Ionicons name='footsteps-outline' size={20} color='##1A1F71'/>
+                  </CatIcon>
+                  <Text style={styles.categoryText}>Step metrics</Text>
+                </TouchableCategory>
+              </CategoryScroll>
+            </CategoriesContainer>
+          </Spacer>
 
-        <Spacer position='bottom' size='large'>
           <ArticleContainer>
             <Text variant='main'>Health articles</Text>
             <TouchableArticle>
@@ -153,22 +154,27 @@ export const Home = () => {
               </ArticleInfo>
             </TouchableArticle>
           </ArticleContainer>
-        </Spacer>
-      </AppContainer>
-    </ScrollView>
+          <Spacer position='bottom' size='large'>
+          </Spacer>
+        </AppContainer>
+      </ScrollView>
+      <TouchableOpacity>
+        <CatIcon style={styles.emergency}>
+          <MaterialCommunityIcons name='phone-alert-outline' size={30} color='white' />
+        </CatIcon>
+      </TouchableOpacity>
+    </View>
   );
 }
 
 export const Appointments = () => <Text>Appointments</Text>
 
 export const Reports = () => <Text>Reports</Text>
-
-export const Profile = () => <Text>Profile</Text>
  
 // export default Home;
 
 const scrollStyle = StyleSheet.create({
   tstyles: {
     justifyContent: 'space-between'
-  }
+  },
 })

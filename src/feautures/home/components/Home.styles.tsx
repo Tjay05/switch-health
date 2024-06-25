@@ -5,6 +5,7 @@ export const AppContainer = styled(View)`
   flex: 1;
   width: 90%;
   margin-horizontal: auto;
+  margin-top: ${(props)=> props.theme.space[3]};
 `;
 
 export const HeaderContainer = styled(View)`
@@ -35,7 +36,6 @@ export const IndexContainer = styled(View)`
 export const IndexBox = styled(View)`
   flex-direction: row;
   justify-content: space-between;
-  background-color: white;
   width: 48%;
   border-radius: 25px;
   padding: ${(props)=> props.theme.space[3]};
@@ -48,13 +48,13 @@ export const IndexItem = styled(View)`
 export const SearchInput = styled(TextInput)`
   width: 100%;
   height: 45px;
-  border: 1px solid #221F1F1A;
-  background: #F9FAFB; 
+  background: #FBFBFB; 
   border-radius: 25px;
   padding-left: 45px;
   font-family: ${(props) => props.theme.fonts.poppinsRegular};
   color: #757575;
   font-size: ${(props) => props.theme.fontSizes.placeholder};
+  border: 1px solid #CBCBCB
 `;
 
 export const CategoriesContainer = styled(View)`
@@ -72,9 +72,10 @@ export const TouchableCategory = styled(TouchableOpacity)`
 `;
 
 export const CatIcon = styled(View)`
-  border: 1px solid #221F1F1A;
-  border-radius: 24px;
+  border-radius: 30px;
+  border: 1px solid #00000026;
   padding: 12px;
+  margin-bottom: ${(props)=> props.theme.space[1]};
   background-color: white;
 `;
 
@@ -86,6 +87,7 @@ export const ArticleContainer = styled(View)`
 export const TouchableArticle = styled(TouchableOpacity)`
   flex-direction: row;
   background-color: white;
+  border: 1px solid #221F1F1A;
   border-radius: 5px;
   width: 100%;
   padding: ${(props)=> props.theme.space[2]};
@@ -108,10 +110,10 @@ export const ArticleText = styled(View)`
 
 export const HomeStyles = StyleSheet.create({
   greeting: {
-    fontSize: 22,
+    fontSize: 20,
   },
   name: {
-    fontSize: 26,
+    fontSize: 24,
     fontWeight: 'bold',
   },
   indexes: {
@@ -160,4 +162,13 @@ export const HomeStyles = StyleSheet.create({
     color: '#888',
     fontSize: 12,
   },
+  whiteWrapper: {
+    backgroundColor: '#FAFBFC',
+  },
+  emergency: {
+    position: 'absolute',
+    right: 18,
+    bottom: 10,
+    backgroundColor: '#FF0000',
+  }
 });

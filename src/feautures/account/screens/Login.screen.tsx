@@ -36,7 +36,7 @@ const CenteredText = styled(Text)`
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(' ');
+  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
     
   const handleSubmit = async () => {

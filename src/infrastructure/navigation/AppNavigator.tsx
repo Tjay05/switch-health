@@ -1,4 +1,5 @@
-import { Appointments, Home, Profile, Reports } from "@/src/feautures/home/screens";
+import { Appointments, Home, Reports } from "@/src/feautures/home/screens";
+import ProfileScreen from "@/src/feautures/profile/screen/Index";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -48,7 +49,7 @@ const AppNavigator = () => {
         <Tab.Screen name="Home" component={Home} />
         <Tab.Screen name="Reports" component={Reports} />
         <Tab.Screen name="Appointments" component={Appointments} />
-        <Tab.Screen name="Profile" component={Profile} />
+        <Tab.Screen name="Profile" component={ProfileScreen} />
       </Tab.Navigator>
     </>
   );

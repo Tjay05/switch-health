@@ -59,6 +59,12 @@ const main = (theme:any) =>`
   text-align: left;
 `;
 
+const main1 = (theme:any) =>`
+  font-family: ${theme.fonts.poppinsBold};
+  font-size: ${theme.fontSizes.info};
+  text-align: left;
+`;
+
 const head = (theme:any) =>`
   color: ${theme.Colors.brand.tetiary};
   font-size: ${theme.fontSizes.title};
@@ -75,6 +81,7 @@ const variants = {
   place,
   shade,
   main,
+  main1,
   headText,
   head
 };

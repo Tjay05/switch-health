@@ -26,9 +26,9 @@ import {
 // Pic Imports
 import CovidPic from '../../../../assets/images/covid.png';
 import DocImg from '../../../../assets/images/doctor.png';
-import ProfileImg from '../../../../assets/images/avatar.png';
 import Text from '@/src/components/typograpghy/Text.component';
 import Spacer from '@/src/components/spacer/Spacer.component';
+import AvatarSVG from '@/assets/icons/Avatar';
 
 export const Home = () => {
   return (
@@ -39,13 +39,13 @@ export const Home = () => {
             <Spacer>
               <Header>
                 <ProfileContainer>
-                  <Image source={ProfileImg}/>
+                  <AvatarSVG width={50} height={50}/>
                   <GreetContainer>
                     <Text style={styles.greeting}>Hello,</Text>
                     <Text style={styles.name}>Tosin Poppins</Text>
                   </GreetContainer>
                 </ProfileContainer>
-                <Ionicons name='notifications' size={24} color='#1A1F71' />
+                <Ionicons name='notifications' size={28} color='#1A1F71' />
               </Header>
             </Spacer>
             <Spacer position='top' size='extraLarge'>
@@ -170,8 +170,6 @@ export const Home = () => {
 export const Appointments = () => <Text>Appointments</Text>
 
 export const Reports = () => <Text>Reports</Text>
-
-export const Profile = () => <Text>Profile</Text>
  
 // export default Home;
 

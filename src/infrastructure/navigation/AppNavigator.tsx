@@ -1,8 +1,11 @@
-import { Appointments, Home, Reports } from "@/src/feautures/home/screens";
+import AppointmentScreen from "@/src/feautures/appointment/screens/Index";
+import Home from "@/src/feautures/home/screens";
 import ProfileScreen from "@/src/feautures/profile/screen/Index";
+import ReportScreen from "@/src/feautures/report/screens";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { theme } from "../theme";
 
 const AppNavigator = () => {
   const Tab = createBottomTabNavigator();
@@ -43,12 +46,35 @@ const AppNavigator = () => {
           tabBarActiveTintColor: '#1A1F71',
           tabBarInactiveTintColor: '#221F1F99',
           headerShown: false,
-          
+          headerStatusBarHeight: 0,
+          headerTitleStyle: {
+            fontFamily: theme.fonts.poppinsMedium,
+          },
+          headerTitleAlign: "center",
+          tabBarLabelStyle: {
+            fontFamily: theme.fonts.poppinsMedium,
+          },
+          tabBarStyle: {
+            paddingBottom: 2,
+          },
         })}
       >
         <Tab.Screen name="Home" component={Home} />
-        <Tab.Screen name="Reports" component={Reports} />
-        <Tab.Screen name="Appointments" component={Appointments} />
+        <Tab.Screen 
+          name="Reports" 
+          component={ReportScreen} 
+          options={{
+            headerShown: true,
+            headerTitle: 'My Report',
+          }} 
+        />
+        <Tab.Screen 
+          name="Appointments" 
+          options={{
+            headerShown: true,
+          }} 
+          component={AppointmentScreen} 
+        />
         <Tab.Screen name="Profile" component={ProfileScreen} />
       </Tab.Navigator>
     </>

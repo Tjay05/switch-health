@@ -1,5 +1,5 @@
 import { FontAwesome5, FontAwesome6, Ionicons, MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
-import { View, ScrollView, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 
 import { 
   AppContainer,
@@ -30,7 +30,7 @@ import Text from '@/src/components/typograpghy/Text.component';
 import Spacer from '@/src/components/spacer/Spacer.component';
 import AvatarSVG from '@/assets/icons/Avatar';
 
-export const Home = () => {
+const Home = () => {
   return (
     <View>
       <ScrollView style={styles.whiteWrapper}>
@@ -166,12 +166,8 @@ export const Home = () => {
     </View>
   );
 }
-
-export const Appointments = () => <Text>Appointments</Text>
-
-export const Reports = () => <Text>Reports</Text>
  
-// export default Home;
+export default Home;
 
 const scrollStyle = StyleSheet.create({
   tstyles: {

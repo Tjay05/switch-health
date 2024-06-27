@@ -1,5 +1,7 @@
 import Home from "@/src/feautures/home/screens";
+import Ambulance from "@/src/feautures/home/screens/Ambulance";
 import TopDoctors from "@/src/feautures/home/screens/Doctors";
+import Emergency from "@/src/feautures/home/screens/Emergency";
 import { createStackNavigator } from "@react-navigation/stack";
 import { theme } from "../theme";
 
@@ -26,6 +28,15 @@ const HomeNavigator = () => {
         name="Top Doctors"
         component={TopDoctors}
         options={{headerShown: true}}
+      />
+      <Stack.Screen
+        name="Emergency"
+        component={Emergency}
+        options={{headerShown: true}}
+      />
+      <Stack.Screen
+        name="Ambulance"
+        component={Ambulance}
       />
     </Stack.Navigator>
   );

@@ -1,3 +1,4 @@
+import Text from "@/src/components/typograpghy/Text.component";
 import { Image, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import { styled } from "styled-components";
 
@@ -172,3 +173,54 @@ export const HomeStyles = StyleSheet.create({
     backgroundColor: '#FF0000',
   }
 });
+
+export const DoctorWraapper = styled(ScrollView)`
+  background-color: #fff;
+`;
+
+export const TopDoctorsContainer = styled(View)`
+  flex-direction: column;
+  flex: 1;
+`;
+
+export const DocIMage = styled(Image)`
+  width: 105px;
+  height: 96px;
+  border-radius: 6px;
+`;
+
+export const DocDetails = styled(View)`
+  width: 61%;
+  align-items: flex-start;
+`;
+
+export const DocName = styled(Text)`
+  font-size: 16px;
+  font-family: ${(props) => props.theme.fonts.poppinsMedium};
+`;
+
+export const DocAOS = styled(Text)`
+  font-size: 13px;
+  font-family: ${(props) => props.theme.fonts.poppinsMedium};
+  color: ${(props) => props.theme.Colors.bg.dark};
+`;
+
+export const RatingWrap = styled(View)`
+  flex: 1;
+  flex-direction: row;
+  background: #407CE22B;
+  padding-horizontal: ${(props)=> props.theme.space[1]};
+  border-radius: 3px;
+`; 
+
+export const RatingText = styled(Text)`
+  font-size: 12px;
+  color: #407CE2;
+  font-family: ${(props) => props.theme.fonts.poppinsMedium};
+`;
+
+export const DocLocation = styled(Text)`
+  font-size: 12px;
+  color: #221F1F66;
+  font-family: ${(props) => props.theme.fonts.poppinsRegular};
+`;

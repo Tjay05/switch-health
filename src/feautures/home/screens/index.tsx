@@ -30,7 +30,7 @@ import Text from '@/src/components/typograpghy/Text.component';
 import Spacer from '@/src/components/spacer/Spacer.component';
 import AvatarSVG from '@/assets/icons/Avatar';
 
-const Home = () => {
+const Home = ({ navigation }) => {
   return (
     <View>
       <ScrollView style={styles.whiteWrapper}>
@@ -85,7 +85,7 @@ const Home = () => {
                 showsHorizontalScrollIndicator={false} 
                 contentContainerStyle={scrollStyle.tstyles}
               >
-                <TouchableCategory>
+                <TouchableCategory onPress={() => navigation.navigate('Top Doctors')}>
                   <CatIcon>
                     <FontAwesome6 name='user-doctor' size={20} color='##1A1F71'/>
                   </CatIcon>
@@ -97,7 +97,7 @@ const Home = () => {
                   </CatIcon>
                   <Text style={styles.categoryText}>Pharmacy</Text>
                 </TouchableCategory>
-                <TouchableCategory>
+                <TouchableCategory onPress={() => navigation.navigate('Appointments')}>
                   <CatIcon>
                     <MaterialCommunityIcons name='clipboard-text-outline' size={20} color='##1A1F71'/>
                   </CatIcon>

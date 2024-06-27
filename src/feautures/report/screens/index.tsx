@@ -36,7 +36,7 @@ import {
 import LinearGradient from "react-native-linear-gradient";
 import { Picker } from "@react-native-picker/picker";
 import { useState } from "react";
-
+import GradientLine from "./gradient";
 
 const colors = [
   { label: "Red", value: "#ff0000" },
@@ -47,7 +47,6 @@ const colors = [
   { label: "Indigo", value: "#4b0082" },
   { label: "Violet", value: "#ee82ee" },
 ];
-
 
 const ReportScreen = () => {
   const [selectedColor, setSelectedColor] = useState("#ff0000");
@@ -77,6 +76,7 @@ const ReportScreen = () => {
                 </BMIStatus>
               </Spacer>
               <Spacer position="bottom" size="small">
+                <GradientLine />
                 <BmiSVG width={150} height={45} />
               </Spacer>
             </BMIBox>

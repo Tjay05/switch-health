@@ -73,7 +73,11 @@ const Home = ({ navigation }) => {
           </HeaderContainer>
           <Spacer position='top' size='extraLarge'/>
           <Spacer position='bottom' size='extraLarge'>
-            <SearchInput placeholder="Search doctor, drugs, articles..." />
+            <SearchInput  
+              placeholderTextColor={'#221F1F99'} 
+              iconColor={'#221F1F99'}
+              placeholder="Search doctor, drugs, articles..." 
+            />
           </Spacer>
           <Spacer position='bottom' size='extraLarge'>
             <CategoriesContainer>
@@ -103,7 +107,7 @@ const Home = ({ navigation }) => {
                   </CatIcon>
                   <Text style={styles.categoryText}>Appointments</Text>
                 </TouchableCategory>
-                <TouchableCategory>
+                <TouchableCategory onPress={() => navigation.navigate('Ambulance')}>
                   <CatIcon>
                     <FontAwesome5 name='ambulance' size={20} color='##1A1F71'/>
                   </CatIcon>
@@ -158,7 +162,7 @@ const Home = ({ navigation }) => {
           </Spacer>
         </AppContainer>
       </ScrollView>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('Emergency')}>
         <CatIcon style={styles.emergency}>
           <MaterialCommunityIcons name='phone-alert-outline' size={30} color='white' />
         </CatIcon>

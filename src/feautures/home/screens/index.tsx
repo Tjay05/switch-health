@@ -5,14 +5,7 @@ import {
   MaterialCommunityIcons,
   Octicons,
 } from "@expo/vector-icons";
-import {
-  View,
-  ScrollView,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  Alert,
-} from "react-native";
+import { View, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
 
 import {
   AppContainer,
@@ -237,11 +230,7 @@ export const Home = () => {
   );
 };
 
-export const Appointments = () => <Text>Appointments</Text>;
-
-export const Reports = () => <Text>Reports</Text>;
-
-// export default Home;
+export default Home;
 
 const scrollStyle = StyleSheet.create({
   tstyles: {

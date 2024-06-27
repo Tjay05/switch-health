@@ -39,7 +39,7 @@ import AvatarSVG from "@/assets/icons/Avatar";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const Home = () => {
+const Home = ({ navigation }) => {
   const [userData, setUserData] = useState(null);
 
   const getData = async () => {
@@ -58,7 +58,6 @@ export const Home = () => {
     getData();
   }, []);
 
-const Home = ({ navigation }) => {
   return (
     <View>
       <ScrollView style={styles.whiteWrapper}>

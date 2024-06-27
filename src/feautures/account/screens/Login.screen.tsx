@@ -1,17 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { StyleSheet, TouchableOpacity, View, Alert } from "react-native";
 import { styled } from "styled-components";
 import Text from "@/src/components/typograpghy/Text.component";
 import Spacer from "@/src/components/spacer/Spacer.component";
-import { 
-  IconContainer, 
+import {
+  IconContainer,
   InputContainer,
   InputField,
-  LogBtn, 
-  ORstyles as styles
+  LogBtn,
+  ORstyles as styles,
 } from "../components/account.styles";
 import { ScrollView } from "react-native-gesture-handler";
 import { AntDesign, Ionicons, SimpleLineIcons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+// import {
+//   GoogleSignin,
+//   statusCodes,
+// } from "@react-native-google-signin/google-signin";
 
 const Container = styled(View)`
   width: 85%;
@@ -34,44 +39,53 @@ const CenteredText = styled(Text)`
 `;
 
 const Login = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-    
+
+
+  const handleSetData = async (data) => {
+    try {
+      await AsyncStorage.setItem("data", JSON.stringify(data));
+    } catch (error) {
+      console.error("Error storing data:", error);
+    }
+  };
+ 
+
   const handleSubmit = async () => {
-
-      setIsLoading(true);
-      const userData = {
-        email,
-        password,
-      };
-
-      try {
-        const response = await fetch(
-          "https://switch-health.onrender.com/patient/sign-in",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(userData),
-          }
-        );
-        const data = await response.json();
-        if (response.ok) {
-          Alert.alert("Logged in Successfully")
-        } 
-        else {
-          setError(data.message);
-        }
-      } catch (error) {
-        console.log("Error:", error);
-        setError("Something went wrong. Please try again.");
-      } finally {
-        setIsLoading(false);
-      }
+    setIsLoading(true);
+    const userData = {
+      email,
+      password,
     };
+
+    try {
+      const response = await fetch(
+        "https://switch-health.onrender.com/patient/sign-in",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userData),
+        }
+      );
+      const data = await response.json();
+      if (response.ok) {
+        Alert.alert("Logged in Successfully");
+        handleSetData(data);
+      } else {
+        setError(data.message);
+      }
+    } catch (error) {
+      console.log("Error:", error);
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <ScrollView>
@@ -149,7 +163,7 @@ const Login = ({ navigation }) => {
           <View style={styles.line}></View>
         </View>
 
-        <TouchableOpacity style={styles.googleBtn}>
+        <TouchableOpacity  style={styles.googleBtn}>
           <AntDesign style={styles.icon} name="google" size={24} />
           <Text variant="place" style={styles.btnText}>
             Sign in with Google
@@ -158,6 +172,6 @@ const Login = ({ navigation }) => {
       </Container>
     </ScrollView>
   );
-}
- 
+};
+
 export default Login;

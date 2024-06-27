@@ -100,6 +100,13 @@ export const ArticleImg = styled(Image)`
   border-radius: 5px;
 `;
 
+
+export const ProfileImg = styled(Image)`
+  width: 50px;
+  height:50px;
+  border-radius:50px;
+`;
+
 export const ArticleInfo = styled(View)`
   width: 77%;
 `;

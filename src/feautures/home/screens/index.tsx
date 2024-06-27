@@ -58,6 +58,7 @@ export const Home = () => {
     getData();
   }, []);
 
+const Home = ({ navigation }) => {
   return (
     <View>
       <ScrollView style={styles.whiteWrapper}>
@@ -110,9 +111,13 @@ export const Home = () => {
               </IndexBox>
             </IndexContainer>
           </HeaderContainer>
-          <Spacer position="top" size="extraLarge" />
-          <Spacer position="bottom" size="extraLarge">
-            <SearchInput placeholder="Search doctor, drugs, articles..." />
+          <Spacer position='top' size='extraLarge'/>
+          <Spacer position='bottom' size='extraLarge'>
+            <SearchInput  
+              placeholderTextColor={'#221F1F99'} 
+              iconColor={'#221F1F99'}
+              placeholder="Search doctor, drugs, articles..." 
+            />
           </Spacer>
           <Spacer position="bottom" size="extraLarge">
             <CategoriesContainer>
@@ -124,7 +129,7 @@ export const Home = () => {
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={scrollStyle.tstyles}
               >
-                <TouchableCategory>
+                <TouchableCategory onPress={() => navigation.navigate('Top Doctors')}>
                   <CatIcon>
                     <FontAwesome6
                       name="user-doctor"
@@ -144,7 +149,7 @@ export const Home = () => {
                   </CatIcon>
                   <Text style={styles.categoryText}>Pharmacy</Text>
                 </TouchableCategory>
-                <TouchableCategory>
+                <TouchableCategory onPress={() => navigation.navigate('Appointments')}>
                   <CatIcon>
                     <MaterialCommunityIcons
                       name="clipboard-text-outline"
@@ -154,7 +159,7 @@ export const Home = () => {
                   </CatIcon>
                   <Text style={styles.categoryText}>Appointments</Text>
                 </TouchableCategory>
-                <TouchableCategory>
+                <TouchableCategory onPress={() => navigation.navigate('Ambulance')}>
                   <CatIcon>
                     <FontAwesome5 name="ambulance" size={20} color="#1A1F71" />
                   </CatIcon>
@@ -217,7 +222,7 @@ export const Home = () => {
           <Spacer position="bottom" size="large"></Spacer>
         </AppContainer>
       </ScrollView>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('Emergency')}>
         <CatIcon style={styles.emergency}>
           <MaterialCommunityIcons
             name="phone-alert-outline"

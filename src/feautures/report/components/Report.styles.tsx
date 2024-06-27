@@ -181,3 +181,7 @@ export const ReportIcon = styled(View)`
   margin-bottom: ${(props)=> props.theme.space[1]};
   background-color: #407CE221;
 `;
+
+// export const colourSpectrum  = styled(View)`
+
+// `

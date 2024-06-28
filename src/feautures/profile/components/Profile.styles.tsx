@@ -1,5 +1,5 @@
 import Text from "@/src/components/typograpghy/Text.component";
-import { Dimensions, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Dimensions, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import { styled } from "styled-components";
 
 const { height } = Dimensions.get('window');
@@ -92,6 +92,32 @@ export const MenuText = styled(Text)`
   margin-left: ${(props)=> props.theme.space[3]};
 `;
 
+// Input Fields
+export const TextLabel = styled(Text)`
+  color: #1A1F71;
+  font-size: 16px;
+  font-family: ${(props)=> props.theme.fonts.poppinsRegular};
+`;
+
+export const ProfInputs = styled(TextInput)`
+  width: 100%;
+  height: 40px;
+  color: #262C3D;
+  border: 1px solid #B0B3C7;
+  border-radius: 15px;
+  padding-horizontal: ${(props)=> props.theme.space[3]};
+  font-family: ${(props)=> props.theme.fonts.poppinsRegular};
+  font-size: 14px;
+  margin-bottom: ${(props)=> props.theme.space[2]};
+`;
+
+export const GenoGroup = styled(View)`
+  flex: 1;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+`;
+
 export const Profstyles = StyleSheet.create({
   contentContainer: {
     paddingTop: 110, // Adjust to the height of your header
@@ -99,4 +125,7 @@ export const Profstyles = StyleSheet.create({
   tabFont: {
     fontFamily: 'Poppins_400Regular',
   },
+  viewWidth: {
+    width: '45%'
+  }
 });

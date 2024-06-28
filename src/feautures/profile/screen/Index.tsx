@@ -19,7 +19,7 @@ import Spacer from '@/src/components/spacer/Spacer.component';
 import Text from '@/src/components/typograpghy/Text.component';
 import ProfSVG from '@/assets/icons/ProfileSvg';
 
-const ProfileScreen = () => {
+const ProfileScreen = ({ navigation }) => {
   return (
     <ProfileOverview contentContainerStyle={styles.contentContainer}>
       <ProfileHead>
@@ -53,24 +53,60 @@ const ProfileScreen = () => {
         </Spacer>
         <Spacer position='top' size='large'/>
         <ProfileMenu>
-          {[
-            { label: 'My Saved Articles', icon: 'heart-outline' },
-            { label: 'Appointments', icon: 'calendar-outline' },
-            { label: 'Payment Method', icon: 'card-outline' },
-            { label: 'Edit Profile', icon: 'create-outline' },
-            { label: 'Notifications', icon: 'notifications-outline' },
-            { label: 'Logout', icon: 'exit-outline' },
-          ].map((item, index) => (
-            <TouchMenu key={index}>
-              <MenuItems>
-                <MenuIcon>
-                  <Ionicons name={item.icon} size={24} color="#1E90FF" />
-                </MenuIcon>
-                <MenuText variant='place'>{item.label}</MenuText>
-              </MenuItems>
-              <Ionicons name="chevron-forward-outline" size={30} color="#221F1F99" />
-            </TouchMenu>
-          ))}
+          <TouchMenu>
+            <MenuItems>
+              <MenuIcon>
+                <Ionicons name='heart-outline' size={24} color="#1E90FF" />
+              </MenuIcon>
+              <MenuText variant='place'>My Saved Articles</MenuText>
+            </MenuItems>
+            <Ionicons name="chevron-forward-outline" size={30} color="#221F1F99" />
+          </TouchMenu>
+          <TouchMenu>
+            <MenuItems>
+              <MenuIcon>
+                <Ionicons name='calendar-outline' size={24} color="#1E90FF" />
+              </MenuIcon>
+              <MenuText variant='place'>Appointments</MenuText>
+            </MenuItems>
+            <Ionicons name="chevron-forward-outline" size={30} color="#221F1F99" />
+          </TouchMenu>
+          <TouchMenu>
+            <MenuItems>
+              <MenuIcon>
+                <Ionicons name='card-outline' size={24} color="#1E90FF" />
+              </MenuIcon>
+              <MenuText variant='place'>Payment Method</MenuText>
+            </MenuItems>
+            <Ionicons name="chevron-forward-outline" size={30} color="#221F1F99" />
+          </TouchMenu>
+          <TouchMenu onPress={() => navigation.navigate('ProfileEdit')}>
+            <MenuItems>
+              <MenuIcon>
+                <Ionicons name='create-outline' size={24} color="#1E90FF" />
+              </MenuIcon>
+              <MenuText variant='place'>Edit Profile</MenuText>
+            </MenuItems>
+            <Ionicons name="chevron-forward-outline" size={30} color="#221F1F99" />
+          </TouchMenu>
+          <TouchMenu>
+            <MenuItems>
+              <MenuIcon>
+                <Ionicons name='notifications-outline' size={24} color="#1E90FF" />
+              </MenuIcon>
+              <MenuText variant='place'>Notifications</MenuText>
+            </MenuItems>
+            <Ionicons name="chevron-forward-outline" size={30} color="#221F1F99" />
+          </TouchMenu>
+          <TouchMenu>
+            <MenuItems>
+              <MenuIcon>
+                <Ionicons name='exit-outline' size={24} color="#1E90FF" />
+              </MenuIcon>
+              <MenuText variant='place'>Logout</MenuText>
+            </MenuItems>
+            <Ionicons name="chevron-forward-outline" size={30} color="#221F1F99" />
+          </TouchMenu>
         </ProfileMenu>
       </ProfileContainer>
     </ProfileOverview>

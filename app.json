@@ -27,7 +27,13 @@
       "favicon": "./assets/icons/logo.svg"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow Switch Health to use your location"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

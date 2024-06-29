@@ -1,11 +1,11 @@
-import AppointmentScreen from "@/src/feautures/appointment/screens/Index";
-import Home from "@/src/feautures/home/screens";
-import ProfileScreen from "@/src/feautures/profile/screen/Index";
-import ReportScreen from "@/src/feautures/report/screens";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { theme } from "../theme";
+import AppointmentNavigator from "./Appointment.navigator";
+import HomeNavigator from "./Home.navigator";
+import ProfileNavigator from "./Profile.navigator";
+import ReportNavigator from "./Report.navigator";
 
 const AppNavigator = () => {
   const Tab = createBottomTabNavigator();
@@ -46,11 +46,6 @@ const AppNavigator = () => {
           tabBarActiveTintColor: '#1A1F71',
           tabBarInactiveTintColor: '#221F1F99',
           headerShown: false,
-          headerStatusBarHeight: 0,
-          headerTitleStyle: {
-            fontFamily: theme.fonts.poppinsMedium,
-          },
-          headerTitleAlign: "center",
           tabBarLabelStyle: {
             fontFamily: theme.fonts.poppinsMedium,
           },
@@ -59,23 +54,22 @@ const AppNavigator = () => {
           },
         })}
       >
-        <Tab.Screen name="Home" component={Home} />
+        <Tab.Screen 
+          name="Home" 
+          component={HomeNavigator} 
+        />
         <Tab.Screen 
           name="Reports" 
-          component={ReportScreen} 
-          options={{
-            headerShown: true,
-            headerTitle: 'My Report',
-          }} 
+          component={ReportNavigator} 
         />
         <Tab.Screen 
-          name="Appointments" 
-          options={{
-            headerShown: true,
-          }} 
-          component={AppointmentScreen} 
+          name="Appointments"
+          component={AppointmentNavigator} 
         />
-        <Tab.Screen name="Profile" component={ProfileScreen} />
+        <Tab.Screen 
+          name="Profile" 
+          component={ProfileNavigator} 
+        />
       </Tab.Navigator>
     </>
   );

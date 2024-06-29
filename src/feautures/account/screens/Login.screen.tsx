@@ -44,15 +44,14 @@ const Login = ({ navigation }) => {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-
   const handleSetData = async (data) => {
     try {
       await AsyncStorage.setItem("data", JSON.stringify(data));
+      // Alert.alert(data)
     } catch (error) {
       console.error("Error storing data:", error);
     }
   };
- 
 
   const handleSubmit = async () => {
     setIsLoading(true);
@@ -76,6 +75,7 @@ const Login = ({ navigation }) => {
       if (response.ok) {
         Alert.alert("Logged in Successfully");
         handleSetData(data);
+        // console.error(data);
       } else {
         setError(data.message);
       }
@@ -163,7 +163,7 @@ const Login = ({ navigation }) => {
           <View style={styles.line}></View>
         </View>
 
-        <TouchableOpacity  style={styles.googleBtn}>
+        <TouchableOpacity style={styles.googleBtn}>
           <AntDesign style={styles.icon} name="google" size={24} />
           <Text variant="place" style={styles.btnText}>
             Sign in with Google

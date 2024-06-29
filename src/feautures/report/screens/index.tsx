@@ -76,7 +76,7 @@ const ReportScreen = () => {
                 </BMIStatus>
               </Spacer>
               <Spacer position="bottom" size="small">
-                <GradientLine />
+                {/* <GradientLine /> */}
                 <BmiSVG width={150} height={45} />
               </Spacer>
             </BMIBox>

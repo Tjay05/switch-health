@@ -101,14 +101,14 @@ const ProfileEdit = () => {
   const handleSubmit = async () => {
     setIsLoading(true);
     const newProfileData = {
-      fullName:name,
+      fullName: name,
       email,
       dateOfBirth: dob.toISOString(),
       height,
       weight,
       address,
       gender,
-      phone:number,
+      phone: number,
       bloodType: bloodGroup,
     };
     try {
@@ -155,12 +155,9 @@ const ProfileEdit = () => {
         </SetIconWrap>
       </ProfileHead>
       <SvgWrap>
-        {userData &&
-        userData.data &&
-        userData.data.user &&
-        userData.data.user.avatar ? (
+        {profileData && profileData.data && profileData.data.avatar ? (
           <ProfileImg
-            source={{ uri: userData.data.user.avatar }}
+            source={{ uri: profileData.data.avatar }}
             style={styles.profileImage}
           />
         ) : (

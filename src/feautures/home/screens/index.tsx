@@ -41,13 +41,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Home = ({ navigation }) => {
   const [userData, setUserData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const getData = async () => {
     try {
       const storedData = await AsyncStorage.getItem("data");
       if (storedData !== null) {
         setUserData(JSON.parse(storedData));
-        // Alert.alert(`${storedData}`);
       }
     } catch (error) {
       console.error(error);
@@ -58,6 +58,39 @@ const Home = ({ navigation }) => {
     getData();
   }, []);
 
+  useEffect(() => {
+    if (userData) {
+      handleGetDetails();
+    }
+  }, [userData]);
+
+  const handleGetDetails = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(
+        `https://switch-health.onrender.com/patient/${userData.data.user._id}/profile`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${userData.data.accessToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        setUserData(data);
+      } else {
+        console.error("Failed to fetch profile data:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error fetching profile data:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <View>
       <ScrollView style={styles.whiteWrapper}>
@@ -66,12 +99,9 @@ const Home = ({ navigation }) => {
             <Spacer>
               <Header>
                 <ProfileContainer>
-                  {userData &&
-                  userData.data &&
-                  userData.data.user &&
-                  userData.data.user.avatar ? (
+                  {userData && userData.data && userData.data.avatar ? (
                     <ProfileImg
-                      source={{ uri: userData.data.user.avatar }}
+                      source={{ uri: userData.data.avatar }}
                       style={styles.profileImage}
                     />
                   ) : (
@@ -80,7 +110,7 @@ const Home = ({ navigation }) => {
                   <GreetContainer>
                     <Text style={styles.greeting}>Hello,</Text>
                     <Text style={styles.name}>
-                      {userData ? userData.data.user.fullName : " Guest "}
+                      {userData ? userData.data.fullName : " Guest "}
                     </Text>
                   </GreetContainer>
                 </ProfileContainer>
@@ -110,12 +140,12 @@ const Home = ({ navigation }) => {
               </IndexBox>
             </IndexContainer>
           </HeaderContainer>
-          <Spacer position='top' size='extraLarge'/>
-          <Spacer position='bottom' size='extraLarge'>
-            <SearchInput  
-              placeholderTextColor={'#221F1F99'} 
-              iconColor={'#221F1F99'}
-              placeholder="Search doctor, drugs, articles..." 
+          <Spacer position="top" size="extraLarge" />
+          <Spacer position="bottom" size="extraLarge">
+            <SearchInput
+              placeholderTextColor={"#221F1F99"}
+              iconColor={"#221F1F99"}
+              placeholder="Search doctor, drugs, articles..."
             />
           </Spacer>
           <Spacer position="bottom" size="extraLarge">
@@ -128,7 +158,9 @@ const Home = ({ navigation }) => {
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={scrollStyle.tstyles}
               >
-                <TouchableCategory onPress={() => navigation.navigate('Top Doctors')}>
+                <TouchableCategory
+                  onPress={() => navigation.navigate("Top Doctors")}
+                >
                   <CatIcon>
                     <FontAwesome6
                       name="user-doctor"
@@ -148,7 +180,9 @@ const Home = ({ navigation }) => {
                   </CatIcon>
                   <Text style={styles.categoryText}>Pharmacy</Text>
                 </TouchableCategory>
-                <TouchableCategory onPress={() => navigation.navigate('Appointments')}>
+                <TouchableCategory
+                  onPress={() => navigation.navigate("Appointments")}
+                >
                   <CatIcon>
                     <MaterialCommunityIcons
                       name="clipboard-text-outline"
@@ -158,7 +192,9 @@ const Home = ({ navigation }) => {
                   </CatIcon>
                   <Text style={styles.categoryText}>Appointments</Text>
                 </TouchableCategory>
-                <TouchableCategory onPress={() => navigation.navigate('Ambulance')}>
+                <TouchableCategory
+                  onPress={() => navigation.navigate("Ambulance")}
+                >
                   <CatIcon>
                     <FontAwesome5 name="ambulance" size={20} color="#1A1F71" />
                   </CatIcon>
@@ -221,7 +257,7 @@ const Home = ({ navigation }) => {
           <Spacer position="bottom" size="large"></Spacer>
         </AppContainer>
       </ScrollView>
-      <TouchableOpacity onPress={() => navigation.navigate('Emergency')}>
+      <TouchableOpacity onPress={() => navigation.navigate("Emergency")}>
         <CatIcon style={styles.emergency}>
           <MaterialCommunityIcons
             name="phone-alert-outline"

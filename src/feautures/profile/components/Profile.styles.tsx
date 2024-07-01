@@ -146,3 +146,4 @@ export const Profstyles = StyleSheet.create({
 export const CenteredText = styled(Text)`
   text-align: center;
 `;
+

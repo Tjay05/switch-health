@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Alert, StyleSheet, View } from "react-native";
+import { Alert, StyleSheet, View, Platform } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ionicons } from "@expo/vector-icons";
 import RNPickerSelect from "react-native-picker-select";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import moment from "moment";
 import {
   GenoGroup,
   HeaderText,
@@ -15,6 +17,7 @@ import {
   SvgWrap,
   ProfileImg,
   TextLabel,
+  CenteredText,
 } from "../components/Profile.styles";
 import Spacer from "@/src/components/spacer/Spacer.component";
 import Text from "@/src/components/typograpghy/Text.component";
@@ -27,14 +30,16 @@ const ProfileEdit = () => {
   const [email, setEmail] = useState("");
   const [number, setNumber] = useState("");
   const [address, setAddress] = useState("");
-  const [dob, setDOB] = useState("");
-  const [height, setHeight] = useState("0");
-  const [weight, setWeight] = useState("0");
-  const [gender, setGender] = useState("Male");
-  const [bloodGroup, setBloodGroup] = useState("a");
+  const [dob, setDOB] = useState(new Date());
+  const [height, setHeight] = useState("");
+  const [weight, setWeight] = useState("");
+  const [gender, setGender] = useState("");
+  const [bloodGroup, setBloodGroup] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState(null);
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const [profileData, setProfileData] = useState(null);
+  const [error, setError] = useState("");
 
   const getData = async () => {
     try {
@@ -59,7 +64,6 @@ const ProfileEdit = () => {
 
   const handleGetDetails = async () => {
     setIsLoading(true);
-
     try {
       const response = await fetch(
         `https://switch-health.onrender.com/patient/${userData.data.user._id}/profile`,
@@ -75,15 +79,15 @@ const ProfileEdit = () => {
       if (response.ok) {
         const data = await response.json();
         setProfileData(data);
-        setName(data.fullName || "");
-        setEmail(data.email || "");
-        setNumber(data.phoneNumber || "");
-        setAddress(data.address || "");
-        setDOB(data.dateOfBirth || "");
-        setHeight(data.height || "0");
-        setWeight(data.weight || "0");
-        setGender(data.gender || "Male");
-        setBloodGroup(data.bloodGroup || "A");
+        setName(data.data.fullName || "");
+        setEmail(data.data.email || "");
+        setNumber(data.data.phone || "");
+        setAddress(data.data.address || "");
+        setDOB(new Date(data.data.dateOfBirth) || "");
+        setHeight(data.data.height.toString() || "");
+        setWeight(data.data.weight.toString() || "");
+        setGender(data.data.gender || "Select a gender");
+        setBloodGroup(data.data.bloodType || "A");
       } else {
         console.error("Failed to fetch profile data:", response.statusText);
       }
@@ -96,16 +100,17 @@ const ProfileEdit = () => {
 
   const handleSubmit = async () => {
     setIsLoading(true);
-
-    const userData = {
+    const newProfileData = {
+      fullName:name,
       email,
-      datOfBirth:dob,
+      dateOfBirth: dob.toISOString(),
       height,
       weight,
       address,
-      bloodGroup
+      gender,
+      phone:number,
+      bloodType: bloodGroup,
     };
-
     try {
       const response = await fetch(
         `https://switch-health.onrender.com/patient/${userData.data.user._id}/profile`,
@@ -115,26 +120,31 @@ const ProfileEdit = () => {
             Authorization: `Bearer ${userData.data.accessToken}`,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(userData),
+          body: JSON.stringify(newProfileData),
         }
       );
 
-      const data = await response.json();
       if (response.ok) {
-        Alert.alert("Profile updated successfully");
+        const data = await response.json();
+        setIsLoading(false);
+        Alert.alert("Success", "Profile updated successfully");
       } else {
-        console.error(data.message)
+        const errorData = await response.json();
+        setIsLoading(false);
+        Alert.alert("Error", errorData.message);
       }
     } catch (error) {
       console.log("Error:", error);
-      setError("Something went wrong. Please try again.");
-    } finally {
       setIsLoading(false);
+      Alert.alert("Error", "Something went wrong. Please try again.");
     }
   };
 
-
-     
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || dob;
+    setShowDatePicker(Platform.OS === "ios");
+    setDOB(currentDate);
+  };
 
   return (
     <ProfileOverview contentContainerStyle={styles.contentContainer}>
@@ -161,14 +171,8 @@ const ProfileEdit = () => {
         <Spacer position="top" size="XXL">
           <TextLabel>Enter your full Name</TextLabel>
           <ProfInputs
-            placeholder={
-              profileData
-                ? profileData.data.fullName
-                : "Enter your date of birth"
-            }
             placeholderTextColor="#262C3D"
             value={name}
-            editable={false}
             textContentType="name"
             keyboardType="default"
             autoCapitalize="none"
@@ -182,8 +186,8 @@ const ProfileEdit = () => {
                 style={pickerSelectStyles}
                 onValueChange={(e) => setGender(e)}
                 items={[
-                  { label: "Male", value: "male" },
-                  { label: "Female", value: "female" },
+                  { label: "Male", value: "MALE" },
+                  { label: "Female", value: "FEMALE" },
                 ]}
               />
             </View>
@@ -204,25 +208,27 @@ const ProfileEdit = () => {
           </GenoGroup>
           <TextLabel>Date of birth</TextLabel>
           <ProfInputs
-            placeholder={
-              profileData
-                ? profileData.data.dateOfBirth
-                : "Enter your date of birth"
-            }
             placeholderTextColor="#262C3D"
-            value={dob}
+            value={moment(dob).format("YYYY-MM-DD")}
             textContentType="birthdate"
             keyboardType="default"
             autoCapitalize="none"
-            onChangeText={(e) => setDOB(e)}
+            onFocus={() => setShowDatePicker(true)}
+            showSoftInputOnFocus={false}
           />
+          {showDatePicker && (
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={dob}
+              mode="date"
+              display="default"
+              onChange={onChange}
+            />
+          )}
           <GenoGroup>
             <View style={styles.viewWidth}>
               <TextLabel>Height (cm)</TextLabel>
               <ProfInputs
-                placeholder={
-                  profileData ? profileData.data.height : "Enter your Height"
-                }
                 placeholderTextColor="#262C3D"
                 value={height}
                 textContentType="none"
@@ -246,9 +252,6 @@ const ProfileEdit = () => {
           </GenoGroup>
           <TextLabel>Email</TextLabel>
           <ProfInputs
-            placeholder={
-              profileData ? profileData.data.email : "Enter your email address"
-            }
             placeholderTextColor="#262C3D"
             value={email}
             editable={false}
@@ -259,12 +262,8 @@ const ProfileEdit = () => {
           />
           <TextLabel>Phone</TextLabel>
           <ProfInputs
-            placeholder={
-              profileData ? profileData.data.phone : "Enter your Phone Number"
-            }
             placeholderTextColor="#262C3D"
             value={number}
-            editable={false}
             textContentType="telephoneNumber"
             keyboardType="number-pad"
             autoCapitalize="none"
@@ -272,9 +271,6 @@ const ProfileEdit = () => {
           />
           <TextLabel>Address</TextLabel>
           <ProfInputs
-            placeholder={
-              profileData ? profileData.data.address : "Enter your Address"
-            }
             placeholderTextColor="#262C3D"
             value={address}
             textContentType="addressCityAndState"
@@ -283,7 +279,14 @@ const ProfileEdit = () => {
             onChangeText={(e) => setAddress(e)}
           />
         </Spacer>
-        <LogBtn>Save Changes</LogBtn>
+        {error && (
+          <Spacer position="top" size="extraLarge">
+            <CenteredText variant="error">{error}</CenteredText>
+          </Spacer>
+        )}
+        <LogBtn onPress={handleSubmit}>
+          {isLoading ? "Saving Changes..." : "Save Changes"}
+        </LogBtn>
       </ProfileContainer>
     </ProfileOverview>
   );
@@ -304,10 +307,10 @@ const pickerSelectStyles = StyleSheet.create({
   inputAndroid: {
     fontSize: 16,
     paddingHorizontal: 16,
+    fontFamily: theme.fonts.poppinsRegular,
     borderWidth: 1,
     borderColor: "#B0B3C7",
     borderRadius: 15,
-    fontFamily: theme.fonts.poppinsRegular,
     color: "#262C3D",
   },
 });

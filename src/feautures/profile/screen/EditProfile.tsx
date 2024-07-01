@@ -61,9 +61,7 @@ const ProfileEdit = () => {
       handleGetDetails();
     }
   }, [userData]);
-
   const handleGetDetails = async () => {
-    setIsLoading(true);
     try {
       const response = await fetch(
         `https://switch-health.onrender.com/patient/${userData.data.user._id}/profile`,
@@ -88,6 +86,8 @@ const ProfileEdit = () => {
         setWeight(data.data.weight.toString() || "");
         setGender(data.data.gender || "Select a gender");
         setBloodGroup(data.data.bloodType || "A");
+
+        await AsyncStorage.setItem("profileData", JSON.stringify(data));
       } else {
         console.error("Failed to fetch profile data:", response.statusText);
       }

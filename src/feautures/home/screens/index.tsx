@@ -41,6 +41,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Home = ({ navigation }) => {
   const [userData, setUserData] = useState(null);
+  const [profileData, setProfileData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const getData = async () => {
@@ -54,17 +55,9 @@ const Home = ({ navigation }) => {
     }
   };
 
-  useEffect(() => {
-    getData();
-  }, []);
-
-  useEffect(() => {
-    if (userData) {
-      handleGetDetails();
-    }
-  }, [userData]);
-
   const handleGetDetails = async () => {
+    if (!userData) return;
+
     setIsLoading(true);
     try {
       const response = await fetch(
@@ -80,7 +73,7 @@ const Home = ({ navigation }) => {
 
       if (response.ok) {
         const data = await response.json();
-        setUserData(data);
+        setProfileData(data);
       } else {
         console.error("Failed to fetch profile data:", response.statusText);
       }
@@ -91,6 +84,14 @@ const Home = ({ navigation }) => {
     }
   };
 
+  useEffect(() => {
+    getData();
+  }, []);
+
+  useEffect(() => {
+    handleGetDetails();
+  }, [userData]);
+
   return (
     <View>
       <ScrollView style={styles.whiteWrapper}>
@@ -99,9 +100,9 @@ const Home = ({ navigation }) => {
             <Spacer>
               <Header>
                 <ProfileContainer>
-                  {userData && userData.data && userData.data.avatar ? (
+                  {profileData && profileData.data && profileData.data.avatar ? (
                     <ProfileImg
-                      source={{ uri: userData.data.avatar }}
+                      source={{ uri: profileData.data.avatar }}
                       style={styles.profileImage}
                     />
                   ) : (
@@ -110,7 +111,7 @@ const Home = ({ navigation }) => {
                   <GreetContainer>
                     <Text style={styles.greeting}>Hello,</Text>
                     <Text style={styles.name}>
-                      {userData ? userData.data.fullName : " Guest "}
+                      {profileData ? profileData.data.fullName : " Guest "}
                     </Text>
                   </GreetContainer>
                 </ProfileContainer>

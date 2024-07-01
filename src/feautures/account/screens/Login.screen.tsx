@@ -47,7 +47,6 @@ const Login = ({ navigation }) => {
   const handleSetData = async (data) => {
     try {
       await AsyncStorage.setItem("data", JSON.stringify(data));
-      // Alert.alert(data)
     } catch (error) {
       console.error("Error storing data:", error);
     }

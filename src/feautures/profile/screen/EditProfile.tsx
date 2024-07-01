@@ -1,59 +1,180 @@
-import { Ionicons } from '@expo/vector-icons';
-import { 
+import React, { useEffect, useState } from "react";
+import { Alert, StyleSheet, View, Platform } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Ionicons } from "@expo/vector-icons";
+import RNPickerSelect from "react-native-picker-select";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import moment from "moment";
+import {
   GenoGroup,
   HeaderText,
   ProfileContainer,
   ProfileHead,
   ProfileOverview,
   ProfInputs,
-  Profstyles as styles, 
-  SetIconWrap, 
+  Profstyles as styles,
+  SetIconWrap,
   SvgWrap,
+  ProfileImg,
   TextLabel,
-} from '../components/Profile.styles';
-import Spacer from '@/src/components/spacer/Spacer.component';
-import Text from '@/src/components/typograpghy/Text.component';
-import ProfSVG from '@/assets/icons/ProfileSvg';
-import { StyleSheet, View } from 'react-native';
-import { LogBtn } from '../../account/components/account.styles';
-import { useEffect, useState } from 'react';
-import RNPickerSelect from 'react-native-picker-select';
-import { theme } from '@/src/infrastructure/theme';
+  CenteredText,
+} from "../components/Profile.styles";
+import Spacer from "@/src/components/spacer/Spacer.component";
+import Text from "@/src/components/typograpghy/Text.component";
+import ProfSVG from "@/assets/icons/ProfileSvg";
+import { LogBtn } from "../../account/components/account.styles";
+import { theme } from "@/src/infrastructure/theme";
 
 const ProfileEdit = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [number, setNumber] = useState('');
-  const [address, setAddress] = useState('');
-  const [dob, setDOB] = useState('');
-  const [height, setHeight] = useState('0');
-  const [weight, setWeight] = useState('0');
-  const [gender, setGender] = useState('Male');
-  const [bloodGroup, setBloodGroup] = useState('a');
-  
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [number, setNumber] = useState("");
+  const [address, setAddress] = useState("");
+  const [dob, setDOB] = useState(new Date());
+  const [height, setHeight] = useState("");
+  const [weight, setWeight] = useState("");
+  const [gender, setGender] = useState("");
+  const [bloodGroup, setBloodGroup] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [userData, setUserData] = useState(null);
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [profileData, setProfileData] = useState(null);
+  const [error, setError] = useState("");
+
+  const getData = async () => {
+    try {
+      const storedData = await AsyncStorage.getItem("data");
+      if (storedData !== null) {
+        setUserData(JSON.parse(storedData));
+      }
+    } catch (error) {
+      console.error("Error retrieving stored data:", error);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  useEffect(() => {
+    if (userData) {
+      handleGetDetails();
+    }
+  }, [userData]);
+  const handleGetDetails = async () => {
+    try {
+      const response = await fetch(
+        `https://switch-health.onrender.com/patient/${userData.data.user._id}/profile`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${userData.data.accessToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        setProfileData(data);
+        setName(data.data.fullName || "");
+        setEmail(data.data.email || "");
+        setNumber(data.data.phone || "");
+        setAddress(data.data.address || "");
+        setDOB(new Date(data.data.dateOfBirth) || "");
+        setHeight(data.data.height.toString() || "");
+        setWeight(data.data.weight.toString() || "");
+        setGender(data.data.gender || "Select a gender");
+        setBloodGroup(data.data.bloodType || "A");
+
+        await AsyncStorage.setItem("profileData", JSON.stringify(data));
+      } else {
+        console.error("Failed to fetch profile data:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error fetching profile data:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSubmit = async () => {
+    setIsLoading(true);
+    const newProfileData = {
+      fullName: name,
+      email,
+      dateOfBirth: dob.toISOString(),
+      height,
+      weight,
+      address,
+      gender,
+      phone: number,
+      bloodType: bloodGroup,
+    };
+    try {
+      const response = await fetch(
+        `https://switch-health.onrender.com/patient/${userData.data.user._id}/profile`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${userData.data.accessToken}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newProfileData),
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        setIsLoading(false);
+        Alert.alert("Success", "Profile updated successfully");
+      } else {
+        const errorData = await response.json();
+        setIsLoading(false);
+        Alert.alert("Error", errorData.message);
+      }
+    } catch (error) {
+      console.log("Error:", error);
+      setIsLoading(false);
+      Alert.alert("Error", "Something went wrong. Please try again.");
+    }
+  };
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || dob;
+    setShowDatePicker(Platform.OS === "ios");
+    setDOB(currentDate);
+  };
+
   return (
     <ProfileOverview contentContainerStyle={styles.contentContainer}>
       <ProfileHead>
-        <HeaderText variant='main1'>Edit Profile</HeaderText>
+        <HeaderText variant="main1">Edit Profile</HeaderText>
         <SetIconWrap>
           <Ionicons name="settings" size={28} color="white" />
         </SetIconWrap>
       </ProfileHead>
       <SvgWrap>
-        <ProfSVG width={100} height={100}/>
+        {profileData && profileData.data && profileData.data.avatar ? (
+          <ProfileImg
+            source={{ uri: profileData.data.avatar }}
+            style={styles.profileImage}
+          />
+        ) : (
+          <ProfSVG width={100} height={100} />
+        )}
       </SvgWrap>
       <ProfileContainer>
-        <Spacer position='top' size='XXL'>
-          <TextLabel>First name & Last name</TextLabel>
+        <Spacer position="top" size="XXL">
+          <TextLabel>Enter your full Name</TextLabel>
           <ProfInputs
-            placeholder="Enter your name"
             placeholderTextColor="#262C3D"
             value={name}
             textContentType="name"
-            keyboardType='default'
+            keyboardType="default"
             autoCapitalize="none"
             onChangeText={(e) => setName(e)}
-            />
+          />
           <GenoGroup>
             <View style={styles.viewWidth}>
               <TextLabel>Gender</TextLabel>
@@ -62,8 +183,8 @@ const ProfileEdit = () => {
                 style={pickerSelectStyles}
                 onValueChange={(e) => setGender(e)}
                 items={[
-                  { label: 'Male', value: 'male' },
-                  { label: 'Female', value: 'female' },
+                  { label: "Male", value: "MALE" },
+                  { label: "Female", value: "FEMALE" },
                 ]}
               />
             </View>
@@ -74,33 +195,41 @@ const ProfileEdit = () => {
                 style={pickerSelectStyles}
                 onValueChange={(e) => setBloodGroup(e)}
                 items={[
-                  { label: 'A', value: 'a' },
-                  { label: 'B', value: 'b' },
-                  { label: 'AB', value: 'ab' },
-                  { label: 'O', value: 'o' },
+                  { label: "A", value: "a" },
+                  { label: "B", value: "b" },
+                  { label: "AB", value: "ab" },
+                  { label: "O", value: "o" },
                 ]}
               />
             </View>
           </GenoGroup>
           <TextLabel>Date of birth</TextLabel>
           <ProfInputs
-            placeholder="0001/01/01"
             placeholderTextColor="#262C3D"
-            value={dob}
-            textContentType='birthdate'
-            keyboardType='default'
+            value={moment(dob).format("YYYY-MM-DD")}
+            textContentType="birthdate"
+            keyboardType="default"
             autoCapitalize="none"
-            onChangeText={(e) => setDOB(e)}
+            onFocus={() => setShowDatePicker(true)}
+            showSoftInputOnFocus={false}
           />
+          {showDatePicker && (
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={dob}
+              mode="date"
+              display="default"
+              onChange={onChange}
+            />
+          )}
           <GenoGroup>
             <View style={styles.viewWidth}>
               <TextLabel>Height (cm)</TextLabel>
               <ProfInputs
-                placeholder="0.00"
                 placeholderTextColor="#262C3D"
                 value={height}
-                textContentType='none'
-                keyboardType='numeric'
+                textContentType="none"
+                keyboardType="numeric"
                 autoCapitalize="none"
                 onChangeText={(e) => setHeight(e)}
               />
@@ -111,8 +240,8 @@ const ProfileEdit = () => {
                 placeholder="0.00"
                 placeholderTextColor="#262C3D"
                 value={weight}
-                textContentType='none'
-                keyboardType='numeric'
+                textContentType="none"
+                keyboardType="numeric"
                 autoCapitalize="none"
                 onChangeText={(e) => setWeight(e)}
               />
@@ -120,66 +249,65 @@ const ProfileEdit = () => {
           </GenoGroup>
           <TextLabel>Email</TextLabel>
           <ProfInputs
-            placeholder="Enter your email address"
             placeholderTextColor="#262C3D"
             value={email}
-            textContentType='emailAddress'
-            keyboardType='email-address'
+            editable={false}
+            textContentType="emailAddress"
+            keyboardType="email-address"
             autoCapitalize="none"
             onChangeText={(e) => setEmail(e)}
           />
           <TextLabel>Phone</TextLabel>
           <ProfInputs
-            placeholder="Enter your phone number"
             placeholderTextColor="#262C3D"
             value={number}
-            textContentType='telephoneNumber'
-            keyboardType='number-pad'
+            textContentType="telephoneNumber"
+            keyboardType="number-pad"
             autoCapitalize="none"
             onChangeText={(e) => setNumber(e)}
           />
           <TextLabel>Address</TextLabel>
           <ProfInputs
-            placeholder="Enter your Address"
             placeholderTextColor="#262C3D"
             value={address}
-            textContentType='addressCityAndState'
-            keyboardType='default'
+            textContentType="addressCityAndState"
+            keyboardType="default"
             autoCapitalize="none"
             onChangeText={(e) => setAddress(e)}
           />
-          {/* <TextLabel>Emergency Contact</TextLabel>
-          <ProfInputs/>
-          <TextLabel>Allergies</TextLabel>
-          <ProfInputs/> */}
         </Spacer>
-        <LogBtn>Save Changes</LogBtn>
+        {error && (
+          <Spacer position="top" size="extraLarge">
+            <CenteredText variant="error">{error}</CenteredText>
+          </Spacer>
+        )}
+        <LogBtn onPress={handleSubmit}>
+          {isLoading ? "Saving Changes..." : "Save Changes"}
+        </LogBtn>
       </ProfileContainer>
     </ProfileOverview>
   );
-}
- 
+};
+
 export default ProfileEdit;
 
 const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
     fontSize: 16,
-    // paddingVertical: 12,
     paddingHorizontal: 16,
     borderWidth: 1,
-    borderColor: '#B0B3C7',
+    borderColor: "#B0B3C7",
     borderRadius: 15,
     fontFamily: theme.fonts.poppinsRegular,
-    color: '#262C3D',// to ensure the text is never behind the icon
+    color: "#262C3D",
   },
   inputAndroid: {
     fontSize: 16,
     paddingHorizontal: 16,
     fontFamily: theme.fonts.poppinsRegular,
-    // paddingVertical: 8,
     borderWidth: 1,
-    borderColor: '#B0B3C7',
+    borderColor: "#B0B3C7",
     borderRadius: 15,
-    color: '#262C3D',// to ensure the text is never behind the icon
+    color: "#262C3D",
   },
 });

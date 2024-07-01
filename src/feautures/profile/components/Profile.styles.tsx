@@ -36,7 +36,7 @@ export const ProfileHead = styled(View)`
   z-index: -1;
 `;
 
-export const SvgWrap = styled(View)`
+export const SvgWrap = styled(TouchableOpacity)`
   position: absolute;
   width: 100%;
   top: 11%;
@@ -132,9 +132,23 @@ export const ProfileImg = styled(Image)`
   border-radius: 50px;
 `;
 
+export const CenteredText = styled(Text)`
+  text-align: center;
+`;
+
+export const AddPicIcon = styled(View)`
+  background-color: #fff;
+  border: 1px solid #00000014;
+  border-radius: 50px;
+  padding: ${(props) => props.theme.space[2]};
+  position: absolute;
+  bottom: 0;
+  right: 125px;
+`;
+
 export const Profstyles = StyleSheet.create({
   contentContainer: {
-    paddingTop: 110, // Adjust to the height of your header
+    paddingTop: 110, // Adjust height of header
   },
   tabFont: {
     fontFamily: "Poppins_400Regular",
@@ -143,7 +157,4 @@ export const Profstyles = StyleSheet.create({
     width: "45%",
   },
 });
-export const CenteredText = styled(Text)`
-  text-align: center;
-`;
 

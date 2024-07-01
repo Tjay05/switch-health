@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert, StyleSheet, View, Platform } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ionicons } from "@expo/vector-icons";
 import RNPickerSelect from "react-native-picker-select";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import moment from "moment";
+import * as ImagePicker from "expo-image-picker";
+
 import {
   GenoGroup,
   HeaderText,
@@ -18,6 +20,7 @@ import {
   ProfileImg,
   TextLabel,
   CenteredText,
+  AddPicIcon,
 } from "../components/Profile.styles";
 import Spacer from "@/src/components/spacer/Spacer.component";
 import Text from "@/src/components/typograpghy/Text.component";
@@ -40,6 +43,25 @@ const ProfileEdit = () => {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [profileData, setProfileData] = useState(null);
   const [error, setError] = useState("");
+
+  // IMAGE SELECTION
+  const [image, setImage] = useState(null);
+
+  const pickImage = async () => {
+    let result = await
+    ImagePicker.launchImageLibraryAsync({
+      mediaTypes:
+      ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [3, 3],
+      quality: 1,
+    });
+    console.log(result);
+    
+    if(!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
 
   const getData = async () => {
     try {
@@ -154,15 +176,23 @@ const ProfileEdit = () => {
           <Ionicons name="settings" size={28} color="white" />
         </SetIconWrap>
       </ProfileHead>
-      <SvgWrap>
-        {profileData && profileData.data && profileData.data.avatar ? (
+      <SvgWrap onPress={pickImage}>
+        {/* {profileData && profileData.data && profileData.data.avatar ? (
           <ProfileImg
             source={{ uri: profileData.data.avatar }}
             style={styles.profileImage}
-          />
+          /> */}
+          {image ?(
+            <ProfileImg 
+              source={{ uri: image }} 
+              style={styles.profileImage}
+            />
         ) : (
           <ProfSVG width={100} height={100} />
         )}
+        <AddPicIcon>
+          <Ionicons name='camera-outline' size={28} color='#1A1F71'/>
+        </AddPicIcon>
       </SvgWrap>
       <ProfileContainer>
         <Spacer position="top" size="XXL">

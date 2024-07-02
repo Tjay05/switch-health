@@ -1,3 +1,4 @@
+import React, { useEffect, useState, useCallback } from "react";
 import {
   FontAwesome5,
   FontAwesome6,
@@ -6,7 +7,6 @@ import {
   Octicons,
 } from "@expo/vector-icons";
 import { View, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
-
 import {
   AppContainer,
   ArticleContainer,
@@ -29,14 +29,12 @@ import {
   TouchableArticle,
   TouchableCategory,
 } from "../components/Home.styles";
-
-// Pic Imports
 import CovidPic from "../../../../assets/images/covid.png";
 import DocImg from "../../../../assets/images/doctor.png";
 import Text from "@/src/components/typograpghy/Text.component";
 import Spacer from "@/src/components/spacer/Spacer.component";
 import AvatarSVG from "@/assets/icons/Avatar";
-import { useEffect, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Home = ({ navigation }) => {
@@ -84,9 +82,11 @@ const Home = ({ navigation }) => {
     }
   };
 
-  useEffect(() => {
-    getData();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      getData();
+    }, [])
+  );
 
   useEffect(() => {
     handleGetDetails();
@@ -100,7 +100,9 @@ const Home = ({ navigation }) => {
             <Spacer>
               <Header>
                 <ProfileContainer>
-                  {profileData && profileData.data && profileData.data.avatar ? (
+                  {profileData &&
+                  profileData.data &&
+                  profileData.data.avatar ? (
                     <ProfileImg
                       source={{ uri: profileData.data.avatar }}
                       style={styles.profileImage}

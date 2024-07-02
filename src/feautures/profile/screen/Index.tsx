@@ -1,5 +1,6 @@
-import { Ionicons } from '@expo/vector-icons';
-import { 
+import React, { useEffect, useState, useCallback } from "react";
+import { Ionicons } from "@expo/vector-icons";
+import {
   HeaderText,
   MenuIcon,
   MenuItems,
@@ -8,71 +9,75 @@ import {
   ProfileHead,
   ProfileMenu,
   ProfileOverview,
-  Profstyles as styles, 
-  SetIconWrap, 
-  StatsBox, 
+  Profstyles as styles,
+  SetIconWrap,
+  StatsBox,
   StatsContainer,
   SvgWrap,
   TouchMenu,
-  ProfileImg
-} from '../components/Profile.styles';
-import Spacer from '@/src/components/spacer/Spacer.component';
-import Text from '@/src/components/typograpghy/Text.component';
-import ProfSVG from '@/assets/icons/ProfileSvg';
-import { useEffect, useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+  ProfileImg,
+} from "../components/Profile.styles";
+import Spacer from "@/src/components/spacer/Spacer.component";
+import Text from "@/src/components/typograpghy/Text.component";
+import ProfSVG from "@/assets/icons/ProfileSvg";
+import { useFocusEffect } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ProfileScreen = ({ navigation }) => {
-    const [userData, setUserData] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
+  const [userData, setUserData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-    const getData = async () => {
-      try {
-        const storedData = await AsyncStorage.getItem("data");
-        if (storedData !== null) {
-          setUserData(JSON.parse(storedData));
-        }
-      } catch (error) {
-        console.error(error);
+  const getData = async () => {
+    try {
+      const storedData = await AsyncStorage.getItem("data");
+      if (storedData !== null) {
+        setUserData(JSON.parse(storedData));
       }
-    };
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-    useEffect(() => {
+  const handleGetDetails = async () => {
+    if (!userData) return;
+    setIsLoading(true);
+    try {
+      const response = await fetch(
+        `https://switch-health.onrender.com/patient/${userData.data.user._id}/profile`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${userData.data.accessToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        setUserData(data);
+      } else {
+        console.error("Failed to fetch profile data:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error fetching profile data:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useFocusEffect(
+    useCallback(() => {
       getData();
-    }, []);
+    }, [])
+  );
 
-    useEffect(() => {
-      if (userData) {
-        handleGetDetails();
-      }
-    }, [userData]);
+  useEffect(() => {
+    if (userData) {
+      handleGetDetails();
+    }
+  }, [userData]);
 
-    const handleGetDetails = async () => {
-      setIsLoading(true);
-      try {
-        const response = await fetch(
-          `https://switch-health.onrender.com/patient/${userData.data.user._id}/profile`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${userData.data.accessToken}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (response.ok) {
-          const data = await response.json();
-          setUserData(data);
-        } else {
-          console.error("Failed to fetch profile data:", response.statusText);
-        }
-      } catch (error) {
-        console.error("Error fetching profile data:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
   return (
     <ProfileOverview contentContainerStyle={styles.contentContainer}>
       <ProfileHead>
@@ -199,6 +204,6 @@ const ProfileScreen = ({ navigation }) => {
       </ProfileContainer>
     </ProfileOverview>
   );
-}
- 
+};
+
 export default ProfileScreen;

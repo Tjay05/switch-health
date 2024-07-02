@@ -42,26 +42,9 @@ const ProfileEdit = () => {
   const [userData, setUserData] = useState(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [profileData, setProfileData] = useState(null);
-  const [error, setError] = useState("");
-
-  // IMAGE SELECTION
   const [image, setImage] = useState(null);
-
-  const pickImage = async () => {
-    let result = await
-    ImagePicker.launchImageLibraryAsync({
-      mediaTypes:
-      ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [3, 3],
-      quality: 1,
-    });
-    console.log(result);
-    
-    if(!result.canceled) {
-      setImage(result.assets[0].uri);
-    }
-  };
+  const [profileimage, setProfileImage] = useState(null);
+  const [error, setError] = useState("");
 
   const getData = async () => {
     try {
@@ -78,11 +61,67 @@ const ProfileEdit = () => {
     getData();
   }, []);
 
+  // IMAGE SELECTION
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [3, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+      await uploadImage(result.assets[0].uri);
+      await handleGetDetails();
+    }
+  };
+
+  const uploadImage = async (img) => {
+    if (!img) return;
+
+    let formData = new FormData();
+    formData.append("image", {
+      uri: img,
+      name: "profile.jpg",
+      type: "image/jpeg",
+    });
+
+    try {
+      const response = await fetch(
+        "https://switch-health.onrender.com/patient/profile-picture",
+        {
+          method: "POST",
+          body: formData,
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${userData.data.accessToken}`,
+          },
+        }
+      );
+
+      setIsLoading(true);
+      const data = await response.json();
+      if (response.ok) {
+        setIsLoading(false);
+       handleGetDetails();
+      } else {
+        Alert.alert("Profile not updated");
+        console.error("Failed to upload image", data);
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+  };
+
   useEffect(() => {
     if (userData) {
+      setIsLoading(true);
       handleGetDetails();
     }
   }, [userData]);
+
   const handleGetDetails = async () => {
     try {
       const response = await fetch(
@@ -108,8 +147,7 @@ const ProfileEdit = () => {
         setWeight(data.data.weight.toString() || "");
         setGender(data.data.gender || "Select a gender");
         setBloodGroup(data.data.bloodType || "A");
-
-        await AsyncStorage.setItem("profileData", JSON.stringify(data));
+        setProfileImage(data.data.avatar || "A");
       } else {
         console.error("Failed to fetch profile data:", response.statusText);
       }
@@ -150,6 +188,7 @@ const ProfileEdit = () => {
         const data = await response.json();
         setIsLoading(false);
         Alert.alert("Success", "Profile updated successfully");
+        await handleGetDetails();
       } else {
         const errorData = await response.json();
         setIsLoading(false);
@@ -177,21 +216,18 @@ const ProfileEdit = () => {
         </SetIconWrap>
       </ProfileHead>
       <SvgWrap onPress={pickImage}>
-        {/* {profileData && profileData.data && profileData.data.avatar ? (
+        {image ? (
+          <ProfileImg source={{ uri: image }} style={styles.profileImage} />
+        ) : profileimage ? (
           <ProfileImg
-            source={{ uri: profileData.data.avatar }}
+            source={{ uri: profileimage }}
             style={styles.profileImage}
-          /> */}
-          {image ?(
-            <ProfileImg 
-              source={{ uri: image }} 
-              style={styles.profileImage}
-            />
+          />
         ) : (
           <ProfSVG width={100} height={100} />
         )}
         <AddPicIcon>
-          <Ionicons name='camera-outline' size={28} color='#1A1F71'/>
+          <Ionicons name="camera-outline" size={28} color="#1A1F71" />
         </AddPicIcon>
       </SvgWrap>
       <ProfileContainer>

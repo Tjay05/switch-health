@@ -99,7 +99,7 @@ const Home = ({ navigation }) => {
           <HeaderContainer>
             <Spacer>
               <Header>
-                <ProfileContainer>
+                <ProfileContainer onPress={() => navigation.navigate('Profile')}>
                   {profileData && profileData.data && profileData.data.avatar ? (
                     <ProfileImg
                       source={{ uri: profileData.data.avatar }}
@@ -115,7 +115,9 @@ const Home = ({ navigation }) => {
                     </Text>
                   </GreetContainer>
                 </ProfileContainer>
-                <Ionicons name="notifications" size={28} color="#1A1F71" />
+                <TouchableOpacity onPress={() => navigation.navigate('Notifications')}>
+                  <Ionicons name="notifications" size={28} color="#1A1F71" />
+                </TouchableOpacity>
               </Header>
             </Spacer>
             <Spacer position="top" size="extraLarge">

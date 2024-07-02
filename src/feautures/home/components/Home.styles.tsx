@@ -22,7 +22,7 @@ export const Header = styled(View)`
   align-items: center;
 `;
 
-export const ProfileContainer = styled(View)`
+export const ProfileContainer = styled(TouchableOpacity)`
   flex-direction: row;
   align-items: center;
 `;
@@ -85,7 +85,21 @@ export const ArticleContainer = styled(View)`
   flex: 1
 `;
 
+export const TouchableFlatlist = styled(TouchableOpacity)`
+  width: 100%;
+`;
+
 export const TouchableArticle = styled(TouchableOpacity)`
+  flex-direction: row;
+  background-color: white;
+  border: 1px solid #221F1F1A;
+  border-radius: 5px;
+  width: 100%;
+  padding: ${(props)=> props.theme.space[2]};
+  margin-vertical: ${(props)=> props.theme.space[2]};
+`;
+
+export const DocCardWrapper = styled(View)`
   flex-direction: row;
   background-color: white;
   border: 1px solid #221F1F1A;
@@ -192,13 +206,14 @@ export const TopDoctorsContainer = styled(View)`
 
 export const DocIMage = styled(Image)`
   width: 105px;
-  height: 96px;
+  height: 100%;
   border-radius: 6px;
 `;
 
 export const DocDetails = styled(View)`
   width: 61%;
   align-items: flex-start;
+  justify-content: center;
 `;
 
 export const DocName = styled(Text)`
@@ -213,7 +228,6 @@ export const DocAOS = styled(Text)`
 `;
 
 export const RatingWrap = styled(View)`
-  flex: 1;
   flex-direction: row;
   background: #407CE22B;
   padding-horizontal: ${(props)=> props.theme.space[1]};
@@ -260,9 +274,9 @@ export const AddressBoxwrap = styled(View)`
   bottom: 0;
   z-index: 4;
   margin-bottom: ${(props)=> props.theme.space[2]};
-  `;
+`;
   
-  export const AddressBox = styled(View)`
+export const AddressBox = styled(View)`
   padding-bottom: ${(props)=> props.theme.space[2]};
   background-color: #fff;
   margin-horizontal: auto;

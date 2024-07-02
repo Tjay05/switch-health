@@ -1,72 +1,61 @@
-import Text from "@/src/components/typograpghy/Text.component";
 import { 
   AppContainer,
-  DocAOS,
-  DocDetails,
-  DocIMage,
-  DocLocation,
-  DocName,
-  DoctorWraapper, 
-  RatingText, 
-  RatingWrap, 
   TopDoctorsContainer,
-  TouchableArticle
+  TouchableFlatlist
 } from "../components/Home.styles";
 
 import DocPIc from "../../../../assets/images/femaleDoc.png";
-import Spacer from "@/src/components/spacer/Spacer.component";
-import { Ionicons } from "@expo/vector-icons";
+import DocPIc2 from "../../../../assets/images/doctor.png";
+import { FlatList } from "react-native";
+import DoctorCard from "../components/Doctor-info-card";
 
-const TopDoctors = () => {
+const DOCTORS = [
+  {
+    image: DocPIc,
+    docName: 'Dr. Alfa',
+    AOS: 'Gynaecologist',
+    rating: '3.7',
+    distanceAway: '800m away'
+  },
+  {
+    image: DocPIc2,
+    docName: 'Dr. Shehu',
+    AOS: 'Consultant',
+    rating: '2.7',
+    distanceAway: '200m away'
+  },
+  {
+    image: DocPIc,
+    docName: 'Dr. Topins',
+    AOS: 'Peditrician',
+    rating: '1.2',
+    distanceAway: '2000m away'
+  },
+]
+
+const TopDoctors = ({ navigation }) => {
   return (
-    <DoctorWraapper>
-      <AppContainer>
-        <TopDoctorsContainer>
-          <TouchableArticle>
-            <DocIMage source={DocPIc}/>
-            <Spacer position='right' size='medium'>
-              <Spacer position='right' size='small'>
-
-              </Spacer>
-            </Spacer>
-            <DocDetails>
-              <DocName>Dr. Nallarasi</DocName>
-              <DocAOS>Orthopaedic</DocAOS>
-              <RatingWrap>
-                <Ionicons name="star" size={15} color={'#407CE2'} />
-                <Spacer position='left' size='small'>
-                  <RatingText>4.7</RatingText>
-                </Spacer>
-              </RatingWrap>
-              <Spacer position='top' size='medium'>
-                <DocLocation>800m away</DocLocation>
-              </Spacer>
-            </DocDetails>
-          </TouchableArticle>
-          <TouchableArticle>
-            <DocIMage source={DocPIc}/>
-            <Spacer position='right' size='medium'>
-              <Spacer position='right' size='small'>
-
-              </Spacer>
-            </Spacer>
-            <DocDetails>
-              <DocName>Dr. Shafar Abdullahi</DocName>
-              <DocAOS>Gynaecologist</DocAOS>
-              <RatingWrap>
-                <Ionicons name="star" size={15} color={'#407CE2'} />
-                <Spacer position='left' size='small'>
-                  <RatingText>3.7</RatingText>
-                </Spacer>
-              </RatingWrap>
-              <Spacer position='top' size='medium'>
-                <DocLocation>800m away</DocLocation>
-              </Spacer>
-            </DocDetails>
-          </TouchableArticle>
-        </TopDoctorsContainer>
-      </AppContainer>
-    </DoctorWraapper>
+    <AppContainer>
+      <TopDoctorsContainer>
+        <FlatList
+          data={DOCTORS}
+          renderItem={({ item }) => {
+            return (
+              <TouchableFlatlist
+                onPress={() => 
+                  navigation.navigate('DoctorAppointment', {
+                    doctor: item,
+                })
+                }
+              >
+                <DoctorCard doctor={item} />
+              </TouchableFlatlist>
+            )
+          }}
+          keyExtractor={(item) => item.docName}
+        />
+      </TopDoctorsContainer>
+    </AppContainer>
   );
 }
  

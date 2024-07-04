@@ -37,6 +37,10 @@ import AvatarSVG from "@/assets/icons/Avatar";
 import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+
+
+
+
 const Home = ({ navigation }) => {
   const [userData, setUserData] = useState(null);
   const [profileData, setProfileData] = useState(null);

@@ -158,3 +158,14 @@ export const Profstyles = StyleSheet.create({
   },
 });
 
+export const IconContainer = styled(View)`
+  position: absolute;
+  z-index: 444;
+  top: 28%;
+  left: 10px;
+`;
+
+export const InputContainer = styled(View)`
+  position: relative;
+  width: 100%;
+`;

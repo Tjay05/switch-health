@@ -1,4 +1,6 @@
 import DocsNearMe from "@/src/feautures/appointment/screens/DoctorNear.screen";
+import ArticleScreen from "@/src/feautures/article/screens";
+import ArticleDetail from "@/src/feautures/article/screens/ArticleDetail";
 import SuccessfulPage from "@/src/feautures/home/components/Success.screen";
 import Home from "@/src/feautures/home/screens";
 import Ambulance from "@/src/feautures/home/screens/Ambulance";
@@ -32,6 +34,15 @@ const HomeNavigator = () => {
         name="Top Doctors"
         component={TopDoctors}
         options={{headerShown: true}}
+      />
+      <Stack.Screen
+        name="Health articles"
+        component={ArticleScreen}
+        options={{headerShown: true}}
+      />
+      <Stack.Screen
+        name="Article Detail"
+        component={ArticleDetail}
       />
       <Stack.Screen
         name="DoctorAppointment"

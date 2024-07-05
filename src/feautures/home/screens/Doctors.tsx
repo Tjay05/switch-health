@@ -21,22 +21,6 @@ const DOCTORS = [
     ratings: "3.7",
     distanceAway: "800m away",
   },
-  {
-    image:
-      "https://res.cloudinary.com/dba1aezsn/image/upload/v1720109367/Heng_asavarid_i7ypbf.jpg",
-    docName: "Dr. Shehu",
-    AOS: "Consultant",
-    ratings: "2.7",
-    distanceAway: "200m away",
-  },
-  {
-    image:
-      "https://res.cloudinary.com/dba1aezsn/image/upload/v1720109367/Heng_asavarid_i7ypbf.jpg",
-    docName: "Dr. Topins",
-    AOS: "Peditrician",
-    ratings: "1.2",
-    distanceAway: "2000m away",
-  },
 ];
 
 const TopDoctors = ({ navigation }) => {

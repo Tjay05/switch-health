@@ -28,6 +28,8 @@ import {
   SearchInput,
   TouchableArticle,
   TouchableCategory,
+  TopicContainer,
+  SeeText,
 } from "../components/Home.styles";
 import CovidPic from "../../../../assets/images/covid.png";
 import DocImg from "../../../../assets/images/doctor.png";
@@ -36,6 +38,7 @@ import Spacer from "@/src/components/spacer/Spacer.component";
 import AvatarSVG from "@/assets/icons/Avatar";
 import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ArtFooter, ArticleCard, ArticleTextWrap, CardContainer, Date, Title } from "../../article/components/Article.styles";
 
 
 
@@ -223,43 +226,27 @@ const Home = ({ navigation }) => {
           </Spacer>
 
           <ArticleContainer>
-            <Text variant="main">Health articles</Text>
+            <TopicContainer>
+              <Text variant="main">Health articles</Text>
+              <SeeText 
+                variant="body"
+                onPress={()=>navigation.navigate('Health articles')}
+              >See all</SeeText>
+            </TopicContainer>
             <TouchableArticle>
-              <ArticleImg source={DocImg} />
-              <Spacer position="right" size="medium" />
-              <Spacer position="right" size="small" />
-              <ArticleInfo>
-                <Text style={styles.articleTitle}>
-                  The 25 Healthiest Fruits You Can Eat, According to a
-                  Nutritionist
-                </Text>
-                <Spacer position="top" size="small">
-                  <ArticleText>
-                    <Text style={styles.articleDate}>Jul 10, 2023</Text>
-                    <Spacer position="left" size="large">
-                      <Text style={styles.articleReadTime}>5min read</Text>
-                    </Spacer>
-                  </ArticleText>
-                </Spacer>
-              </ArticleInfo>
-            </TouchableArticle>
-            <TouchableArticle>
-              <ArticleImg source={CovidPic} />
-              <Spacer position="right" size="medium" />
-              <Spacer position="right" size="small" />
-              <ArticleInfo>
-                <Text style={styles.articleTitle}>
-                  The Impact of COVID-19 on Healthcare Systems
-                </Text>
-                <Spacer position="top" size="small">
-                  <ArticleText>
-                    <Text style={styles.articleDate}>Jul 10, 2023</Text>
-                    <Spacer position="left" size="large">
-                      <Text style={styles.articleReadTime}>5min read</Text>
-                    </Spacer>
-                  </ArticleText>
-                </Spacer>
-              </ArticleInfo>
+              <ArticleCard>
+                <CardContainer>
+                  <ArticleImg source={DocImg}/>
+                  <ArticleTextWrap>
+                    <Title>The 25 Healthiest Fruits You Can Eat, According to a Nutritionist</Title>
+                    <ArtFooter>
+                      <Date>Jul 10, 2023</Date>
+                      <Date>5min read</Date>
+                    </ArtFooter>
+                  </ArticleTextWrap>
+                </CardContainer>
+                <Ionicons name="bookmark-outline" size={20} color='#407CE2'/>
+              </ArticleCard>
             </TouchableArticle>
           </ArticleContainer>
           <Spacer position="bottom" size="large"></Spacer>

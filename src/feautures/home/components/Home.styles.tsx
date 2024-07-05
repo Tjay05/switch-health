@@ -1,5 +1,5 @@
 import Text from "@/src/components/typograpghy/Text.component";
-import { Image, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
+import { Image, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import MapView from "react-native-maps";
 import { Searchbar } from "react-native-paper";
 import { styled } from "styled-components";
@@ -89,14 +89,19 @@ export const TouchableFlatlist = styled(TouchableOpacity)`
   width: 100%;
 `;
 
-export const TouchableArticle = styled(TouchableOpacity)`
-  flex-direction: row;
-  background-color: white;
-  border: 1px solid #221F1F1A;
-  border-radius: 5px;
+export const TopicContainer = styled(View)`
   width: 100%;
-  padding: ${(props)=> props.theme.space[2]};
-  margin-vertical: ${(props)=> props.theme.space[2]};
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const SeeText = styled(Text)`
+  color: ${(props)=> props.theme.Colors.text.secondary};
+`;
+
+export const TouchableArticle = styled(TouchableOpacity)`
+  width: 100%;
 `;
 
 export const DocCardWrapper = styled(View)`

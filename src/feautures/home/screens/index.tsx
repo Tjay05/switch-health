@@ -45,7 +45,6 @@ const Home = ({ navigation }) => {
   const [userData, setUserData] = useState(null);
   const [profileData, setProfileData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-
   const getData = async () => {
     try {
       const storedData = await AsyncStorage.getItem("data");

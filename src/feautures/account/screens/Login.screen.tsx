@@ -17,6 +17,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 //   GoogleSignin,
 //   statusCodes,
 // } from "@react-native-google-signin/google-signin";
+import Loading from "@/src/components/loader";
 
 const Container = styled(View)`
   width: 85%;
@@ -94,6 +95,7 @@ const Login = ({ navigation }) => {
         </Spacer>
         <Spacer position="top" size="extraLarge" />
         <Spacer position="top" size="large" />
+        {isLoading && <Loading />}
         <InputContainer>
           <IconContainer>
             <Ionicons name="mail-outline" size={25} color="#757575" />

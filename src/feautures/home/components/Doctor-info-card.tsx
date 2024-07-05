@@ -9,13 +9,13 @@ const DoctorCard = ({ doctor = {} }) => {
     image = DocPIc,
     docName = 'Dr. Alfa',
     AOS = 'Gynaecologist',
-    rating = '3.7',
+    ratings = '3.7',
     distanceAway = '800m away',
   } = doctor;
 
   return (
     <DocCardWrapper>
-      <DocIMage source={image}/>
+      <DocIMage source={{uri: image} }/>
       <Spacer position='right' size='medium'>
         <Spacer position='right' size='small'>
         </Spacer>
@@ -26,7 +26,7 @@ const DoctorCard = ({ doctor = {} }) => {
         <RatingWrap>
           <Ionicons name="star" size={15} color={'#407CE2'} />
           <Spacer position='left' size='small'>
-            <RatingText>{rating}</RatingText>
+            <RatingText>{ratings}</RatingText>
           </Spacer>
         </RatingWrap>
         <Spacer position='top' size='medium'>

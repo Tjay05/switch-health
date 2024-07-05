@@ -18,6 +18,7 @@ import {
   LogBtn,
   ORstyles as styles,
 } from "../components/account.styles";
+import Loading from "@/src/components/loader";
 
 const Container = styled(View)`
   width: 85%;
@@ -101,6 +102,7 @@ const SignUp = ({ navigation }) => {
           <CenteredText variant="main">Sign Up</CenteredText>
         </Spacer>
         <Spacer position="top" size="extraLarge" />
+        {isLoading && <Loading />}
         <InputContainer>
           <IconContainer>
             <Feather name="user" size={24} color="#757575" />

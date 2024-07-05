@@ -60,7 +60,7 @@ const ProfileScreen = ({ navigation }) => {
         console.error("Failed to fetch profile data:", response.statusText);
       }
     } catch (error) {
-      console.error("Error fetching profile data:", error);
+      // console.error("Error fetching profile data:", error);
     } finally {
       setIsLoading(false);
     }

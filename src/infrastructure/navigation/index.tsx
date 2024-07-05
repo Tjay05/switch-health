@@ -4,8 +4,8 @@ import AppNavigator from "./AppNavigator";
 const Navigation = () => {
   return (
     <>
-      {/* <AccountNavigator/> */}
-      <AppNavigator/>
+      <AccountNavigator/>
+      {/* <AppNavigator/> */}
     </>
   );
 }

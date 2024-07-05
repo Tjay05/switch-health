@@ -102,6 +102,7 @@ export const SeeText = styled(Text)`
 
 export const TouchableArticle = styled(TouchableOpacity)`
   width: 100%;
+  flex: 1;
 `;
 
 export const DocCardWrapper = styled(View)`

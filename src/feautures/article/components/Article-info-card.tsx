@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import Text from "@/src/components/typograpghy/Text.component";
 import { 
   ArtFooter,
@@ -12,14 +14,24 @@ import {
 
 import { Ionicons } from "@expo/vector-icons";
 import DocImg from "../../../../assets/images/doctor.png";
+import { TouchableOpacity } from "react-native";
 
 const ArticleInfo = ({ article ={} }) => {
+  const [bookmarks, setBookmarks] = useState({});
+
   const {
     image = DocImg,
     title = "Dental Health a Part to Success",
     date = "Ju1 10, 2023",
     readTime = "5min read",
   } = article;
+
+  const toggleBookmark = (title) => {
+    setBookmarks((prevBookmarks) => ({
+      ...prevBookmarks,
+      [title]: !prevBookmarks[title],
+    }));
+  };
 
   return (  
     <ArticleWrapper>
@@ -34,7 +46,13 @@ const ArticleInfo = ({ article ={} }) => {
             </ArtFooter>
           </ArticleTextWrap>
         </CardContainer>
-        <Ionicons name="bookmark-outline" size={20} color='#407CE2' />
+        <TouchableOpacity onPress={() => toggleBookmark(title)}>
+          <Ionicons
+            name={bookmarks[title] ? "bookmark" : "bookmark-outline"}
+            size={20}
+            color="#407CE2"
+          />
+        </TouchableOpacity>
       </ArticleCard>
     </ArticleWrapper>
   );

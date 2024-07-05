@@ -6,7 +6,7 @@ import {
   MaterialCommunityIcons,
   Octicons,
 } from "@expo/vector-icons";
-import { View, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
+import { View, ScrollView, StyleSheet, TouchableOpacity, FlatList } from "react-native";
 import {
   AppContainer,
   ArticleContainer,
@@ -32,6 +32,7 @@ import {
   SeeText,
 } from "../components/Home.styles";
 import CovidPic from "../../../../assets/images/covid.png";
+import AuthImg from "../../../../assets/images/tosinBabe.png";
 import DocImg from "../../../../assets/images/doctor.png";
 import Text from "@/src/components/typograpghy/Text.component";
 import Spacer from "@/src/components/spacer/Spacer.component";
@@ -40,14 +41,14 @@ import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ArtFooter, ArticleCard, ArticleTextWrap, CardContainer, Date, Title } from "../../article/components/Article.styles";
 
-
-
-
-
 const Home = ({ navigation }) => {
+  console.log(navigation);
+  
   const [userData, setUserData] = useState(null);
   const [profileData, setProfileData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [bookmarks, setBookmarks] = useState({});
+
   const getData = async () => {
     try {
       const storedData = await AsyncStorage.getItem("data");
@@ -97,6 +98,70 @@ const Home = ({ navigation }) => {
   useEffect(() => {
     handleGetDetails();
   }, [userData]);
+
+  const articles = [
+    {
+      image:
+        "https://res.cloudinary.com/dba1aezsn/image/upload/v1720110110/Dental_Decoration_Clinic_Aesthetic_Design_zxeful.jpg",
+      title: "Dental Health in a short whole",
+      createdAt: "2024-07-03T13:31:48.919Z",
+      avatar:
+        "https://res.cloudinary.com/dba1aezsn/image/upload/v1720110043/lesh_seoedx.jpg",
+      fullName: "Leshaodo Omotayo",
+      readTime: "3 minutes read",
+      content: `Dental health is a vital component of overall success, influencing multiple facets of life. Proper oral hygiene practices, such as regular brushing, flossing, and dental check-ups, help prevent common dental issues like cavities, gum disease, and bad breath. These problems, if left unchecked, can lead to more severe health complications and negatively affect one's self-esteem and social interactions. <br> A healthy, bright smile contributes significantly to making positive first impressions, which are crucial in both personal and professional contexts. In the workplace, a confident smile can enhance communication skills, foster better relationships with colleagues and clients, and even improve job prospects. People who maintain good dental health are often perceived as more attractive, confident, and approachable. <br>Moreover, dental health is closely linked to overall physical health. Poor oral hygiene can lead to serious health issues such as cardiovascular disease, diabetes, and respiratory infections. By taking care of one's teeth and gums, individuals can reduce the risk of these systemic health problems, promoting overall well-being and productivity. <br> Investing in dental health also underscores the importance of self-care and discipline. Regular dental visits and good oral hygiene practices reflect a commitment to personal health and well-being. This discipline can translate into other areas of life, contributing to academic, professional, and personal achievements. <br>In summary, dental health is not just about maintaining a beautiful smile; it is integral to overall health and success. Prioritizing oral hygiene can enhance self-confidence, improve social and professional relationships, and prevent serious health issues, ultimately supporting a more successful and fulfilling life.
+    `,
+    },
+    {
+      image:
+        "https://res.cloudinary.com/dba1aezsn/image/upload/v1720013159/Lady_Health_Justice_-_Healthcare_should_be_like_u4mo2q.jpg",
+      title: "Health and Law",
+      createdAt: "2024-07-03T13:31:48.919Z",
+      avatar:
+        "https://res.cloudinary.com/dba1aezsn/image/upload/v1720013199/pic_1_sox5mu.jpg",
+      fullName: "Angel Ugochukwu",
+      readTime: "5 minutes read",
+      content: `Health and law intersect in numerous ways, encompassing the regulation of healthcare practices, the protection of patient rights, and the formulation of public health policies. Health law governs the administration of healthcare services, ensuring quality standards and ethical practices among providers. It includes laws on medical malpractice, patient confidentiality, informed consent, and the licensing of healthcare professionals. <br> Public health law focuses on the legal frameworks that enable governments to manage and prevent disease outbreaks, promote healthy behaviors, and ensure access to healthcare. This includes legislation on vaccination mandates, smoking bans, and regulations to control the spread of infectious diseases. <br> Additionally, health law addresses issues of healthcare accessibility and equity, aiming to reduce disparities and ensure that all individuals receive adequate care regardless of their socioeconomic status. It also encompasses bioethics, which deals with the moral implications of medical advancements and technologies, such as genetic testing and end-of-life care. <br> Overall, the field of health law is crucial in maintaining the integrity of healthcare systems, protecting patient rights, and promoting public health and safety.
+    `,
+    },
+  ];
+
+  const toggleBookmark = (title) => {
+    setBookmarks((prevBookmarks) => ({
+      ...prevBookmarks,
+      [title]: !prevBookmarks[title],
+    }));
+  };
+
+  const renderItem = ({ item }) => (
+    <TouchableArticle
+        onPress={() =>
+        navigation.navigate("Article Detail", {
+          article: item,
+        })
+      }
+    >
+      <ArticleCard>
+        <CardContainer>
+          <ArticleImg source={item.image} />
+          <ArticleTextWrap>
+            <Title>{item.title}</Title>
+            <ArtFooter>
+              <Date>{item.date}</Date>
+              <Date>{item.readTime}</Date>
+            </ArtFooter>
+          </ArticleTextWrap>
+        </CardContainer>
+        <TouchableOpacity onPress={() => toggleBookmark(item.title)}>
+          <Ionicons
+            name={bookmarks[item.title] ? "bookmark" : "bookmark-outline"}
+            size={20}
+            color="#407CE2"
+          />
+        </TouchableOpacity>
+      </ArticleCard>
+    </TouchableArticle>
+  );
 
   return (
     <View>
@@ -233,21 +298,12 @@ const Home = ({ navigation }) => {
                 onPress={()=>navigation.navigate('Health articles')}
               >See all</SeeText>
             </TopicContainer>
-            <TouchableArticle>
-              <ArticleCard>
-                <CardContainer>
-                  <ArticleImg source={DocImg}/>
-                  <ArticleTextWrap>
-                    <Title>The 25 Healthiest Fruits You Can Eat, According to a Nutritionist</Title>
-                    <ArtFooter>
-                      <Date>Jul 10, 2023</Date>
-                      <Date>5min read</Date>
-                    </ArtFooter>
-                  </ArticleTextWrap>
-                </CardContainer>
-                <Ionicons name="bookmark-outline" size={20} color='#407CE2'/>
-              </ArticleCard>
-            </TouchableArticle>
+            <FlatList
+              data={articles}
+              renderItem={renderItem}
+              keyExtractor={item => item.title}
+              contentContainerStyle={{ paddingBottom: 20 }}
+            />
           </ArticleContainer>
           <Spacer position="bottom" size="large"></Spacer>
         </AppContainer>

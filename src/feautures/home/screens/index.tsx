@@ -6,7 +6,7 @@ import {
   MaterialCommunityIcons,
   Octicons,
 } from "@expo/vector-icons";
-import { View, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
+import { View, ScrollView, StyleSheet, TouchableOpacity, FlatList } from "react-native";
 import {
   AppContainer,
   ArticleContainer,
@@ -32,6 +32,7 @@ import {
   SeeText,
 } from "../components/Home.styles";
 import CovidPic from "../../../../assets/images/covid.png";
+import AuthImg from "../../../../assets/images/tosinBabe.png";
 import DocImg from "../../../../assets/images/doctor.png";
 import Text from "@/src/components/typograpghy/Text.component";
 import Spacer from "@/src/components/spacer/Spacer.component";
@@ -40,14 +41,14 @@ import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ArtFooter, ArticleCard, ArticleTextWrap, CardContainer, Date, Title } from "../../article/components/Article.styles";
 
-
-
-
-
 const Home = ({ navigation }) => {
+  console.log(navigation);
+  
   const [userData, setUserData] = useState(null);
   const [profileData, setProfileData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [bookmarks, setBookmarks] = useState({});
+
   const getData = async () => {
     try {
       const storedData = await AsyncStorage.getItem("data");
@@ -97,6 +98,76 @@ const Home = ({ navigation }) => {
   useEffect(() => {
     handleGetDetails();
   }, [userData]);
+
+  const articles = [
+    {
+      image: DocImg,
+      title: "The 25 Healthiest Fruits You Can Eat, According to a Nutritionist",
+      date: "Jun 10, 2024",
+      authorPic: AuthImg,
+      author: 'Popins Shallom',
+      readTime: "3min read",
+      info: `Dental health is a vital component of overall success, influencing multiple facets of life. Proper oral hygiene practices, such as regular brushing, flossing, and dental check-ups, help prevent common dental issues like cavities, gum disease, and bad breath. These problems, if left unchecked, can lead to more severe health complications and negatively affect one's self-esteem and social interactions. 
+      
+      A healthy, bright smile contributes significantly to making positive first impressions, which are crucial in both personal and professional contexts. In the workplace, a confident smile can enhance communication skills, foster better relationships with colleagues and clients, and even improve job prospects. People who maintain good dental health are often perceived as more attractive, confident, and approachable. 
+      
+      Moreover, dental health is closely linked to overall physical health. Poor oral hygiene can lead to serious health issues such as cardiovascular disease, diabetes, and respiratory infections. By taking care of one's teeth and gums, individuals can reduce the risk of these systemic health problems, promoting overall well-being and productivity. 
+      
+      Investing in dental health also underscores the importance of self-care and discipline. Regular dental visits and good oral hygiene practices reflect a commitment to personal health and well-being. This discipline can translate into other areas of life, contributing to academic, professional, and personal achievements. 
+      
+      In summary, dental health is not just about maintaining a beautiful smile; it is integral to overall health and success. Prioritizing oral hygiene can enhance self-confidence, improve social and professional relationships, and prevent serious health issues, ultimately supporting a more successful and fulfilling life.
+      `,
+    },
+    {
+      image: CovidPic,
+      title: "Dental Health a Part to Success",
+      date: "Apr 10, 2024",
+      authorPic: AuthImg,
+      author: 'Steph Baby',
+      readTime: "15min read",
+      info: `Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cum cupiditate ipsa assumenda quae illo doloremque voluptate in! 
+      
+      Atque nemo commodi enim. Quos, eaque est blanditiis sed sit non, illo omnis labore molestiae libero quis sunt! Ducimus obcaecati ex, magnam quidem laborum reprehenderit incidunt quam ut quia quasi id distinctio nulla.
+      `,
+    },
+  ];
+
+  const toggleBookmark = (title) => {
+    setBookmarks((prevBookmarks) => ({
+      ...prevBookmarks,
+      [title]: !prevBookmarks[title],
+    }));
+  };
+
+  const renderItem = ({ item }) => (
+    <TouchableArticle
+        onPress={() =>
+        navigation.navigate("Article Detail", {
+          article: item,
+        })
+      }
+    >
+      <ArticleCard>
+        <CardContainer>
+          <ArticleImg source={item.image} />
+          <ArticleTextWrap>
+            <Title>{item.title}</Title>
+            <ArtFooter>
+              <Date>{item.date}</Date>
+              <Date>{item.readTime}</Date>
+            </ArtFooter>
+          </ArticleTextWrap>
+        </CardContainer>
+        <TouchableOpacity onPress={() => toggleBookmark(item.title)}>
+          <Ionicons
+            name={bookmarks[item.title] ? "bookmark" : "bookmark-outline"}
+            size={20}
+            color="#407CE2"
+          />
+        </TouchableOpacity>
+      </ArticleCard>
+    </TouchableArticle>
+  );
 
   return (
     <View>
@@ -233,21 +304,12 @@ const Home = ({ navigation }) => {
                 onPress={()=>navigation.navigate('Health articles')}
               >See all</SeeText>
             </TopicContainer>
-            <TouchableArticle>
-              <ArticleCard>
-                <CardContainer>
-                  <ArticleImg source={DocImg}/>
-                  <ArticleTextWrap>
-                    <Title>The 25 Healthiest Fruits You Can Eat, According to a Nutritionist</Title>
-                    <ArtFooter>
-                      <Date>Jul 10, 2023</Date>
-                      <Date>5min read</Date>
-                    </ArtFooter>
-                  </ArticleTextWrap>
-                </CardContainer>
-                <Ionicons name="bookmark-outline" size={20} color='#407CE2'/>
-              </ArticleCard>
-            </TouchableArticle>
+            <FlatList
+              data={articles}
+              renderItem={renderItem}
+              keyExtractor={item => item.title}
+              contentContainerStyle={{ paddingBottom: 20 }}
+            />
           </ArticleContainer>
           <Spacer position="bottom" size="large"></Spacer>
         </AppContainer>

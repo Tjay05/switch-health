@@ -71,14 +71,14 @@ const ArticleInfo = ({ article = {} }) => {
           <ArticleImg source={{ uri: image }} />
           <ArticleTextWrap>
             <Title>
-              <Text>{title}</Text>
+              {title}
             </Title>
             <ArtFooter>
               <ArticleDate>
-                <Text>{formatDate(createdAt)}</Text>
+                {formatDate(createdAt)}
               </ArticleDate>
               <ArticleDate>
-                <Text>{readTime}</Text>
+                {readTime}
               </ArticleDate>
             </ArtFooter>
           </ArticleTextWrap>

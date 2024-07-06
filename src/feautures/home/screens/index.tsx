@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
+import BackgroundFetch from "react-native-background-fetch";
 import {
   FontAwesome5,
   FontAwesome6,
@@ -6,7 +7,14 @@ import {
   MaterialCommunityIcons,
   Octicons,
 } from "@expo/vector-icons";
-import { View, ScrollView, StyleSheet, TouchableOpacity, FlatList } from "react-native";
+import {
+  View,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  FlatList,
+} from "react-native";
+import { Accelerometer } from "expo-sensors";
 import {
   AppContainer,
   ArticleContainer,
@@ -39,15 +47,24 @@ import Spacer from "@/src/components/spacer/Spacer.component";
 import AvatarSVG from "@/assets/icons/Avatar";
 import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { ArtFooter, ArticleCard, ArticleTextWrap, CardContainer, Date, Title } from "../../article/components/Article.styles";
+import {
+  ArtFooter,
+  ArticleCard,
+  ArticleTextWrap,
+  CardContainer,
+  Date,
+  Title,
+} from "../../article/components/Article.styles";
 
 const Home = ({ navigation }) => {
   console.log(navigation);
-  
+
   const [userData, setUserData] = useState(null);
   const [profileData, setProfileData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [bookmarks, setBookmarks] = useState({});
+  const [stepCount, setStepCount] = useState(0);
+  const [previousAcceleration, setPreviousAcceleration] = useState(null);
 
   const getData = async () => {
     try {
@@ -99,6 +116,57 @@ const Home = ({ navigation }) => {
     handleGetDetails();
   }, [userData]);
 
+useEffect(() => {
+  const fetchTask = async (taskId) => {
+    const subscription = Accelerometer.addListener((accelerometerData) => {
+      const { x, y, z } = accelerometerData;
+      const acceleration = Math.sqrt(x * x + y * y + z * z);
+
+      if (previousAcceleration !== null) {
+        const delta = Math.abs(acceleration - previousAcceleration);
+
+        if (delta > 0.05) {
+          setStepCount((prevStepCount) => {
+            // Save the step count to AsyncStorage so it persists
+            AsyncStorage.setItem(
+              "stepCount",
+              JSON.stringify(prevStepCount + 1)
+            );
+            return prevStepCount + 1;
+          });
+        }
+      }
+
+      setPreviousAcceleration(acceleration);
+    });
+
+    Accelerometer.setUpdateInterval(1000);
+    subscription && subscription.remove();
+    BackgroundFetch.finish(taskId);
+  };
+
+  BackgroundFetch.configure(
+    {
+      minimumFetchInterval: 15, 
+      stopOnTerminate: false,
+      startOnBoot: true,
+    },
+    fetchTask,
+    (error) => {
+      console.error("Background Fetch failed to start:", error);
+    }
+  );
+
+  // Optional: Perform a one-time fetch task to initialize
+  BackgroundFetch.scheduleTask({
+    taskId: "com.foo.backgroundfetch",
+    delay: 5000,
+  });
+}, []);
+
+
+
+
   const articles = [
     {
       image:
@@ -135,7 +203,7 @@ const Home = ({ navigation }) => {
 
   const renderItem = ({ item }) => (
     <TouchableArticle
-        onPress={() =>
+      onPress={() =>
         navigation.navigate("Article Detail", {
           article: item,
         })
@@ -170,7 +238,9 @@ const Home = ({ navigation }) => {
           <HeaderContainer>
             <Spacer>
               <Header>
-                <ProfileContainer onPress={() => navigation.navigate('Profile')}>
+                <ProfileContainer
+                  onPress={() => navigation.navigate("Profile")}
+                >
                   {profileData &&
                   profileData.data &&
                   profileData.data.avatar ? (
@@ -188,7 +258,9 @@ const Home = ({ navigation }) => {
                     </Text>
                   </GreetContainer>
                 </ProfileContainer>
-                <TouchableOpacity onPress={() => navigation.navigate('Notifications')}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("Notifications")}
+                >
                   <Ionicons name="notifications" size={28} color="#1A1F71" />
                 </TouchableOpacity>
               </Header>
@@ -209,7 +281,7 @@ const Home = ({ navigation }) => {
               <IndexBox>
                 <IndexItem>
                   <Text style={styles.indexTitle}>Activities</Text>
-                  <Text style={styles.indexValue}>1.2k</Text>
+                  <Text style={styles.indexValue}>{stepCount}</Text>
                   <Text style={styles.indexUnit}>steps</Text>
                 </IndexItem>
                 <Ionicons name="footsteps-outline" size={20} color="#1E1E1E" />
@@ -293,15 +365,17 @@ const Home = ({ navigation }) => {
           <ArticleContainer>
             <TopicContainer>
               <Text variant="main">Health articles</Text>
-              <SeeText 
+              <SeeText
                 variant="body"
-                onPress={()=>navigation.navigate('Health articles')}
-              >See all</SeeText>
+                onPress={() => navigation.navigate("Health articles")}
+              >
+                See all
+              </SeeText>
             </TopicContainer>
             <FlatList
               data={articles}
               renderItem={renderItem}
-              keyExtractor={item => item.title}
+              keyExtractor={(item) => item.title}
               contentContainerStyle={{ paddingBottom: 20 }}
             />
           </ArticleContainer>

@@ -39,7 +39,7 @@ import Spacer from "@/src/components/spacer/Spacer.component";
 import AvatarSVG from "@/assets/icons/Avatar";
 import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { ArtFooter, ArticleCard, ArticleTextWrap, CardContainer, Date, Title } from "../../article/components/Article.styles";
+import { ArtFooter, ArticleCard, ArticleTextWrap, CardContainer, Date as ArticleDate, Title } from "../../article/components/Article.styles";
 
 const Home = ({ navigation }) => {
   console.log(navigation);
@@ -126,12 +126,29 @@ const Home = ({ navigation }) => {
     },
   ];
 
-  const toggleBookmark = (title) => {
-    setBookmarks((prevBookmarks) => ({
-      ...prevBookmarks,
-      [title]: !prevBookmarks[title],
-    }));
+  const toggleBookmark = async (title) => {
+    const updatedBookmarks = {
+      ...bookmarks,
+      [title]: !bookmarks[title],
+    };
+
+    setBookmarks(updatedBookmarks);
+
+    try {
+      await AsyncStorage.setItem(
+        "bookmarkedArticles",
+        JSON.stringify(updatedBookmarks)
+      );
+    } catch (error) {
+      console.error("Failed to save bookmark", error);
+    }
   };
+
+  const formatDate = (dateString) => {
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
 
   const renderItem = ({ item }) => (
     <TouchableArticle
@@ -143,12 +160,12 @@ const Home = ({ navigation }) => {
     >
       <ArticleCard>
         <CardContainer>
-          <ArticleImg source={item.image} />
+          <ArticleImg source={{ uri: item.image }} />
           <ArticleTextWrap>
             <Title>{item.title}</Title>
             <ArtFooter>
-              <Date>{item.date}</Date>
-              <Date>{item.readTime}</Date>
+              <ArticleDate>{formatDate(item.createdAt)}</ArticleDate>
+              <ArticleDate>{item.readTime}</ArticleDate>
             </ArtFooter>
           </ArticleTextWrap>
         </CardContainer>

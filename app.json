@@ -27,7 +27,20 @@
       "favicon": "./assets/icons/logo.svg"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow Switch Health to use your location"
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "This app aceesses your photos to let you update your profile.",
+          "cameraPermission": "Allow Switch Health to access your camera"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

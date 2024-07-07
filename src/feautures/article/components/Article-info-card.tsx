@@ -70,16 +70,10 @@ const ArticleInfo = ({ article = {} }) => {
         <CardContainer>
           <ArticleImg source={{ uri: image }} />
           <ArticleTextWrap>
-            <Title>
-              {title}
-            </Title>
+            <Title>{title}</Title>
             <ArtFooter>
-              <ArticleDate>
-                {formatDate(createdAt)}
-              </ArticleDate>
-              <ArticleDate>
-                {readTime}
-              </ArticleDate>
+              <ArticleDate>{formatDate(createdAt)}</ArticleDate>
+              <ArticleDate>{readTime}</ArticleDate>
             </ArtFooter>
           </ArticleTextWrap>
         </CardContainer>

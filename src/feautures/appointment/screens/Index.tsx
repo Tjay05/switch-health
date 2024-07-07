@@ -16,7 +16,7 @@ const AppointmentScreen = () => {
             <Spacer position="bottom" size="large">
               <Text variant='place'>You don't have any appointments</Text>
             </Spacer>
-            <LogBtn>Book Now</LogBtn>
+            <LogBtn >Book Now</LogBtn>
           </NoAppWrapper>
         </AppointmentContainer>
       </AppointmentWrapper>

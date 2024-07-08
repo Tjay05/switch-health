@@ -138,7 +138,7 @@ const Home = ({ navigation }) => {
       if (result) {
         subscription = Accelerometer.addListener((accelerometer) => {
           const { y } = accelerometer;
-          const threshold = 0.08;
+          const threshold = 0.09;
           const timestamp = new Date().getTime();
 
           if (

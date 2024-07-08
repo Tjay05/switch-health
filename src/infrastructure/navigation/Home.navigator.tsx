@@ -8,12 +8,15 @@ import BookAppointment from "@/src/feautures/home/screens/BookAppointment";
 import TopDoctors from "@/src/feautures/home/screens/Doctors";
 import Emergency from "@/src/feautures/home/screens/Emergency";
 import NotificationScreen from "@/src/feautures/home/screens/Notification.screen";
+import NotificationSettings from "@/src/feautures/home/screens/Notification.Settings";
+import { Ionicons } from "@expo/vector-icons";
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack";
+import { TouchableOpacity } from "react-native";
 import { theme } from "../theme";
 
 const Stack = createStackNavigator();
 
-const HomeNavigator = () => {
+const HomeNavigator = ({ navigation }) => {
   return (
     <Stack.Navigator 
       initialRouteName="HomeMain" 
@@ -68,6 +71,21 @@ const HomeNavigator = () => {
       <Stack.Screen
         name="Notifications"
         component={NotificationScreen}
+        options={{
+          headerShown: true,
+          headerRight: () => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Notifications Settings')}
+              style={{ marginRight: 16 }}
+            >
+              <Ionicons name="settings" size={25} color='black' />
+            </TouchableOpacity>
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="Notifications Settings"
+        component={NotificationSettings}
         options={{headerShown: true}}
       />
       <Stack.Screen

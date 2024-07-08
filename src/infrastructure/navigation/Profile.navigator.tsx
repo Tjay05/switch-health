@@ -1,5 +1,6 @@
 import ProfileEdit from "@/src/feautures/profile/screen/EditProfile";
 import ProfileScreen from "@/src/feautures/profile/screen/Index";
+import SettingsScreen from "@/src/feautures/settings/screens/Index";
 import { createStackNavigator } from "@react-navigation/stack";
 import { theme } from "../theme";
 
@@ -26,6 +27,11 @@ const ProfileNavigator = () => {
       <Stack.Screen
         name="ProfileEdit" 
         component={ProfileEdit}
+      />
+      <Stack.Screen
+        name="Settings"
+        component={SettingsScreen}
+        options={{headerShown: true}}
       />
     </Stack.Navigator>
   );

@@ -1,5 +1,6 @@
 import Text from "@/src/components/typograpghy/Text.component";
 import { Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons } from "@expo/vector-icons";
+import { Alert } from "react-native";
 import { 
   Menu,
   MenuIcon,
@@ -30,7 +31,7 @@ const SettingsScreen = ({ navigation }) => {
             color="#221F1F99"
           />
         </Menu>
-        <Menu>
+        <Menu onPress={() => Alert.alert('Only one language Available right now!')}>
           <MenuItems>
             <MenuIcon>
               <MaterialCommunityIcons name="web" size={24} color="#407BFF" /> 

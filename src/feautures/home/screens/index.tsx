@@ -42,8 +42,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ArtFooter, ArticleCard, ArticleTextWrap, CardContainer, Date as ArticleDate, Title } from "../../article/components/Article.styles";
 
 const Home = ({ navigation }) => {
-  console.log(navigation);
-  
   const [userData, setUserData] = useState(null);
   const [profileData, setProfileData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);

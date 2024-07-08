@@ -59,8 +59,7 @@ const BACKGROUND_FETCH_TASK = "background-fetch-task";
 
 
 const Home = ({ navigation }) => {
-  console.log(navigation);
-
+  
 const [userData, setUserData] = useState(null);
 const [profileData, setProfileData] = useState(null);
 const [isLoading, setIsLoading] = useState(false);
@@ -262,7 +261,10 @@ const toggleBookmark = async (title) => {
 
   return (
     <View>
-      <ScrollView style={styles.whiteWrapper}>
+      <ScrollView 
+        style={styles.whiteWrapper}
+        showsVerticalScrollIndicator={false}
+      >
         <AppContainer>
           <HeaderContainer>
             <Spacer>
@@ -317,14 +319,15 @@ const toggleBookmark = async (title) => {
               </IndexBox>
             </IndexContainer>
           </HeaderContainer>
-          <Spacer position="top" size="extraLarge" />
-          <Spacer position="bottom" size="extraLarge">
+          <Spacer position="top" size="extraLarge" >
+          </Spacer>
+          {/* <Spacer position="bottom" size="extraLarge">
             <SearchInput
               placeholderTextColor={"#221F1F99"}
               iconColor={"#221F1F99"}
               placeholder="Search doctor, drugs, articles..."
             />
-          </Spacer>
+          </Spacer> */}
           <Spacer position="bottom" size="extraLarge">
             <CategoriesContainer>
               <Spacer position="bottom" size="medium">

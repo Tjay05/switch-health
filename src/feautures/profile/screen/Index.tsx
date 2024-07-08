@@ -26,6 +26,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const ProfileScreen = ({ navigation }) => {
   const [userData, setUserData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [weight, setWeight] = useState(" ")
 
   const getData = async () => {
     try {
@@ -37,7 +38,7 @@ const ProfileScreen = ({ navigation }) => {
       console.error(error);
     }
   };
-
+  const kgToLbs = (kg) => kg * 2.20462;
   const handleGetDetails = async () => {
     if (!userData) return;
     setIsLoading(true);
@@ -56,11 +57,11 @@ const ProfileScreen = ({ navigation }) => {
       if (response.ok) {
         const data = await response.json();
         setUserData(data);
+        setWeight(kgToLbs(data.data.weight).toFixed(2).toString());
       } else {
         console.error("Failed to fetch profile data:", response.statusText);
       }
     } catch (error) {
-      // console.error("Error fetching profile data:", error);
     } finally {
       setIsLoading(false);
     }
@@ -112,7 +113,9 @@ const ProfileScreen = ({ navigation }) => {
             <StatsBox>
               <Ionicons name="scale" size={34} color="#407BFF" />
               <Text variant="body">Weight</Text>
-              <Text variant="main1">103lbs</Text>
+              <Text variant="main1">
+               {weight} lbs
+              </Text>
             </StatsBox>
           </StatsContainer>
         </Spacer>

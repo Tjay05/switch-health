@@ -3,6 +3,7 @@ import {
   TopDoctorsContainer,
   TouchableFlatlist,
 } from "../components/Home.styles";
+import Loading from "@/src/components/loader";
 
 import DocPIc from "../../../../assets/images/femaleDoc.png";
 import DocPIc2 from "../../../../assets/images/doctor.png";
@@ -79,6 +80,7 @@ const TopDoctors = ({ navigation }) => {
   );
   return (
     <AppContainer>
+      {isLoading && <Loading />}
       <TopDoctorsContainer>
         <FlatList
           data={doctors.length ? doctors : DOCTORS}

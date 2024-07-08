@@ -26,7 +26,33 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const ProfileScreen = ({ navigation }) => {
   const [userData, setUserData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [weight, setWeight] = useState(" ")
+  const [weight, setWeight] = useState(" ");
+  const [stepCount, setStepCount] = useState(0);
+  const [caloriesBurnt, setCaloriesBurnt] = useState(0);
+  const loadStepCount = async () => {
+    try {
+      const storedStepCount = await AsyncStorage.getItem("stepCount");
+      const storedCalorieBurnt = await AsyncStorage.getItem("caloriesBurnt");
+      if (storedStepCount !== null) {
+        setStepCount(JSON.parse(storedStepCount));
+      }
+      if (storedCalorieBurnt !== null) {
+        setCaloriesBurnt(JSON.parse(storedCalorieBurnt));
+      }
+    } catch (error) {
+      console.error("Error loading step count or calories burnt:", error);
+    }
+  };
+
+  useEffect(() => {
+    loadStepCount();
+  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      loadStepCount();
+    }, [])
+  );
 
   const getData = async () => {
     try {
@@ -103,19 +129,17 @@ const ProfileScreen = ({ navigation }) => {
             <StatsBox>
               <Ionicons name="footsteps" size={34} color="#407BFF" />
               <Text variant="body">Steps</Text>
-              <Text variant="main1">1,023Km</Text>
+              <Text variant="main1">{stepCount}</Text>
             </StatsBox>
             <StatsBox>
               <Ionicons name="flame" size={34} color="#407BFF" />
               <Text variant="body">Calories</Text>
-              <Text variant="main1">756cal</Text>
+              <Text variant="main1">{caloriesBurnt.toFixed(2)} cal</Text>
             </StatsBox>
             <StatsBox>
               <Ionicons name="scale" size={34} color="#407BFF" />
               <Text variant="body">Weight</Text>
-              <Text variant="main1">
-               {weight} lbs
-              </Text>
+              <Text variant="main1">{weight} lbs</Text>
             </StatsBox>
           </StatsContainer>
         </Spacer>

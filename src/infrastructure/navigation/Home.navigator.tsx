@@ -8,6 +8,7 @@ import BookAppointment from "@/src/feautures/home/screens/BookAppointment";
 import TopDoctors from "@/src/feautures/home/screens/Doctors";
 import Emergency from "@/src/feautures/home/screens/Emergency";
 import NotificationScreen from "@/src/feautures/home/screens/Notification.screen";
+import SettingsScreen from "@/src/feautures/settings/screens/Index";
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack";
 import { theme } from "../theme";
 
@@ -78,6 +79,11 @@ const HomeNavigator = () => {
       <Stack.Screen
         name="Ambulance"
         component={Ambulance}
+      />
+      <Stack.Screen
+        name="Settings"
+        component={SettingsScreen}
+        options={{headerShown: true}}
       />
     </Stack.Navigator>
   );

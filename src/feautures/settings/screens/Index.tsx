@@ -12,13 +12,13 @@ import {
 } from "../component/Settings.styles";
 
 const SettingsScreen = ({ navigation }) => {
-  return ( 
+  return (
     <SettingWrapper>
       <SettingContainer>
         <Menu onPress={() => navigation.navigate("ProfileEdit")}>
           <MenuItems>
             <MenuIcon>
-              <Ionicons name="create-outline" size={24} color="#407BFF" /> 
+              <Ionicons name="create-outline" size={24} color="#407BFF" />
             </MenuIcon>
             <MenuText>
               <Text variant="place">Edit Profile</Text>
@@ -31,10 +31,12 @@ const SettingsScreen = ({ navigation }) => {
             color="#221F1F99"
           />
         </Menu>
-        <Menu onPress={() => Alert.alert('Only one language Available right now!')}>
+        <Menu
+          onPress={() => Alert.alert("Only one language available right now!")}
+        >
           <MenuItems>
             <MenuIcon>
-              <MaterialCommunityIcons name="web" size={24} color="#407BFF" /> 
+              <MaterialCommunityIcons name="web" size={24} color="#407BFF" />
             </MenuIcon>
             <MenuText>
               <Text variant="place">Language Preference</Text>
@@ -50,7 +52,7 @@ const SettingsScreen = ({ navigation }) => {
         <Menu>
           <MenuItems>
             <MenuIcon>
-              <Octicons name="key" size={24} color="#407BFF" /> 
+              <Octicons name="key" size={24} color="#407BFF" />
             </MenuIcon>
             <MenuText>
               <Text variant="place">Change Password</Text>
@@ -63,10 +65,14 @@ const SettingsScreen = ({ navigation }) => {
             color="#221F1F99"
           />
         </Menu>
-        <Menu onPress={() => navigation.navigate("Notifications")}>
+        <Menu onPress={() => navigation.navigate("Notifications Settings")}>
           <MenuItems>
             <MenuIcon>
-              <Ionicons name="notifications-outline" size={24} color="#407BFF" /> 
+              <Ionicons
+                name="notifications-outline"
+                size={24}
+                color="#407BFF"
+              />
             </MenuIcon>
             <MenuText>
               <Text variant="place">Notifications</Text>
@@ -79,10 +85,12 @@ const SettingsScreen = ({ navigation }) => {
             color="#221F1F99"
           />
         </Menu>
-        <Menu>
+        <Menu
+          onPress={() => Alert.alert("Terms and conditions are coming soon")}
+        >
           <MenuItems>
             <MenuIcon>
-              <MaterialCommunityIcons name="read" size={24} color="#407BFF" /> 
+              <MaterialCommunityIcons name="read" size={24} color="#407BFF" />
             </MenuIcon>
             <MenuText>
               <Text variant="place">Terms of Services</Text>
@@ -98,7 +106,7 @@ const SettingsScreen = ({ navigation }) => {
         <Menu>
           <MenuItems>
             <MenuIcon>
-              <MaterialIcons name="system-update" size={24} color="#407BFF" /> 
+              <MaterialIcons name="system-update" size={24} color="#407BFF" />
             </MenuIcon>
             <MenuText>
               <Text variant="place">App Updates</Text>

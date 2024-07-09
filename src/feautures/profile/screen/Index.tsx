@@ -145,7 +145,7 @@ const ProfileScreen = ({ navigation }) => {
         </Spacer>
         <Spacer position="top" size="large" />
         <ProfileMenu>
-          <TouchMenu>
+          <TouchMenu onPress={() => navigation.navigate("Saved articles")}>
             <MenuItems>
               <MenuIcon>
                 <Ionicons name="heart-outline" size={24} color="#1E90FF" />
@@ -158,7 +158,7 @@ const ProfileScreen = ({ navigation }) => {
               color="#221F1F99"
             />
           </TouchMenu>
-          <TouchMenu>
+          <TouchMenu onPress={() => navigation.navigate("Appointments")}>
             <MenuItems>
               <MenuIcon>
                 <Ionicons name="calendar-outline" size={24} color="#1E90FF" />
@@ -197,7 +197,7 @@ const ProfileScreen = ({ navigation }) => {
               color="#221F1F99"
             />
           </TouchMenu>
-          <TouchMenu>
+          <TouchMenu onPress={() => navigation.navigate("Notifications")}>
             <MenuItems>
               <MenuIcon>
                 <Ionicons

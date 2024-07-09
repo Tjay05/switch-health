@@ -64,7 +64,8 @@
     "react-native-webview": "^13.10.4",
     "styled-components": "^6.1.11",
     "expo-task-manager": "~11.8.2",
-    "expo-background-fetch": "~12.0.1"
+    "expo-background-fetch": "~12.0.1",
+    "expo-av": "~14.0.6"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

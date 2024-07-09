@@ -109,7 +109,7 @@ const ProfileScreen = ({ navigation }) => {
     <ProfileOverview contentContainerStyle={styles.contentContainer}>
       <ProfileHead>
         <HeaderText variant="main1">Profile Overview</HeaderText>
-        <SetIconWrap>
+        <SetIconWrap onPress={() => navigation.navigate('Settings')}>
           <Ionicons name="settings" size={28} color="white" />
         </SetIconWrap>
       </ProfileHead>

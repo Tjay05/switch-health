@@ -4,7 +4,7 @@ import Text from "@/src/components/typograpghy/Text.component";
 import { LogBtn } from "../../account/components/account.styles";
 import { AppointmentContainer, AppointmentWrapper, NoAppWrapper } from "../components/Appointment.styles";
 
-const AppointmentScreen = () => {
+const AppointmentScreen = ({ navigation }) => {
   return (
     <>
       <AppointmentWrapper>
@@ -16,7 +16,7 @@ const AppointmentScreen = () => {
             <Spacer position="bottom" size="large">
               <Text variant='place'>You don't have any appointments</Text>
             </Spacer>
-            <LogBtn >Book Now</LogBtn>
+            <LogBtn onPress={() => navigation.navigate('Top Doctors')}>Book Now</LogBtn>
           </NoAppWrapper>
         </AppointmentContainer>
       </AppointmentWrapper>

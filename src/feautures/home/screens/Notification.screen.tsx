@@ -2,16 +2,15 @@ import NoNotSVG from "@/assets/icons/NoNotification";
 import Spacer from "@/src/components/spacer/Spacer.component";
 import Text from "@/src/components/typograpghy/Text.component";
 import { 
-  AppointmentContainer, 
-  AppointmentWrapper,
   NoAppWrapper
 } from "../../appointment/components/Appointment.styles";
+import { NotContainer, NotWrapper } from "../components/Notification.styles";
 
 const NotificationScreen = () => {
   return (
     <>
-      <AppointmentWrapper>
-        <AppointmentContainer>
+      <NotContainer>
+        <NotWrapper>
           <NoAppWrapper>
             <Spacer position="bottom" size="extraLarge">
               <NoNotSVG/>
@@ -20,8 +19,8 @@ const NotificationScreen = () => {
               <Text variant='place'>All your notifications will appear here</Text>
             </Spacer>
           </NoAppWrapper>
-        </AppointmentContainer>
-      </AppointmentWrapper>
+        </NotWrapper>
+      </NotContainer>
     </>
   );
 }

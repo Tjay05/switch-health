@@ -270,7 +270,10 @@ useEffect(() => {
 
   return (
     <View>
-      <ScrollView style={styles.whiteWrapper}>
+      <ScrollView 
+        style={styles.whiteWrapper}
+        showsVerticalScrollIndicator={false}
+      >
         <AppContainer>
           <HeaderContainer>
             <Spacer>
@@ -327,14 +330,15 @@ useEffect(() => {
               </IndexBox>
             </IndexContainer>
           </HeaderContainer>
-          <Spacer position="top" size="extraLarge" />
-          <Spacer position="bottom" size="extraLarge">
+          <Spacer position="top" size="extraLarge" >
+          </Spacer>
+          {/* <Spacer position="bottom" size="extraLarge">
             <SearchInput
               placeholderTextColor={"#221F1F99"}
               iconColor={"#221F1F99"}
               placeholder="Search doctor, drugs, articles..."
             />
-          </Spacer>
+          </Spacer> */}
           <Spacer position="bottom" size="extraLarge">
             <CategoriesContainer>
               <Spacer position="bottom" size="medium">

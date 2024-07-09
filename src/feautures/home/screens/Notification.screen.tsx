@@ -19,13 +19,13 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 
 const NotificationScreen = () => {
-  const [notifications, setNotifications] = useState([]);
+  const [notifications, setNotifications] = useState(['']);
 
   return (
     <>
       <NotContainer showsVerticalScrollIndicator={false}>
         <NotWrapper>
-          {!notifications.length ? (
+          { notifications.length ? (
             <NotificationSection>
               <Spacer position="top" size="large">
                 <DateLabel>June 2024</DateLabel>
@@ -69,16 +69,14 @@ const NotificationScreen = () => {
             </NotificationSection>
           ) : (
             <NoAppWrapper>
-              <Spacer position="top" size="XXL">
-                <Spacer position="bottom" size="extraLarge">
-                  <NoNotSVG/>
-                </Spacer>
-                <Spacer position="bottom" size="large">
-                  <Text variant='place'>All your notifications will appear here</Text>
-                </Spacer>
+              <Spacer position="bottom" size="extraLarge">
+                <NoNotSVG/>
+              </Spacer>
+              <Spacer position="bottom" size="large">
+                <Text variant='place'>All your notifications will appear here</Text>
               </Spacer>
             </NoAppWrapper>
-          )}
+          ) }
         </NotWrapper>
       </NotContainer>
     </>

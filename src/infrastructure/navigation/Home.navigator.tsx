@@ -1,3 +1,9 @@
+import { Ionicons } from "@expo/vector-icons";
+import { createStackNavigator, TransitionPresets } from "@react-navigation/stack";
+import { TouchableOpacity } from "react-native";
+import { theme } from "../theme";
+
+// Page Imports
 import DocsNearMe from "@/src/feautures/appointment/screens/DoctorNear.screen";
 import ArticleScreen from "@/src/feautures/article/screens";
 import ArticleDetail from "@/src/feautures/article/screens/ArticleDetail";
@@ -10,10 +16,9 @@ import TopDoctors from "@/src/feautures/home/screens/Doctors";
 import Emergency from "@/src/feautures/home/screens/Emergency";
 import NotificationScreen from "@/src/feautures/home/screens/Notification.screen";
 import NotificationSettings from "@/src/feautures/home/screens/Notification.Settings";
-import { Ionicons } from "@expo/vector-icons";
-import { createStackNavigator, TransitionPresets } from "@react-navigation/stack";
-import { TouchableOpacity } from "react-native";
-import { theme } from "../theme";
+import CartScreen from "@/src/feautures/pharmacy/screens/Cart";
+import PharmacyScreen from "@/src/feautures/pharmacy/screens/Index";
+import PharmDetails from "@/src/feautures/pharmacy/screens/Pharmacy.Details";
 
 const Stack = createStackNavigator();
 
@@ -37,6 +42,42 @@ const HomeNavigator = ({ navigation }) => {
       <Stack.Screen
         name="Top Doctors"
         component={TopDoctors}
+        options={{headerShown: true}}
+      />
+      <Stack.Screen
+        name="Pharmacy"
+        component={PharmacyScreen}options={{
+          headerShown: true,
+          headerRight: () => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Cart')}
+              style={{ marginRight: 16 }}
+            >
+              <Ionicons name="cart-outline" size={25} color='black' />
+            </TouchableOpacity>
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="Pharmacy Details"
+        component={PharmDetails}
+        options={{
+          ...TransitionPresets.ModalTransition,
+          headerTitle: 'Details',
+          headerShown: true,
+          headerRight: () => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Cart')}
+              style={{ marginRight: 16 }}
+            >
+              <Ionicons name="cart-outline" size={25} color='black' />
+            </TouchableOpacity>
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="Cart"
+        component={CartScreen}
         options={{headerShown: true}}
       />
       <Stack.Screen

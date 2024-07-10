@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useCallback } from "react";
-import BackgroundFetch from "react-native-background-fetch";
 import {
   FontAwesome5,
   FontAwesome6,
@@ -12,7 +11,6 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
-  FlatList,
 } from "react-native";
 import { Accelerometer } from "expo-sensors";
 import {
@@ -20,8 +18,6 @@ import {
   ArticleContainer,
   ArticleImg,
   ProfileImg,
-  ArticleInfo,
-  ArticleText,
   CategoriesContainer,
   CategoryScroll,
   CatIcon,
@@ -33,7 +29,6 @@ import {
   IndexContainer,
   IndexItem,
   ProfileContainer,
-  SearchInput,
   TouchableArticle,
   TouchableCategory,
   TopicContainer,
@@ -54,8 +49,6 @@ import {
 } from "../../article/components/Article.styles";
 
 const Home = ({ navigation }) => {
-  console.log(navigation);
-
   const [userData, setUserData] = useState(null);
   const [profileData, setProfileData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -238,36 +231,6 @@ useEffect(() => {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
-  const renderItem = ({ item }) => (
-    <TouchableArticle
-      onPress={() =>
-        navigation.navigate("Article Detail", {
-          article: item,
-        })
-      }
-    >
-      <ArticleCard>
-        <CardContainer>
-          <ArticleImg source={{ uri: item.image }} />
-          <ArticleTextWrap>
-            <Title>{item.title}</Title>
-            <ArtFooter>
-              <ArticleDate>{formatDate(item.createdAt)}</ArticleDate>
-              <ArticleDate>{item.readTime}</ArticleDate>
-            </ArtFooter>
-          </ArticleTextWrap>
-        </CardContainer>
-        <TouchableOpacity onPress={() => toggleBookmark(item.title)}>
-          <Ionicons
-            name={bookmarks[item.title] ? "bookmark" : "bookmark-outline"}
-            size={20}
-            color="#407CE2"
-          />
-        </TouchableOpacity>
-      </ArticleCard>
-    </TouchableArticle>
-  );
-
   return (
     <View>
       <ScrollView 
@@ -361,7 +324,9 @@ useEffect(() => {
                   </CatIcon>
                   <Text style={styles.categoryText}>Top Doctors</Text>
                 </TouchableCategory>
-                <TouchableCategory>
+                <TouchableCategory
+                  onPress={() => navigation.navigate("Pharmacy")}
+                >
                   <CatIcon>
                     <MaterialCommunityIcons
                       name="pill"
@@ -415,12 +380,36 @@ useEffect(() => {
                 See all
               </SeeText>
             </TopicContainer>
-            <FlatList
-              data={articles}
-              renderItem={renderItem}
-              keyExtractor={(item) => item.title}
-              contentContainerStyle={{ paddingBottom: 20 }}
-            />
+            {articles.map((item) => (
+              <TouchableArticle 
+                key={item.title}
+                onPress={() =>
+                  navigation.navigate("Article Detail", {
+                    article: item,
+                  })
+                }
+              >
+                <ArticleCard>
+                  <CardContainer>
+                    <ArticleImg source={{ uri: item.image }} />
+                    <ArticleTextWrap>
+                      <Title>{item.title}</Title>
+                      <ArtFooter>
+                        <ArticleDate>{formatDate(item.createdAt)}</ArticleDate>
+                        <ArticleDate>{item.readTime}</ArticleDate>
+                      </ArtFooter>
+                    </ArticleTextWrap>
+                  </CardContainer>
+                  <TouchableOpacity onPress={() => toggleBookmark(item.title)}>
+                    <Ionicons
+                      name={bookmarks[item.title] ? "bookmark" : "bookmark-outline"}
+                      size={20}
+                      color="#407CE2"
+                    />
+                  </TouchableOpacity>
+                </ArticleCard>
+              </TouchableArticle>
+            ))}
           </ArticleContainer>
           <Spacer position="bottom" size="large"></Spacer>
         </AppContainer>

@@ -6,12 +6,7 @@ import {
   MaterialCommunityIcons,
   Octicons,
 } from "@expo/vector-icons";
-import {
-  View,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
+import { View, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
 import { Accelerometer } from "expo-sensors";
 import {
   AppContainer,
@@ -48,6 +43,82 @@ import {
   Title,
 } from "../../article/components/Article.styles";
 
+import * as BackgroundService from "expo-background-fetch";
+import * as TaskManager from "expo-task-manager";
+
+const TASK_NAME = "BACKGROUND_STEP_COUNTER";
+
+const backgroundStepCounterTask = async (taskData) => {
+  const { delay } = taskData;
+  let lastY = 0;
+  let isCounting = false;
+  let lastTimeStamp = 0;
+  let stepCount = 0;
+
+  const accelerometerSubscription = Accelerometer.addListener(
+    (accelerometer) => {
+      const { y } = accelerometer;
+      const threshold = 0.2;
+      const timestamp = new Date().getTime();
+
+      if (
+        Math.abs(y - lastY) > threshold &&
+        !isCounting &&
+        timestamp - lastTimeStamp > 800
+      ) {
+        isCounting = true;
+        lastY = y;
+        lastTimeStamp = timestamp;
+
+        stepCount += 1;
+
+        setTimeout(() => {
+          isCounting = false;
+          // Call a function to calculate calories burnt, if necessary
+          // calculateCaloriesBurnt();
+        }, 1000);
+      }
+    }
+  );
+
+  await new Promise((resolve) => {
+    const interval = setInterval(() => {
+      console.log("Step Count:", stepCount);
+      if (!BackgroundService.isRunning()) {
+        clearInterval(interval);
+        accelerometerSubscription.remove();
+        resolve();
+      }
+    }, delay);
+  });
+};
+
+TaskManager.defineTask(TASK_NAME, backgroundStepCounterTask);
+
+const options = {
+  taskName: "StepCounter",
+  taskTitle: "Step Counter Running",
+  taskDesc: "Counting steps in the background",
+  taskIcon: {
+    name: "ic_launcher",
+    type: "mipmap",
+  },
+  color: "#ff00ff",
+  parameters: {
+    delay: 1000,
+  },
+};
+
+const startBackgroundService = async () => {
+  await BackgroundService.start(TASK_NAME, options);
+};
+
+const updateBackgroundServiceNotification = async () => {
+  await BackgroundService.updateNotification({
+    taskDesc: "Counting steps and calculating calories",
+  });
+};
+
 const Home = ({ navigation }) => {
   const [userData, setUserData] = useState(null);
   const [profileData, setProfileData] = useState(null);
@@ -58,6 +129,7 @@ const Home = ({ navigation }) => {
   const [lastTimeStamp, setlastTimeStamp] = useState(0);
   const [isCounting, setIsCounting] = useState(false);
   const [caloriesBurnt, setCaloriesBurnt] = useState(0);
+  const [hasUnread, setHasUnread] = useState(false);
   useEffect(() => {
     const loadStepCount = async () => {
       const storedStepCount = await AsyncStorage.getItem("stepCount");
@@ -69,6 +141,8 @@ const Home = ({ navigation }) => {
     };
 
     loadStepCount();
+    startBackgroundService();
+    updateBackgroundServiceNotification();
   }, []);
 
   const getData = async () => {
@@ -131,7 +205,7 @@ const Home = ({ navigation }) => {
       if (result) {
         subscription = Accelerometer.addListener((accelerometer) => {
           const { y } = accelerometer;
-          const threshold = 0.09;
+          const threshold = 0.2;
           const timestamp = new Date().getTime();
 
           if (
@@ -163,22 +237,79 @@ const Home = ({ navigation }) => {
     };
   }, [isCounting, lastY, lastTimeStamp]);
 
-useEffect(() => {
-  const storeCaloriesBurnt = async () => {
-    try {
-      await AsyncStorage.setItem("caloriesBurnt", caloriesBurnt.toString());
-    } catch (error) {
-      console.error("Error storing calories burnt:", error);
-    }
-  };
+  useEffect(() => {
+    const storeCaloriesBurnt = async () => {
+      try {
+        await AsyncStorage.setItem("caloriesBurnt", caloriesBurnt.toString());
+      } catch (error) {
+        console.error("Error storing calories burnt:", error);
+      }
+    };
 
-  storeCaloriesBurnt();
-}, [caloriesBurnt]);
+    storeCaloriesBurnt();
+    handleGetNotify();
+  }, [caloriesBurnt]);
 
   const calculateCaloriesBurnt = () => {
     const caloriesPerStep = 0.05;
     const calculatedCalories = stepCount * caloriesPerStep;
     setCaloriesBurnt(calculatedCalories);
+  };
+
+  const readAllNOtifiy = async ()=>{
+       try {
+         const response = await fetch(
+           `https://switch-health.onrender.com/notification/read-notification`,
+           {
+             method: "PATCH",
+             headers: {
+               Authorization: `Bearer ${userData.data.accessToken}`,
+               "Content-Type": "application/json",
+             },
+           }
+         );
+
+         if (response.ok) {
+           navigation.navigate("Notifications");
+           const data = await response.json();
+           navigation.navigate("Notifications");
+           setHasUnread(false)
+           console.log(data);
+         } else {
+           console.error("Failed to fetch profile data:", response.statusText);
+         }
+       } catch (error) {
+         console.error("Error fetching profile data:", error);
+       } finally {
+         setIsLoading(false);
+       }
+  }
+
+  const handleGetNotify = async () => {
+    try {
+      const response = await fetch(
+        `https://switch-health.onrender.com/notification/get`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${userData.data.accessToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data.hasUnread);
+        setHasUnread(data.hasUnread);
+      } else {
+        console.error("Failed to fetch profile data:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error fetching profile data:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const articles = [
@@ -233,7 +364,7 @@ useEffect(() => {
 
   return (
     <View>
-      <ScrollView 
+      <ScrollView
         style={styles.whiteWrapper}
         showsVerticalScrollIndicator={false}
       >
@@ -261,10 +392,23 @@ useEffect(() => {
                     </Text>
                   </GreetContainer>
                 </ProfileContainer>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate("Notifications")}
-                >
-                  <Ionicons name="notifications" size={28} color="#1A1F71" />
+                <TouchableOpacity onPress={() => readAllNOtifiy()}>
+                  <View>
+                    <Ionicons name="notifications" size={28} color="#1A1F71" />
+                    {hasUnread && (
+                      <View
+                        style={{
+                          position: "absolute",
+                          top: 1,
+                          right: 2,
+                          width: 10,
+                          height: 10,
+                          borderRadius: 5,
+                          backgroundColor: "red",
+                        }}
+                      />
+                    )}
+                  </View>
                 </TouchableOpacity>
               </Header>
             </Spacer>
@@ -277,7 +421,7 @@ useEffect(() => {
                 <IndexItem>
                   <Text style={styles.indexTitle}>Calories</Text>
                   <Text style={styles.indexValue}>
-                    {(caloriesBurnt/ 1000).toFixed(4)}
+                    {(caloriesBurnt / 1000).toFixed(4)}
                   </Text>
                   <Text style={styles.indexUnit}>kcal</Text>
                 </IndexItem>
@@ -293,15 +437,7 @@ useEffect(() => {
               </IndexBox>
             </IndexContainer>
           </HeaderContainer>
-          <Spacer position="top" size="extraLarge" >
-          </Spacer>
-          {/* <Spacer position="bottom" size="extraLarge">
-            <SearchInput
-              placeholderTextColor={"#221F1F99"}
-              iconColor={"#221F1F99"}
-              placeholder="Search doctor, drugs, articles..."
-            />
-          </Spacer> */}
+          <Spacer position="top" size="extraLarge"></Spacer>
           <Spacer position="bottom" size="extraLarge">
             <CategoriesContainer>
               <Spacer position="bottom" size="medium">
@@ -356,7 +492,9 @@ useEffect(() => {
                   </CatIcon>
                   <Text style={styles.categoryText}>Ambulance</Text>
                 </TouchableCategory>
-                <TouchableCategory>
+                <TouchableCategory
+                  onPress={() => navigation.navigate("Reports")}
+                >
                   <CatIcon>
                     <Ionicons
                       name="footsteps-outline"
@@ -381,7 +519,7 @@ useEffect(() => {
               </SeeText>
             </TopicContainer>
             {articles.map((item) => (
-              <TouchableArticle 
+              <TouchableArticle
                 key={item.title}
                 onPress={() =>
                   navigation.navigate("Article Detail", {
@@ -402,7 +540,9 @@ useEffect(() => {
                   </CardContainer>
                   <TouchableOpacity onPress={() => toggleBookmark(item.title)}>
                     <Ionicons
-                      name={bookmarks[item.title] ? "bookmark" : "bookmark-outline"}
+                      name={
+                        bookmarks[item.title] ? "bookmark" : "bookmark-outline"
+                      }
                       size={20}
                       color="#407CE2"
                     />

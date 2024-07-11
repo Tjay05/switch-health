@@ -22,6 +22,7 @@ import Text from "@/src/components/typograpghy/Text.component";
 import ProfSVG from "@/assets/icons/ProfileSvg";
 import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Alert } from "react-native";
 
 const ProfileScreen = ({ navigation }) => {
   const [userData, setUserData] = useState(null);
@@ -44,15 +45,12 @@ const ProfileScreen = ({ navigation }) => {
     }
   };
 
-  useEffect(() => {
-    loadStepCount();
-  }, []);
-
   useFocusEffect(
     useCallback(() => {
       loadStepCount();
     }, [])
   );
+
 
   const getData = async () => {
     try {
@@ -109,7 +107,7 @@ const ProfileScreen = ({ navigation }) => {
     <ProfileOverview contentContainerStyle={styles.contentContainer}>
       <ProfileHead>
         <HeaderText variant="main1">Profile Overview</HeaderText>
-        <SetIconWrap onPress={() => navigation.navigate('Settings')}>
+        <SetIconWrap onPress={() => navigation.navigate("Settings")}>
           <Ionicons name="settings" size={28} color="white" />
         </SetIconWrap>
       </ProfileHead>
@@ -171,7 +169,9 @@ const ProfileScreen = ({ navigation }) => {
               color="#221F1F99"
             />
           </TouchMenu>
-          <TouchMenu>
+          <TouchMenu
+            onPress={() => Alert.alert("You can not add card now use paystack")}
+          >
             <MenuItems>
               <MenuIcon>
                 <Ionicons name="card-outline" size={24} color="#1E90FF" />

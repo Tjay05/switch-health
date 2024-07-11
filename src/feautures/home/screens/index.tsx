@@ -273,6 +273,7 @@ const Home = ({ navigation }) => {
            navigation.navigate("Notifications");
            const data = await response.json();
            navigation.navigate("Notifications");
+           setHasUnread(false)
            console.log(data);
          } else {
            console.error("Failed to fetch profile data:", response.statusText);

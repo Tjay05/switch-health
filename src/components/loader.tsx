@@ -29,11 +29,11 @@ const styles = StyleSheet.create({
   indicatorContainer: {
     position: "absolute",
     top: "50%",
-    marginTop: -30, // Half of the ActivityIndicator size (60 / 2)
+    marginTop: -30, 
   },
   logoContainer: {
     position: "absolute",
-    bottom: 20, // Adjust as needed
+    bottom: 20, 
   },
 });
 

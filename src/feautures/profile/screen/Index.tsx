@@ -131,10 +131,7 @@ const ProfileScreen = ({ navigation }) => {
       </ProfileHead>
       <SvgWrap>
         {userData && userData.data && userData.data.avatar ? (
-          <ProfileImg
-            source={{ uri: userData.data.avatar }}
-            style={styles.profileImage}
-          />
+          <ProfileImg source={{ uri: userData.data.avatar }} />
         ) : (
           <ProfSVG width={100} height={100} />
         )}

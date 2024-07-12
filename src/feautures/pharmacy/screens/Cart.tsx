@@ -8,9 +8,10 @@ import { CartDescription, CartDetailWrap, CartFooter, CartImg, CartItemBox, Cart
 import DrugPic from '../../../../assets/images/drugbox.png';
 import { FontAwesome6, Ionicons, SimpleLineIcons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
+import EmptyCartSVG from "@/assets/icons/EmptyCartSvg";
 
 const CartScreen = ({ navigation }) => {
-  const [cart, setCart] = useState(['']);
+  const [cart, setCart] = useState([]);
   const [count, setCount] = useState(1);
 
   const add = () => setCount(count + 1);
@@ -79,7 +80,7 @@ const CartScreen = ({ navigation }) => {
         ) : (
           <NoAppWrapper>
             <Spacer position="bottom" size="extraLarge">
-
+              <EmptyCartSVG/>
             </Spacer>
             <Spacer position="bottom" size="large">
               <Text variant='place'>Oops! Your cart is empty</Text>

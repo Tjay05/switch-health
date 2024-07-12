@@ -129,7 +129,7 @@ const ReportScreen = () => {
       setHealthMessage("You're obese");
     }
   };
-
+    
   return (
     <>
       <ReportWrapper>
@@ -188,24 +188,7 @@ const ReportScreen = () => {
           <ReportList>
             <Text variant="main">Latest report</Text>
             <ReportInfoWrapper>
-              <TouchableReport>
-                <ReportIcon>
-                  <MaterialCommunityIcons
-                    name="clipboard-pulse-outline"
-                    size={28}
-                    color={"#407CE2"}
-                  />
-                </ReportIcon>
-                <Spacer position="right" size="medium" />
-                <Spacer position="right" size="small" />
-                <ReportInfo>
-                  <Text>General report</Text>
-                  <Spacer position="top" size="small">
-                    <ReportLightText>Jul 10, 2023</ReportLightText>
-                  </Spacer>
-                </ReportInfo>
-              </TouchableReport>
-              <TouchableReport>
+              <TouchableReport onPress={() => navigation.navigate('Weekly Report')}>
                 <ReportIcon>
                   <MaterialCommunityIcons
                     name="clipboard-pulse-outline"

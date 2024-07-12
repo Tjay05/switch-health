@@ -121,6 +121,7 @@ const ProfileScreen = ({ navigation }) => {
   };
 
   return (
+    
     <ProfileOverview contentContainerStyle={styles.contentContainer}>
       <ProfileHead>
         <HeaderText variant="main1">Profile Overview</HeaderText>

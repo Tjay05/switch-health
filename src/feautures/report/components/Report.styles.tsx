@@ -1,6 +1,8 @@
 import Text from "@/src/components/typograpghy/Text.component";
 import { ScrollView, TouchableOpacity, View } from "react-native";
 import { styled } from "styled-components";
+import GradientLine from "../screens/gradient";
+
 
 export const ReportWrapper = styled(ScrollView)`
   width: 100%;
@@ -81,7 +83,7 @@ export const BMIStatus = styled(View)`
 export const StatWrap = styled(View)`
   padding-horizontal: 10px;
   padding-vertical: 3px;
-  background-color: #D6FFDD;
+  background-color: ${(props) => props.color || "#D6FFDD"};
   border-radius: 8px;
 `;
 

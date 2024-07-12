@@ -1,80 +1,90 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, PanResponder } from "react-native";
-import LinearGradient from "react-native-linear-gradient";
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
-const GradientLine = () => {
-  const [color, setColor] = useState("#00fe99");
+function interpolateColor(color1, color2, factor) {
+  if (!color1 || !color2) return [0, 0, 0]; // Default color if input is invalid
+  const result = color1.slice();
+  for (let i = 0; i < 3; i++) {
+    result[i] = Math.round(result[i] + factor * (color2[i] - result[i]));
+  }
+  return result;
+}
+
+function rgbToHex(rgb) {
+  return (
+    "#" +
+    ((1 << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2])
+      .toString(16)
+      .slice(1)
+      .toUpperCase()
+  );
+}
+
+function hexToRgb(hex) {
+  if (!hex || hex.length !== 7) return [0, 0, 0]; // Default to black if invalid input
+  const bigint = parseInt(hex.slice(1), 16);
+  return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255];
+}
+
+const GradientLine = ({ bmi, onColorChange }) => {
   const [position, setPosition] = useState(0);
 
-  const gradientColors = ["#ff0000", "#00ff00", "#0000ff"];
+  const gradientColors = ["#B5D4F1", "#81E5DB", "#E8D284", "#E2798E"];
+  const minRange = 15;
+  const maxRange = 40;
+  const width = 150;
 
-  const panResponder = PanResponder.create({
-    onStartShouldSetPanResponder: () => true,
-    onPanResponderMove: (event, gestureState) => {
-      const x = gestureState.moveX;
-      const width = 300; // width of the gradient line
-      if (x >= 0 && x <= width) {
-        setPosition(x);
-        const selectedColor = interpolateColor(x / width, gradientColors);
-        setColor(selectedColor);
-      }
-    },
-  });
+  useEffect(() => {
+    const newPosition = ((bmi - minRange) / (maxRange - minRange)) * width;
+    setPosition(newPosition);
 
-  const interpolateColor = (value, colors) => {
-    const numColors = colors.length;
-    const scale = (numColors - 1) * value;
-    const leftIndex = Math.floor(scale);
-    const rightIndex = Math.ceil(scale);
-    const blend = scale - leftIndex;
+    const colorIndex = Math.min(
+      Math.floor(
+        ((bmi - minRange) / (maxRange - minRange)) * (gradientColors.length - 1)
+      ),
+      gradientColors.length - 2
+    );
+    const colorFactor =
+      ((bmi - minRange) / (maxRange - minRange)) * (gradientColors.length - 1) -
+      colorIndex;
+    const color = interpolateColor(
+      hexToRgb(gradientColors[colorIndex]),
+      hexToRgb(gradientColors[colorIndex + 1]),
+      colorFactor
+    );
 
-    const leftColor = hexToRgb(colors[leftIndex]);
-    const rightColor = hexToRgb(colors[rightIndex]);
-    const resultColor = {
-      r: Math.round(leftColor.r + blend * (rightColor.r - leftColor.r)),
-      g: Math.round(leftColor.g + blend * (rightColor.g - leftColor.g)),
-      b: Math.round(leftColor.b + blend * (rightColor.b - leftColor.b)),
-    };
+    onColorChange(rgbToHex(color));
+  }, [bmi]);
 
-    return rgbToHex(resultColor);
-  };
-
-  const hexToRgb = (hex) => {
-    const bigint = parseInt(hex.replace("#", ""), 16);
-    const r = (bigint >> 16) & 255;
-    const g = (bigint >> 8) & 255;
-    const b = bigint & 255;
-    return { r, g, b };
-  };
-
-  const rgbToHex = ({ r, g, b }) => {
-    const toHex = (value) => value.toString(16).padStart(2, "0");
-    return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+  const renderMarkers = () => {
+    const markers = [15, 18.5, 25, 30, 35, 40];
+    return markers.map((marker) => {
+      const markerPosition =
+        ((marker - minRange) / (maxRange - minRange)) * width;
+      return (
+        <View
+          key={marker}
+          style={[styles.marker, { left: markerPosition - 7 }]}
+        >
+          <Text style={styles.markerText}>{marker}</Text>
+        </View>
+      );
+    });
   };
 
   return (
     <View style={styles.container}>
-      <Text style={[styles.title, { color: color }]}>
-        Development Dashboard
-      </Text>
-
-      <LinearGradient
-        colors={gradientColors}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0 }}
-        style={styles.gradient}
-        {...panResponder.panHandlers}
-      >
-        <View
-          style={[
-            styles.indicator,
-            { left: position - 15, backgroundColor: color },
-          ]}
-        />
-      </LinearGradient>
-
-      <View style={[styles.preview, { backgroundColor: color }]}>
-        <Text style={styles.previewText}>Preview Color</Text>
+      <View style={styles.gradientContainer}>
+        <LinearGradient
+          colors={gradientColors}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          style={styles.gradient}
+        >
+          {renderMarkers()}
+          <View style={[styles.indicator, { left: position - 2.5 }]} />
+        </LinearGradient>
       </View>
     </View>
   );
@@ -82,41 +92,42 @@ const GradientLine = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    padding: 20,
+    width: 150,
   },
-  title: {
-    fontSize: 24,
-    marginBottom: 20,
+  gradientContainer: {
+    position: "relative",
+    width: 150,
+    borderRadius: 25,
+    marginVertical: 20,
   },
   gradient: {
-    width: 300,
-    height: 50,
+    width: 150,
+    height: 15,
     borderRadius: 25,
     justifyContent: "center",
-    marginVertical: 20,
     position: "relative",
+  },
+  marker: {
+    position: "absolute",
+    top: 20,
+    alignItems: "center",
+  },
+  markerText: {
+    fontSize: 12,
+    color: "white",
   },
   indicator: {
     position: "absolute",
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    borderWidth: 2,
-    borderColor: "#fff",
-  },
-  preview: {
-    marginTop: 20,
-    width: 100,
-    height: 100,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  previewText: {
-    color: "white",
-    fontSize: 16,
+    width: 5,
+    height: 10,
+    borderBottomLeftRadius: 100,
+    borderBottomRightRadius: 100,
+    backgroundColor: "red",
+    borderWidth: 1,
+    borderColor: "white",
+    top: -7,
   },
 });
 

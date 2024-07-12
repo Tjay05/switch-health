@@ -4,6 +4,7 @@ import { ThemeProvider } from "styled-components";
 import { useFonts as useInter, Inter_400Regular, Inter_500Medium, Inter_700Bold } from '@expo-google-fonts/inter';
 import { useFonts as usePoppins, Poppins_400Regular, Poppins_500Medium, Poppins_700Bold } from '@expo-google-fonts/poppins';
 import { useFonts as useOutfit, Outfit_400Regular, Outfit_500Medium, Outfit_700Bold } from '@expo-google-fonts/outfit';
+import { useFonts as useSpaceGrotesk, SpaceGrotesk_400Regular, SpaceGrotesk_500Medium } from '@expo-google-fonts/space-grotesk';
 
 // Page Imports
 import { theme } from "@/src/infrastructure/theme";
@@ -27,8 +28,13 @@ export default function Index() {
     Outfit_500Medium, 
     Outfit_700Bold
   });
+  
+  const [spaceGroteskLoaded] = useSpaceGrotesk({
+    SpaceGrotesk_400Regular,
+    SpaceGrotesk_500Medium,
+  });
 
-  if (!interLoaded || !poppinsLoaded || !outfitLoaded) {
+  if (!interLoaded || !poppinsLoaded || !outfitLoaded || !spaceGroteskLoaded) {
     return null
   }  
   

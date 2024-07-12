@@ -20,9 +20,9 @@ import {
 import Spacer from "@/src/components/spacer/Spacer.component";
 import Text from "@/src/components/typograpghy/Text.component";
 import ProfSVG from "@/assets/icons/ProfileSvg";
-import { useFocusEffect } from "@react-navigation/native";
+import { CommonActions, useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Alert } from "react-native";
+import { Alert, Button, Modal, StyleSheet, View } from "react-native";
 
 const ProfileScreen = ({ navigation }) => {
   const [userData, setUserData] = useState(null);
@@ -30,6 +30,8 @@ const ProfileScreen = ({ navigation }) => {
   const [weight, setWeight] = useState(" ");
   const [stepCount, setStepCount] = useState(0);
   const [caloriesBurnt, setCaloriesBurnt] = useState(0);
+  const [modalVisible, setModalVisible] = useState(false);
+
   const loadStepCount = async () => {
     try {
       const storedStepCount = await AsyncStorage.getItem("stepCount");
@@ -102,6 +104,21 @@ const ProfileScreen = ({ navigation }) => {
       handleGetDetails();
     }
   }, [userData]);
+
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem('data');
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [
+          { 
+            name: 'AccountNavigator',
+            params: { screen: 'Login', }
+          }
+        ],
+      })
+    );
+  };
 
   return (
     <ProfileOverview contentContainerStyle={styles.contentContainer}>
@@ -214,7 +231,7 @@ const ProfileScreen = ({ navigation }) => {
               color="#221F1F99"
             />
           </TouchMenu>
-          <TouchMenu>
+          <TouchMenu onPress={() => setModalVisible(true)}>
             <MenuItems>
               <MenuIcon>
                 <Ionicons name="exit-outline" size={24} color="#1E90FF" />
@@ -227,10 +244,47 @@ const ProfileScreen = ({ navigation }) => {
               color="#221F1F99"
             />
           </TouchMenu>
+
+          <Modal
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => setModalVisible(false)}
+          >
+            <View style={styls.modalBackground}>
+              <View style={styls.modalContainer}>
+                <Text>Are you sure you want to logout?</Text>
+                <View style={styls.buttonContainer}>
+                  <Button title="Cancel" onPress={() => setModalVisible(false)} />
+                  <Button title="Log Out" onPress={handleLogout} />
+                </View>
+              </View>
+            </View>
+          </Modal>
+
         </ProfileMenu>
       </ProfileContainer>
     </ProfileOverview>
   );
 };
+
+const styls = StyleSheet.create({
+  modalBackground: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  }, 
+  modalContainer: {
+    width: 300,
+    padding: 20,
+    backgroundColor: 'white',
+    borderRadius: 10,
+  }, 
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 20,
+  },
+});
 
 export default ProfileScreen;

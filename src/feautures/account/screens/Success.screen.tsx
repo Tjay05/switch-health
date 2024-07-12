@@ -1,10 +1,11 @@
 import SuccSVG from '@/assets/icons/SuccSVG';
 import Spacer from '@/src/components/spacer/Spacer.component';
 import Text from '@/src/components/typograpghy/Text.component';
-import { Image, View, Button } from 'react-native';
+import { CommonActions } from '@react-navigation/native';
+import { View } from 'react-native';
 import { styled } from 'styled-components';
 
-import successImg from '../../../../assets/images/success.png';
+import { LogBtn } from '../components/account.styles';
 
 const Container = styled(View)`
   flex: 1;
@@ -15,19 +16,12 @@ const Container = styled(View)`
   margin-right: auto;
 `;
 
-const WelImg = styled(Image)`
-  height: 245px;
-  width: 245px;
-`;
-
-
 const SuccessPage = ({ navigation }) => {
   return (
     <>
       <Container>
         <Spacer position='bottom' size='large'>
           <SuccSVG/>
-          {/* <WelImg source={successImg} /> */}
         </Spacer>
         <Spacer position='bottom' size='extraLarge' >
           <Text variant='caption' >Success!</Text>
@@ -36,7 +30,14 @@ const SuccessPage = ({ navigation }) => {
           <Text variant='shade'>Congratulations! You have been successfully authenticated</Text>
         </Spacer>
         <Spacer position='top' size='large' >
-          <Button title='Continue'/>
+          <LogBtn onPress={() => navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [{ name: 'AppNavigator' }],
+            })
+          )} >
+            Continue
+          </LogBtn>
         </Spacer>
       </Container>
     </>

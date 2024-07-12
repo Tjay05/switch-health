@@ -17,6 +17,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Loading from "@/src/components/loader";
 
 const NotificationScreen = () => {
   const [notifications, setNotifications] = useState([]);
@@ -136,6 +137,7 @@ const NotificationScreen = () => {
 
   return (
     <NotContainer showsVerticalScrollIndicator={false}>
+      {isLoading && <Loading />}
       <NotWrapper>
         {Object.keys(groupedNotifications).length ? (
           Object.entries(groupedNotifications).map(

@@ -1,8 +1,6 @@
 import Text from "@/src/components/typograpghy/Text.component";
-import { Dimensions, ScrollView, TouchableOpacity, View } from "react-native";
+import { Dimensions, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import { styled } from "styled-components";
-import GradientLine from "../screens/gradient";
-
 
 const { height } = Dimensions.get("window");
 
@@ -16,6 +14,7 @@ export const ReportContainer = styled(View)`
   flex: 1;
   width: 90%;
   margin-horizontal: auto;
+  margin-bottom: ${(props) => props.theme.space[3]};
 `;
 
 export const BMIConatiner = styled(View)`
@@ -186,16 +185,118 @@ export const ReportIcon = styled(View)`
   background-color: #407CE221;
 `;
 
+// Weekly Report STyles
 export const ReportHead = styled(View)`
   position: absolute;
   top: 0;
-  padding-bottom: ${height * 0.4}px;
+  padding-bottom: ${height * 0.04}px;
   padding-horizontal: ${(props) => props.theme.space[3]};
   padding-top: ${(props) => props.theme.space[4]};
-  border-radius: 0px 0px 36px 36px;
+  border-radius: 0px 0px 40px 40px;
   width: 100%;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   z-index: -1;
+  background-color: #1a1f71;
 `;
+
+export const ReportTitle = styled(Text)`
+  color: #FFFFFF;
+  font-family: ${(props)=> props.theme.fonts.poppinsBold};
+  font-size: ${(props)=> props.theme.fontSizes.info};
+`;
+
+export const CircleContainer = styled(View)`
+  align-items: center;
+  justify-content: center;
+  padding-vertical: ${(props) => props.theme.space[2]};
+`;
+
+export const TextCircle = styled(View)`
+  position: absolute;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+`;
+
+export const CompleteText = styled(Text)`
+  color: #FFFFFF;
+  font-family: ${(props)=> props.theme.fonts.poppinsRegular};
+  font-size: 48px;
+`;
+
+export const RemainText = styled(Text)`
+  color: #B9EEFF;
+  font-family: ${(props)=> props.theme.fonts.poppinsMedium};
+  font-size: ${(props)=> props.theme.fontSizes.body};
+`;
+
+export const HeaderNote = styled(Text)`
+  font-size: ${(props)=> props.theme.fontSizes.min};
+  font-family: ${(props)=> props.theme.fonts.poppinsMedium};
+  color: #FFFFFF;
+`;
+
+export const VitalParamsSection = styled(View)`
+  width: 100%;
+  flex:1;
+`;
+
+export const ParamsHeader = styled(Text)`
+  color: #10152C;
+  font-size: ${(props)=> props.theme.fontSizes.h6};
+  font-family: ${(props)=> props.theme.fonts.poppinsMedium};
+`;
+
+export const ParamsWrapper = styled(View)`
+  width: 100%;
+  flex: 1;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  flex-direction: row;
+  margin-vertical: ${(props) => props.theme.space[3]};
+`;
+
+export const ParamsItems = styled(View)`
+  border-radius: 20px;
+  background-color: #F5F5DA;
+  width: 47%;
+  align-items: start;
+  margin-bottom: ${(props) => props.theme.space[3]};
+  padding: ${(props) => props.theme.space[3]};
+  flex-direction: column;
+`;
+
+export const ParamsHeadWrap = styled(View)`
+  width: 100%;
+  justify-content: space-between;
+  flex-direction: row;
+`;
+
+export const ParamsHeadText = styled(Text)`
+  color: #000000;
+  font-size: ${(props)=> props.theme.fontSizes.body};
+  font-family: ${(props)=> props.theme.fonts.poppinsMedium};
+  flex-wrap: wrap;
+  width: 71%;
+`;
+
+export const ParamsCaption = styled(Text)`
+  color: #10152C;
+  font-size: ${(props)=> props.theme.fontSizes.min};
+  font-family: ${(props)=> props.theme.fonts.poppinsBold};
+  margin-bottom: ${(props) => props.theme.space[1]};
+`;
+
+export const ParamText = styled(Text)`
+  color: #10152C;
+  font-size: ${(props)=> props.theme.fontSizes.min};
+  font-family: ${(props)=> props.theme.fonts.poppinsRegular};
+`;
+
+export const ContentStyle = StyleSheet.create({
+  contentContainer: {
+    paddingTop: 350, // Adjust height of header
+  },
+});

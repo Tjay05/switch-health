@@ -1,8 +1,10 @@
 import Text from "@/src/components/typograpghy/Text.component";
-import { ScrollView, TouchableOpacity, View } from "react-native";
+import { Dimensions, ScrollView, TouchableOpacity, View } from "react-native";
 import { styled } from "styled-components";
 import GradientLine from "../screens/gradient";
 
+
+const { height } = Dimensions.get("window");
 
 export const ReportWrapper = styled(ScrollView)`
   width: 100%;
@@ -184,6 +186,16 @@ export const ReportIcon = styled(View)`
   background-color: #407CE221;
 `;
 
-// export const colourSpectrum  = styled(View)`
-
-// `
+export const ReportHead = styled(View)`
+  position: absolute;
+  top: 0;
+  padding-bottom: ${height * 0.4}px;
+  padding-horizontal: ${(props) => props.theme.space[3]};
+  padding-top: ${(props) => props.theme.space[4]};
+  border-radius: 0px 0px 36px 36px;
+  width: 100%;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  z-index: -1;
+`;

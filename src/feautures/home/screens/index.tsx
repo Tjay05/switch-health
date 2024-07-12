@@ -6,7 +6,7 @@ import {
   MaterialCommunityIcons,
   Octicons,
 } from "@expo/vector-icons";
-import { View, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { Accelerometer } from "expo-sensors";
 import {
   AppContainer,
@@ -28,6 +28,14 @@ import {
   TouchableCategory,
   TopicContainer,
   SeeText,
+  AppWrapper,
+  HelloText,
+  UserNameText,
+  IndexTitle,
+  IndexValue,
+  IndexUnit,
+  CategoryText,
+  IndexTextWrap,
 } from "../components/Home.styles";
 import Text from "@/src/components/typograpghy/Text.component";
 import Spacer from "@/src/components/spacer/Spacer.component";
@@ -361,10 +369,7 @@ const Home = ({ navigation }) => {
 
   return (
     <View>
-      <ScrollView
-        style={styles.whiteWrapper}
-        showsVerticalScrollIndicator={false}
-      >
+      <AppWrapper showsVerticalScrollIndicator={false}>
         <AppContainer>
           <HeaderContainer>
             <Spacer>
@@ -383,10 +388,10 @@ const Home = ({ navigation }) => {
                     <AvatarSVG width={50} height={50} />
                   )}
                   <GreetContainer>
-                    <Text style={styles.greeting}>Hello,</Text>
-                    <Text style={styles.name}>
+                    <HelloText>Hello,</HelloText>
+                    <UserNameText>
                       {profileData ? profileData.data.fullName : " Guest "}
-                    </Text>
+                    </UserNameText>
                   </GreetContainer>
                 </ProfileContainer>
                 <TouchableOpacity onPress={() => readAllNOtifiy()}>
@@ -416,19 +421,23 @@ const Home = ({ navigation }) => {
             <IndexContainer>
               <IndexBox>
                 <IndexItem>
-                  <Text style={styles.indexTitle}>Calories</Text>
-                  <Text style={styles.indexValue}>
-                    {(caloriesBurnt / 1000).toFixed(4)}
-                  </Text>
-                  <Text style={styles.indexUnit}>kcal</Text>
+                  <IndexTitle>Calories</IndexTitle>
+                  <IndexTextWrap>
+                    <IndexValue>
+                      {(caloriesBurnt).toFixed(1)}
+                    </IndexValue>
+                    <IndexUnit>cal</IndexUnit>
+                  </IndexTextWrap>
                 </IndexItem>
                 <Octicons name="flame" size={20} color="#1E1E1E" />
               </IndexBox>
               <IndexBox>
                 <IndexItem>
-                  <Text style={styles.indexTitle}>Activities</Text>
-                  <Text style={styles.indexValue}>{stepCount}</Text>
-                  <Text style={styles.indexUnit}>steps</Text>
+                  <IndexTitle>Activities</IndexTitle>
+                  <IndexTextWrap>
+                    <IndexValue>{stepCount}</IndexValue>
+                    <IndexUnit>steps</IndexUnit>
+                  </IndexTextWrap>
                 </IndexItem>
                 <Ionicons name="footsteps-outline" size={20} color="#1E1E1E" />
               </IndexBox>
@@ -443,7 +452,7 @@ const Home = ({ navigation }) => {
               <CategoryScroll
                 horizontal
                 showsHorizontalScrollIndicator={false}
-                contentContainerStyle={scrollStyle.tstyles}
+                contentContainerStyle={styles.tstyles}
               >
                 <TouchableCategory
                   onPress={() => navigation.navigate("Top Doctors")}
@@ -455,7 +464,7 @@ const Home = ({ navigation }) => {
                       color="#1A1F71"
                     />
                   </CatIcon>
-                  <Text style={styles.categoryText}>Top Doctors</Text>
+                  <CategoryText>Top Doctors</CategoryText>
                 </TouchableCategory>
                 <TouchableCategory
                   onPress={() => navigation.navigate("Pharmacy")}
@@ -467,7 +476,7 @@ const Home = ({ navigation }) => {
                       color="#1A1F71"
                     />
                   </CatIcon>
-                  <Text style={styles.categoryText}>Pharmacy</Text>
+                  <CategoryText>Pharmacy</CategoryText>
                 </TouchableCategory>
                 <TouchableCategory
                   onPress={() => navigation.navigate("Appointments")}
@@ -479,7 +488,7 @@ const Home = ({ navigation }) => {
                       color="#1A1F71"
                     />
                   </CatIcon>
-                  <Text style={styles.categoryText}>Appointments</Text>
+                  <CategoryText>Appointments</CategoryText>
                 </TouchableCategory>
                 <TouchableCategory
                   onPress={() => navigation.navigate("Ambulance")}
@@ -487,7 +496,7 @@ const Home = ({ navigation }) => {
                   <CatIcon>
                     <FontAwesome5 name="ambulance" size={20} color="#1A1F71" />
                   </CatIcon>
-                  <Text style={styles.categoryText}>Ambulance</Text>
+                  <CategoryText>Ambulance</CategoryText>
                 </TouchableCategory>
                 <TouchableCategory
                   onPress={() => navigation.navigate("Reports")}
@@ -499,7 +508,7 @@ const Home = ({ navigation }) => {
                       color="#1A1F71"
                     />
                   </CatIcon>
-                  <Text style={styles.categoryText}>Step metrics</Text>
+                  <CategoryText>Step metrics</CategoryText>
                 </TouchableCategory>
               </CategoryScroll>
             </CategoriesContainer>
@@ -550,7 +559,7 @@ const Home = ({ navigation }) => {
           </ArticleContainer>
           <Spacer position="bottom" size="large"></Spacer>
         </AppContainer>
-      </ScrollView>
+      </AppWrapper>
       <TouchableOpacity onPress={() => navigation.navigate("Emergency")}>
         <CatIcon style={styles.emergency}>
           <MaterialCommunityIcons
@@ -565,9 +574,3 @@ const Home = ({ navigation }) => {
 };
 
 export default Home;
-
-const scrollStyle = StyleSheet.create({
-  tstyles: {
-    justifyContent: "space-between",
-  },
-});

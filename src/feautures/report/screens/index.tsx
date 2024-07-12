@@ -38,7 +38,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
 import Loading from "@/src/components/loader";
 
-const ReportScreen = () => {
+const ReportScreen = ({ navigation }) => {
   const [weight, setWeight] = useState("0");
   const [height, setHeight] = useState("0");
   const [caloriesBurnt, setCaloriesBurnt] = useState("0");

@@ -74,8 +74,6 @@ const backgroundStepCounterTask = async (taskData) => {
 
         setTimeout(() => {
           isCounting = false;
-          // Call a function to calculate calories burnt, if necessary
-          // calculateCaloriesBurnt();
         }, 1000);
       }
     }

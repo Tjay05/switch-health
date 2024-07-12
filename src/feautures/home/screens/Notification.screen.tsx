@@ -75,15 +75,45 @@ const NotificationScreen = () => {
 
   const formatAMPM = (dateString) => {
     const date = new Date(dateString);
-    let hours = date.getHours();
-    let minutes = date.getMinutes();
-    const ampm = hours >= 12 ? "PM" : "AM";
-    hours = hours % 12;
-    hours = hours ? hours : 12; // the hour '0' should be '12'
-    minutes = minutes < 10 ? "0" + minutes : minutes;
-    const strTime = hours + ":" + minutes + " " + ampm;
-    return strTime;
+    const currentDate = new Date(); 
+
+    const isSameDay = (date1, date2) => {
+      return (
+        date1.getFullYear() === date2.getFullYear() &&
+        date1.getMonth() === date2.getMonth() &&
+        date1.getDate() === date2.getDate()
+      );
+    };
+
+    const getYesterday = (date) => {
+      const yesterday = new Date(date);
+      yesterday.setDate(date.getDate() - 1);
+      return yesterday;
+    };
+
+    if (isSameDay(date, currentDate)) {
+      let hours = date.getHours();
+      let minutes = date.getMinutes();
+      const ampm = hours >= 12 ? "PM" : "AM";
+      hours = hours % 12;
+      hours = hours ? hours : 12;
+      minutes = minutes < 10 ? "0" + minutes : minutes;
+      return `Today at ${hours}:${minutes} ${ampm}`;
+    } else if (isSameDay(date, getYesterday(currentDate))) {
+      let hours = date.getHours();
+      let minutes = date.getMinutes();
+      const ampm = hours >= 12 ? "PM" : "AM";
+      hours = hours % 12;
+      hours = hours ? hours : 12;
+      minutes = minutes < 10 ? "0" + minutes : minutes;
+      return `Yesterday at ${hours}:${minutes} ${ampm}`;
+    } else {
+      const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+      return date.toLocaleDateString(undefined, options);
+    }
   };
+
+
 
   const groupNotificationsByMonth = (notifications) => {
     return notifications.reduce((acc, notification) => {

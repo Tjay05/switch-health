@@ -1,6 +1,8 @@
 import Text from "@/src/components/typograpghy/Text.component";
 import { Dimensions, ScrollView, TouchableOpacity, View } from "react-native";
 import { styled } from "styled-components";
+import GradientLine from "../screens/gradient";
+
 
 const { height } = Dimensions.get("window");
 
@@ -83,7 +85,7 @@ export const BMIStatus = styled(View)`
 export const StatWrap = styled(View)`
   padding-horizontal: 10px;
   padding-vertical: 3px;
-  background-color: #D6FFDD;
+  background-color: ${(props) => props.color || "#D6FFDD"};
   border-radius: 8px;
 `;
 

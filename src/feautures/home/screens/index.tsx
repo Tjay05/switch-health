@@ -160,7 +160,7 @@ const Home = ({ navigation }) => {
         setUserData(JSON.parse(storedData));
       }
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   };
 
@@ -184,10 +184,10 @@ const Home = ({ navigation }) => {
         const data = await response.json();
         setProfileData(data);
       } else {
-        console.error("Failed to fetch profile data:", response.statusText);
+        console.log("Failed to fetch profile data:", response.statusText);
       }
     } catch (error) {
-      console.error("Error fetching profile data:", error);
+      console.log("Error fetching profile data:", error);
     } finally {
       setIsLoading(false);
     }
@@ -250,7 +250,7 @@ const Home = ({ navigation }) => {
       try {
         await AsyncStorage.setItem("caloriesBurnt", caloriesBurnt.toString());
       } catch (error) {
-        console.error("Error storing calories burnt:", error);
+        console.log("Error storing calories burnt:", error);
       }
     };
 
@@ -264,34 +264,31 @@ const Home = ({ navigation }) => {
     setCaloriesBurnt(calculatedCalories);
   };
 
-  const readAllNOtifiy = async ()=>{
-       try {
-         const response = await fetch(
-           `https://switch-health.onrender.com/notification/read-notification`,
-           {
-             method: "PATCH",
-             headers: {
-               Authorization: `Bearer ${userData.data.accessToken}`,
-               "Content-Type": "application/json",
-             },
-           }
-         );
+  const readAllNOtifiy = async () => {
+    try {
+      const response = await fetch(
+        `https://switch-health.onrender.com/notification/read-notification`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${userData.data.accessToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-         if (response.ok) {
-           navigation.navigate("Notifications");
-           const data = await response.json();
-           navigation.navigate("Notifications");
-           setHasUnread(false)
-           console.log(data);
-         } else {
-           console.error("Failed to fetch profile data:", response.statusText);
-         }
-       } catch (error) {
-         console.error("Error fetching profile data:", error);
-       } finally {
-         setIsLoading(false);
-       }
-  }
+      if (response.ok) {
+        navigation.navigate("Notifications");
+        setHasUnread(false);
+      } else {
+        console.log("Failed to fetch profile data:", response.statusText);
+      }
+    } catch (error) {
+      console.log("Error fetching profile data:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleGetNotify = async () => {
     try {
@@ -311,10 +308,10 @@ const Home = ({ navigation }) => {
         console.log(data.hasUnread);
         setHasUnread(data.hasUnread);
       } else {
-        console.error("Failed to fetch profile data:", response.statusText);
+        console.log("Failed to fetch profile data:", response.statusText);
       }
     } catch (error) {
-      console.error("Error fetching profile data:", error);
+      console.log("Error fetching profile data:", error);
     } finally {
       setIsLoading(false);
     }
@@ -361,7 +358,7 @@ const Home = ({ navigation }) => {
         JSON.stringify(updatedBookmarks)
       );
     } catch (error) {
-      console.error("Failed to save bookmark", error);
+      console.log("Failed to save bookmark", error);
     }
   };
 

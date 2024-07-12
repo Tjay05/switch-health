@@ -18,6 +18,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 //   statusCodes,
 // } from "@react-native-google-signin/google-signin";
 import Loading from "@/src/components/loader";
+import { CommonActions } from "@react-navigation/native";
 
 const Container = styled(View)`
   width: 85%;
@@ -73,7 +74,12 @@ const Login = ({ navigation }) => {
       );
       const data = await response.json();
       if (response.ok) {
-        Alert.alert("Logged in Successfully");
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{ name: 'AppNavigator' }],
+          })
+        );
         handleSetData(data);
         // console.error(data);
       } else {

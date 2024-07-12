@@ -1,4 +1,5 @@
 import ReportScreen from "@/src/feautures/report/screens";
+import WeeklyReport from "@/src/feautures/report/screens/WeeklyReport";
 import { createStackNavigator } from "@react-navigation/stack";
 import { theme } from "../theme";
 
@@ -21,8 +22,12 @@ const ReportNavigator = () => {
         component={ReportScreen}
         options={{
           headerTitle: 'My Report',
-          headerStatusBarHeight: 0,
         }}
+      />
+      <Stack.Screen
+        name="Weekly Report"
+        component={WeeklyReport}
+        options={{headerShown: false}}
       />
     </Stack.Navigator>
   );

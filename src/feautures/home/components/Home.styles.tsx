@@ -4,11 +4,16 @@ import MapView from "react-native-maps";
 import { Searchbar } from "react-native-paper";
 import { styled } from "styled-components";
 
+export const AppWrapper = styled(ScrollView)`
+  background-color: #fff;
+  width: 100%;
+`;
+
 export const AppContainer = styled(View)`
   flex: 1;
   width: 90%;
   margin-horizontal: auto;
-  margin-top: ${(props)=> props.theme.space[3]};
+  margin-vertical: ${(props)=> props.theme.space[3]};
 `;
 
 export const HeaderContainer = styled(View)`
@@ -31,6 +36,16 @@ export const GreetContainer = styled(View)`
   margin-left: ${(props)=> props.theme.space[2]}
 `;
 
+export const HelloText = styled(Text)`
+  font-size: ${(props) => props.theme.fontSizes.h6};
+  font-family: ${(props) => props.theme.fonts.spaceGroteskRegular};
+`;
+
+export const UserNameText = styled(Text)`
+  font-size: ${(props) => props.theme.fontSizes.title};
+  font-family: ${(props) => props.theme.fonts.spaceGroteskMedium};
+`;
+
 export const IndexContainer = styled(View)`
   flex-direction: row;
   justify-content: space-between;
@@ -46,6 +61,31 @@ export const IndexBox = styled(View)`
 `;
 
 export const IndexItem = styled(View)` 
+`;
+
+export const IndexTitle = styled(Text)`
+  font-size: ${(props) => props.theme.fontSizes.info};
+  font-family: ${(props) => props.theme.fonts.spaceGroteskMedium};
+  color: #1E1E1E;
+`;
+
+export const IndexTextWrap = styled(View)`
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 3px;
+  flex-wrap:wrap;
+`;
+
+export const IndexValue = styled(Text)`
+  color: #1E1E1E;
+  font-family: ${(props) => props.theme.fonts.spaceGroteskMedium};
+  font-size: ${(props) => props.theme.fontSizes.h3};
+`;
+
+export const IndexUnit = styled(Text)`
+  color: #1E1E1E;
+  font-family: ${(props) => props.theme.fonts.spaceGroteskMedium};
+  font-size: ${(props) => props.theme.fontSizes.info};
 `;
 
 export const SearchInput = styled(Searchbar)`
@@ -78,6 +118,12 @@ export const CatIcon = styled(View)`
   padding: 12px;
   margin-bottom: ${(props)=> props.theme.space[1]};
   background-color: white;
+`;
+
+export const CategoryText = styled(Text)`
+  color: #221F1F;
+  font-family: ${(props) => props.theme.fonts.poppinsRegular};
+  font-size: ${(props) => props.theme.fontSizes.tiny};
 `;
 
 export const ArticleContainer = styled(View)`
@@ -136,71 +182,6 @@ export const ArticleText = styled(View)`
   flex-direction: row;
 `;
 
-export const HomeStyles = StyleSheet.create({
-  greeting: {
-    fontSize: 20,
-  },
-  name: {
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-  indexes: {
-    flexDirection: 'column',
-    marginVertical: 20,
-  },
-  indexesChild: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginVertical: 20,
-  },
-  indexBox: {
-    width: '48%',
-    padding: 20,
-    borderRadius: 10,
-    backgroundColor: '#f0f0f0',
-    alignItems: 'center',
-  },
-  indexTitle: {
-    fontSize: 18,
-    color: '#666',
-  },
-  indexValue: {
-    fontSize: 32,
-    fontWeight: 'bold',
-  },
-  indexUnit: {
-    fontSize: 18,
-    color: '#666',
-  },
-  categoryText: {
-    fontSize: 10,
-  },
-  articleText: {
-    flex: 1,
-  },
-  articleTitle: {
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
-  articleDate: {
-    color: '#888',
-    fontSize: 12,
-  },
-  articleReadTime: {
-    color: '#888',
-    fontSize: 12,
-  },
-  whiteWrapper: {
-    backgroundColor: '#FAFBFC',
-  },
-  emergency: {
-    position: 'absolute',
-    right: 18,
-    bottom: 10,
-    backgroundColor: '#FF0000',
-  }
-});
-
 export const DoctorWraapper = styled(ScrollView)`
   background-color: #fff;
 `;
@@ -257,9 +238,9 @@ export const SearchContainer = styled(View)`
   flex: 1;
   z-index: 4;
   position: absolute;
-  `;
-  
-  export const Search = styled(Searchbar)`
+`;
+
+export const Search = styled(Searchbar)`
   margin-horizontal: auto;
   width: 90%;
   margin-top: ${(props)=> props.theme.space[2]};
@@ -281,7 +262,7 @@ export const AddressBoxwrap = styled(View)`
   z-index: 4;
   margin-bottom: ${(props)=> props.theme.space[2]};
 `;
-  
+
 export const AddressBox = styled(View)`
   padding-bottom: ${(props)=> props.theme.space[2]};
   background-color: #fff;
@@ -317,3 +298,15 @@ export const ConfirmBtnWrap = styled(Text)`
   width: 50%;
   margin-horizontal: auto;
 `;
+
+export const HomeStyles = StyleSheet.create({
+  tstyles: {
+    justifyContent: "space-between",
+  },
+  emergency: {
+    position: 'absolute',
+    right: 18,
+    bottom: 10,
+    backgroundColor: '#FF0000',
+  }
+});

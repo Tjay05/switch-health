@@ -9,6 +9,7 @@ import { useFonts as useSpaceGrotesk, SpaceGrotesk_400Regular, SpaceGrotesk_500M
 // Page Imports
 import { theme } from "@/src/infrastructure/theme";
 import Navigation from "@/src/infrastructure/navigation";
+import Loading from "@/src/components/loader";
 
 export default function Index() {
   const [interLoaded] = useInter({
@@ -35,7 +36,7 @@ export default function Index() {
   });
 
   if (!interLoaded || !poppinsLoaded || !outfitLoaded || !spaceGroteskLoaded) {
-    return null
+    return <Loading/>
   }  
   
   return (

@@ -33,7 +33,7 @@ const WeeklyReport = () => {
     <ReportWrapper contentContainerStyle={ContentStyle.contentContainer}>
       <ReportHead>
         <ReportTitle variant="main1">Your Health Report for the week</ReportTitle>
-        <CircularProgress value={63} />
+        <CircularProgress value={10} />
         <Spacer position="top" size="large">
           <HeaderNote>*Calculated from recent health and fitness activites</HeaderNote>
         </Spacer>

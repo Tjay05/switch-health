@@ -39,96 +39,104 @@ import { useFocusEffect } from "@react-navigation/native";
 import Loading from "@/src/components/loader";
 
 const ReportScreen = ({ navigation }) => {
-  const [weight, setWeight] = useState("0");
-  const [height, setHeight] = useState("0");
-  const [caloriesBurnt, setCaloriesBurnt] = useState("0");
-  const [bmi, setBmi] = useState(" ");
-  const [userData, setUserData] = useState(" ");
-  const [isLoading, setIsLoading] = useState(false);
-  const [statWrapColor, setStatWrapColor] = useState("#D6FFDD");
-  const [healthMessage, setHealthMessage] = useState("#D6FFDD");
-  const loadStepCount = async () => {
-    try {
-      const storedCalorieBurnt = await AsyncStorage.getItem("caloriesBurnt");
-      if (storedCalorieBurnt !== null) {
-        setCaloriesBurnt(JSON.parse(storedCalorieBurnt).toFixed(2));
-      }
-    } catch (error) {
-      console.log("Error loading step count or calories burnt:", error);
+const [weight, setWeight] = useState("0");
+const [height, setHeight] = useState("0");
+const [caloriesBurnt, setCaloriesBurnt] = useState("0");
+const [bmi, setBmi] = useState(" ");
+const [userData, setUserData] = useState(" ");
+const [isLoading, setIsLoading] = useState(false);
+const [statWrapColor, setStatWrapColor] = useState("#1A1F71");
+const [healthMessage, setHealthMessage] = useState("Welcome");
+
+const loadStepCount = async () => {
+  try {
+    const storedCalorieBurnt = await AsyncStorage.getItem("caloriesBurnt");
+    if (storedCalorieBurnt !== null) {
+      setCaloriesBurnt(JSON.parse(storedCalorieBurnt).toFixed(2));
     }
-  };
-  useFocusEffect(
-    useCallback(() => {
+  } catch (error) {
+    console.log("Error loading step count or calories burnt:", error);
+  }
+};
+
+const getData = async () => {
+  try {
+    const storedData = await AsyncStorage.getItem("data");
+    if (storedData !== null) {
+      setUserData(JSON.parse(storedData));
+    }
+  } catch (error) {
+    console.error("Error retrieving stored data:", error);
+  }
+};
+
+const calculateBMI = (weight, heightCm) => {
+  const height = heightCm / 100;
+  const bmi = weight / (height * height);
+  setBmi(bmi.toFixed(1));
+  getMessageForBMI(bmi);
+};
+
+const handleGetDetails = async () => {
+  try {
+    const response = await fetch(
+      `https://switch-health.onrender.com/patient/${userData.data.user._id}/profile`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${userData.data.accessToken}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (response.ok) {
+      const data = await response.json();
+      setHeight(data.data.height.toString());
+      setWeight(data.data.weight.toString());
+      calculateBMI(data.data.weight, data.data.height);
+    } else {
+      console.log("Failed to fetch profile data:", response.statusText);
+    }
+  } catch (error) {
+    console.log("Error fetching profile data:", error);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+const getMessageForBMI = (bmi) => {
+  if (bmi < 18.5) {
+    setHealthMessage("You're underweight");
+  } else if (bmi < 24.9) {
+    setHealthMessage("You're healthy");
+  } else if (bmi < 29.9) {
+    setHealthMessage("You're overweight");
+  } else {
+    setHealthMessage("You're obese");
+  }
+};
+
+useEffect(() => {
+  // Initial data load
+  getData();
+}, []);
+
+useEffect(() => {
+  if (userData) {
+    setIsLoading(true);
+    handleGetDetails();
+  }
+}, [userData]);
+
+useFocusEffect(
+  useCallback(() => {
+    if (userData) {
       handleGetDetails();
       loadStepCount();
-    }, [])
-  );
-  const getData = async () => {
-    try {
-      const storedData = await AsyncStorage.getItem("data");
-      if (storedData !== null) {
-        setUserData(JSON.parse(storedData));
-      }
-    } catch (error) {
-      console.error("Error retrieving stored data:", error);
     }
-  };
-  useEffect(() => {
-    getData();
-  }, []);
-
-  useEffect(() => {
-    if (userData) {
-      setIsLoading(true);
-      handleGetDetails();
-    }
-  }, [userData]);
-
-  const calculateBMI = (weight, heightCm) => {
-    const height = heightCm / 100;
-    const bmi = weight / (height * height);
-    setBmi(bmi.toFixed(1));
-    getMessageForBMI(bmi);
-  };
-  const handleGetDetails = async () => {
-    try {
-      const response = await fetch(
-        `https://switch-health.onrender.com/patient/${userData.data.user._id}/profile`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${userData.data.accessToken}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (response.ok) {
-        const data = await response.json();
-        setHeight(data.data.height.toString());
-        setWeight(data.data.weight.toString());
-        calculateBMI(data.data.weight, data.data.height);
-      } else {
-        console.log("Failed to fetch profile data:", response.statusText);
-      }
-    } catch (error) {
-      console.log("Error fetching profile data:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const getMessageForBMI = (bmi) => {
-    if (bmi < 18.5) {
-      setHealthMessage("You're underweight");
-    } else if (bmi < 24.9) {
-      setHealthMessage("You're healthy");
-    } else if (bmi < 29.9) {
-      setHealthMessage("You're overweight");
-    } else {
-      setHealthMessage("You're obese");
-    }
-  };
+  }, [userData])
+);
     
   return (
     <>

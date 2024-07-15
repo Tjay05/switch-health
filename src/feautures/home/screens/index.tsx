@@ -53,7 +53,6 @@ import {
 
 import * as BackgroundService from "expo-background-fetch";
 
-
 const Home = ({ navigation }) => {
   const [userData, setUserData] = useState(null);
   const [profileData, setProfileData] = useState(null);
@@ -77,22 +76,22 @@ const Home = ({ navigation }) => {
       const lastReset = await AsyncStorage.getItem("lastReset");
 
       const now = new Date();
-      const resetTime = new Date(lastReset);
-      resetTime.setDate(resetTime.getDate() + 1);
-      resetTime.setHours(0, 0, 0, 0);
+      if (lastReset) {
+        const resetTime = new Date(lastReset);
+        resetTime.setDate(resetTime.getDate() + 1);
+        resetTime.setHours(0, 0, 0, 0);
 
-      if (
-        storedStepCount !== null &&
-        storedCaloriesBurnt !== null &&
-        storedDistanceTravelled !== null &&
-        now < resetTime
-      ) {
-        setStepCount(JSON.parse(storedStepCount));
-        setCaloriesBurnt(JSON.parse(storedCaloriesBurnt));
-        setDistanceTravelled(JSON.parse(storedDistanceTravelled));
-      } else {
-        resetActivityData();
+        if (now < resetTime) {
+          if (storedStepCount !== null)
+            setStepCount(JSON.parse(storedStepCount));
+          if (storedCaloriesBurnt !== null)
+            setCaloriesBurnt(JSON.parse(storedCaloriesBurnt));
+          if (storedDistanceTravelled !== null)
+            setDistanceTravelled(JSON.parse(storedDistanceTravelled));
+          return;
+        }
       }
+      resetActivityData();
     };
 
     const resetActivityData = async () => {
@@ -151,10 +150,11 @@ const Home = ({ navigation }) => {
       if (now.getHours() === 0 && now.getMinutes() === 0) {
         resetActivityData();
       }
-    }, 60000); 
+    }, 60000);
 
     return () => clearInterval(intervalId);
   }, []);
+
   const getData = async () => {
     try {
       const storedData = await AsyncStorage.getItem("data");
@@ -267,7 +267,7 @@ const Home = ({ navigation }) => {
     setCaloriesBurnt(calculatedCalories);
   };
 
-  const readAllNotify = async () => {
+  const readAllNOtifiy = async () => {
     navigation.navigate("Notifications");
     setHasUnread(false);
     try {
@@ -308,7 +308,6 @@ const Home = ({ navigation }) => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data.hasUnread);
         setHasUnread(data.hasUnread);
       } else {
         console.log("Failed to fetch profile data:", response.statusText);

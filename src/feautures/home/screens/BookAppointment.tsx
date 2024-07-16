@@ -17,6 +17,7 @@ import { AppContainer } from "../components/Home.styles";
 import Spacer from "@/src/components/spacer/Spacer.component";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
+import Loading from "@/src/components/loader";
 
 const BookAppointment = ({ route, navigation }) => {
   const { doctor } = route.params;
@@ -78,10 +79,10 @@ const BookAppointment = ({ route, navigation }) => {
           body: JSON.stringify(appointment),
         }
       );
-
+      setIsLoading(true);
       if (response.ok) {
         const data = await response.json();
-        Alert.alert("booked an appoint ment successfully");
+      navigation.navigate("Appointments");
       } else {
         console.log("Failed to fetch book appointment", response.statusText);
       }

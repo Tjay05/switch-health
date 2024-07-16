@@ -48,7 +48,7 @@ const SignUp = ({ navigation }) => {
 
   const handleSetData = async (data) => {
     try {
-      await AsyncStorage.setItem("data", JSON.stringify(data));
+      await AsyncStorage.setItem("tokenData", JSON.stringify(data));
     } catch (error) {
       console.error("Error storing data:", error);
     }

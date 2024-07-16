@@ -5,7 +5,7 @@ import {
   TextInput,
   View,
   TouchableOpacity,
-  Alert
+  Alert,
 } from "react-native";
 import styled from "styled-components/native";
 import Text from "@/src/components/typograpghy/Text.component";
@@ -123,6 +123,7 @@ const OTPage = ({ navigation }) => {
       );
       const data = await response.json();
       if (response.ok) {
+        await AsyncStorage.setItem("data", JSON.stringify(data));
         navigation.navigate("Success");
       } else {
         setError(data.message);
@@ -176,7 +177,7 @@ const OTPage = ({ navigation }) => {
 
   const handleResend = async () => {
     try {
-      const storedData = await AsyncStorage.getItem("data");
+      const storedData = await AsyncStorage.getItem("tokenData");
       if (storedData !== null) {
         const userData = JSON.parse(storedData);
         const response = await fetch(
@@ -187,7 +188,7 @@ const OTPage = ({ navigation }) => {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              phone: userData.phone
+              phone: userData.phone,
             }),
           }
         );
@@ -195,7 +196,7 @@ const OTPage = ({ navigation }) => {
         setRemainingTime(7 * 60);
         setOtp(["", "", "", ""]);
         otpRefs.current[0].focus();
-        Alert.alert("A new otp has been sent")
+        Alert.alert("A new otp has been sent");
         if (!response.ok) {
           setError(data.message);
         }
@@ -211,7 +212,7 @@ const OTPage = ({ navigation }) => {
       <Container>
         <Spacer position="bottom" size="large">
           <Spacer position="top" size="large">
-            <OtpSVG/>
+            <OtpSVG />
           </Spacer>
         </Spacer>
         <Spacer position="bottom" size="medium">

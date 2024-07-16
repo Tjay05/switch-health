@@ -52,78 +52,6 @@ import {
 } from "../../article/components/Article.styles";
 
 import * as BackgroundService from "expo-background-fetch";
-import * as TaskManager from "expo-task-manager";
-
-const TASK_NAME = "BACKGROUND_STEP_COUNTER";
-
-const backgroundStepCounterTask = async (taskData) => {
-  const { delay } = taskData;
-  let lastY = 0;
-  let isCounting = false;
-  let lastTimeStamp = 0;
-  let stepCount = 0;
-
-  const accelerometerSubscription = Accelerometer.addListener(
-    (accelerometer) => {
-      const { y } = accelerometer;
-      const threshold = 0.2;
-      const timestamp = new Date().getTime();
-
-      if (
-        Math.abs(y - lastY) > threshold &&
-        !isCounting &&
-        timestamp - lastTimeStamp > 800
-      ) {
-        isCounting = true;
-        lastY = y;
-        lastTimeStamp = timestamp;
-
-        stepCount += 1;
-
-        setTimeout(() => {
-          isCounting = false;
-        }, 1000);
-      }
-    }
-  );
-
-  await new Promise((resolve) => {
-    const interval = setInterval(() => {
-      console.log("Step Count:", stepCount);
-      if (!BackgroundService.isRunning()) {
-        clearInterval(interval);
-        accelerometerSubscription.remove();
-        resolve();
-      }
-    }, delay);
-  });
-};
-
-TaskManager.defineTask(TASK_NAME, backgroundStepCounterTask);
-
-const options = {
-  taskName: "StepCounter",
-  taskTitle: "Step Counter Running",
-  taskDesc: "Counting steps in the background",
-  taskIcon: {
-    name: "ic_launcher",
-    type: "mipmap",
-  },
-  color: "#ff00ff",
-  parameters: {
-    delay: 1000,
-  },
-};
-
-const startBackgroundService = async () => {
-  await BackgroundService.start(TASK_NAME, options);
-};
-
-const updateBackgroundServiceNotification = async () => {
-  await BackgroundService.updateNotification({
-    taskDesc: "Counting steps and calculating calories",
-  });
-};
 
 const Home = ({ navigation }) => {
   const [userData, setUserData] = useState(null);
@@ -131,24 +59,100 @@ const Home = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [bookmarks, setBookmarks] = useState({});
   const [stepCount, setStepCount] = useState(0);
-  const [lastY, setlastY] = useState(0);
-  const [lastTimeStamp, setlastTimeStamp] = useState(0);
+  const [lastY, setLastY] = useState(0);
+  const [lastTimeStamp, setLastTimeStamp] = useState(0);
   const [isCounting, setIsCounting] = useState(false);
   const [caloriesBurnt, setCaloriesBurnt] = useState(0);
+  const [distanceTravelled, setDistanceTravelled] = useState(0);
   const [hasUnread, setHasUnread] = useState(false);
+
   useEffect(() => {
-    const loadStepCount = async () => {
+    const loadActivityData = async () => {
       const storedStepCount = await AsyncStorage.getItem("stepCount");
-      const storedCalorieBurnt = await AsyncStorage.getItem("caloriesBurnt");
-      if (storedStepCount !== null && storedCalorieBurnt !== null) {
-        setStepCount(JSON.parse(storedStepCount));
-        setCaloriesBurnt(JSON.parse(storedCalorieBurnt));
+      const storedCaloriesBurnt = await AsyncStorage.getItem("caloriesBurnt");
+      const storedDistanceTravelled = await AsyncStorage.getItem(
+        "distanceTravelled"
+      );
+      const lastReset = await AsyncStorage.getItem("lastReset");
+
+      const now = new Date();
+      if (lastReset) {
+        const resetTime = new Date(lastReset);
+        resetTime.setDate(resetTime.getDate() + 1);
+        resetTime.setHours(0, 0, 0, 0);
+
+        if (now < resetTime) {
+          if (storedStepCount !== null)
+            setStepCount(JSON.parse(storedStepCount));
+          if (storedCaloriesBurnt !== null)
+            setCaloriesBurnt(JSON.parse(storedCaloriesBurnt));
+          if (storedDistanceTravelled !== null)
+            setDistanceTravelled(JSON.parse(storedDistanceTravelled));
+          return;
+        }
+      }
+      resetActivityData();
+    };
+
+    const resetActivityData = async () => {
+      await sendActivityData();
+      setStepCount(0);
+      setCaloriesBurnt(0);
+      setDistanceTravelled(0);
+      await AsyncStorage.setItem("stepCount", "0");
+      await AsyncStorage.setItem("caloriesBurnt", "0");
+      await AsyncStorage.setItem("distanceTravelled", "0");
+      await AsyncStorage.setItem("lastReset", new Date().toISOString());
+    };
+
+    const sendActivityData = async () => {
+      if (!userData) return;
+
+      const now = new Date();
+      const previousDay = new Date(now);
+      previousDay.setDate(now.getDate() - 1);
+      previousDay.setHours(23, 59, 0, 0);
+
+      const activityReport = {
+        userId: userData.data.user._id,
+        steps: stepCount,
+        caloriesBurnt,
+        distanceTravelled,
+        createdAt: previousDay.getTime(),
+        updatedAt: now.getTime(),
+      };
+
+      try {
+        const response = await fetch(
+          `https://switch-health.onrender.com/activity/create-activity`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${userData.data.accessToken}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(activityReport),
+          }
+        );
+
+        if (!response.ok) {
+          console.log("Failed to send activity data:", response.statusText);
+        }
+      } catch (error) {
+        console.log("Error sending activity data:", error);
       }
     };
 
-    loadStepCount();
-    startBackgroundService();
-    updateBackgroundServiceNotification();
+    loadActivityData();
+
+    const intervalId = setInterval(() => {
+      const now = new Date();
+      if (now.getHours() === 0 && now.getMinutes() === 0) {
+        resetActivityData();
+      }
+    }, 60000);
+
+    return () => clearInterval(intervalId);
   }, []);
 
   const getData = async () => {
@@ -220,10 +224,11 @@ const Home = ({ navigation }) => {
             timestamp - lastTimeStamp > 800
           ) {
             setIsCounting(true);
-            setlastY(y);
-            setlastTimeStamp(timestamp);
+            setLastY(y);
+            setLastTimeStamp(timestamp);
 
             setStepCount((prevSteps) => prevSteps + 1);
+            setDistanceTravelled((prevDistance) => prevDistance + 0.000762); // Assuming average step length of 76.2 cm
 
             setTimeout(() => {
               setIsCounting(false);
@@ -263,6 +268,8 @@ const Home = ({ navigation }) => {
   };
 
   const readAllNOtifiy = async () => {
+    navigation.navigate("Notifications");
+    setHasUnread(false);
     try {
       const response = await fetch(
         `https://switch-health.onrender.com/notification/read-notification`,
@@ -276,8 +283,6 @@ const Home = ({ navigation }) => {
       );
 
       if (response.ok) {
-        navigation.navigate("Notifications");
-        setHasUnread(false);
       } else {
         console.log("Failed to fetch profile data:", response.statusText);
       }
@@ -303,7 +308,6 @@ const Home = ({ navigation }) => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data.hasUnread);
         setHasUnread(data.hasUnread);
       } else {
         console.log("Failed to fetch profile data:", response.statusText);
@@ -421,9 +425,7 @@ const Home = ({ navigation }) => {
                 <IndexItem>
                   <IndexTitle>Calories</IndexTitle>
                   <IndexTextWrap>
-                    <IndexValue>
-                      {(caloriesBurnt).toFixed(1)}
-                    </IndexValue>
+                    <IndexValue>{caloriesBurnt.toFixed(1)}</IndexValue>
                     <IndexUnit>cal</IndexUnit>
                   </IndexTextWrap>
                 </IndexItem>

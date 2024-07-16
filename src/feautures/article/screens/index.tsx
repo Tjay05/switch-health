@@ -11,18 +11,18 @@ import { useFocusEffect } from "@react-navigation/native";
 import Loading from "@/src/components/loader";
 
 const ARTICLES = [
-  {
-    image:
-      "https://res.cloudinary.com/dba1aezsn/image/upload/v1720013159/Lady_Health_Justice_-_Healthcare_should_be_like_u4mo2q.jpg",
-    title: "Health and Law",
-    createdAt: "2024-07-03T13:31:48.919Z",
-    avatar:
-      "https://res.cloudinary.com/dba1aezsn/image/upload/v1720013199/pic_1_sox5mu.jpg",
-    fullName: "Angel Ugochukwu",
-    readTime: "5 minutes read",
-    content: `Health and law intersect in numerous ways, encompassing the regulation of healthcare practices, the protection of patient rights, and the formulation of public health policies. Health law governs the administration of healthcare services, ensuring quality standards and ethical practices among providers. It includes laws on medical malpractice, patient confidentiality, informed consent, and the licensing of healthcare professionals. <br> Public health law focuses on the legal frameworks that enable governments to manage and prevent disease outbreaks, promote healthy behaviors, and ensure access to healthcare. This includes legislation on vaccination mandates, smoking bans, and regulations to control the spread of infectious diseases. <br> Additionally, health law addresses issues of healthcare accessibility and equity, aiming to reduce disparities and ensure that all individuals receive adequate care regardless of their socioeconomic status. It also encompasses bioethics, which deals with the moral implications of medical advancements and technologies, such as genetic testing and end-of-life care. <br> Overall, the field of health law is crucial in maintaining the integrity of healthcare systems, protecting patient rights, and promoting public health and safety.
-    `,
-  },
+  // {
+  //   image:
+  //     "https://res.cloudinary.com/dba1aezsn/image/upload/v1720013159/Lady_Health_Justice_-_Healthcare_should_be_like_u4mo2q.jpg",
+  //   title: "Health and Law",
+  //   createdAt: "2024-07-03T13:31:48.919Z",
+  //   avatar:
+  //     "https://res.cloudinary.com/dba1aezsn/image/upload/v1720013199/pic_1_sox5mu.jpg",
+  //   fullName: "Angel Ugochukwu",
+  //   readTime: "5 minutes read",
+  //   content: `Health and law intersect in numerous ways, encompassing the regulation of healthcare practices, the protection of patient rights, and the formulation of public health policies. Health law governs the administration of healthcare services, ensuring quality standards and ethical practices among providers. It includes laws on medical malpractice, patient confidentiality, informed consent, and the licensing of healthcare professionals. <br> Public health law focuses on the legal frameworks that enable governments to manage and prevent disease outbreaks, promote healthy behaviors, and ensure access to healthcare. This includes legislation on vaccination mandates, smoking bans, and regulations to control the spread of infectious diseases. <br> Additionally, health law addresses issues of healthcare accessibility and equity, aiming to reduce disparities and ensure that all individuals receive adequate care regardless of their socioeconomic status. It also encompasses bioethics, which deals with the moral implications of medical advancements and technologies, such as genetic testing and end-of-life care. <br> Overall, the field of health law is crucial in maintaining the integrity of healthcare systems, protecting patient rights, and promoting public health and safety.
+  //   `,
+  // },
 ];
 
 const ArticleScreen = ({ navigation }) => {

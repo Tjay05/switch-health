@@ -5,8 +5,6 @@ import {
 } from "../components/Home.styles";
 import Loading from "@/src/components/loader";
 
-import DocPIc from "../../../../assets/images/femaleDoc.png";
-import DocPIc2 from "../../../../assets/images/doctor.png";
 import { FlatList } from "react-native";
 import DoctorCard from "../components/Doctor-info-card";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -14,14 +12,14 @@ import { useCallback, useEffect, useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 
 const DOCTORS = [
-  {
-    image:
-      "https://res.cloudinary.com/dba1aezsn/image/upload/v1720109367/Heng_asavarid_i7ypbf.jpg",
-    docName: "Dr. Alfa",
-    AOS: "Gynaecologist",
-    ratings: "3.7",
-    distanceAway: "800m away",
-  },
+  // {
+  //   image:
+  //     "https://res.cloudinary.com/dba1aezsn/image/upload/v1720109367/Heng_asavarid_i7ypbf.jpg",
+  //   docName: "Dr. Alfa",
+  //   AOS: "Gynaecologist",
+  //   ratings: "3.7",
+  //   distanceAway: "800m away",
+  // },
 ];
 
 const TopDoctors = ({ navigation }) => {

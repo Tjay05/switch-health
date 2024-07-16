@@ -91,7 +91,7 @@ const Loading = ({ visible }) => {
       onRequestClose={() => {}}
     >
       <View style={styles.container}>
-        <RotatingLoader size={80} color="#1A1F71" />
+        <RotatingLoader size={40} color="#1A1F71" />
       </View>
     </Modal>
   );
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     zIndex: 7,
-    backgroundColor: "rgba(0,0,0,0.2)"
+    backgroundColor: "rgba(0,0,0,0.09)"
   },
   loaderContainer: {
     justifyContent: "center",

@@ -40,6 +40,14 @@
           "photosPermission": "This app aceesses your photos to let you update your profile.",
           "cameraPermission": "Allow Switch Health to access your camera"
         }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icons/logo.png",
+          "color": "#ffffff",
+          "defaultChannel": "default"
+        }
       ]
     ],
     "experiments": {

@@ -106,6 +106,7 @@ const ProfileScreen = ({ navigation }) => {
   }, [userData]);
 
   const handleLogout = async () => {
+    await AsyncStorage.removeItem('cart');
     await AsyncStorage.removeItem('data');
     navigation.dispatch(
       CommonActions.reset({

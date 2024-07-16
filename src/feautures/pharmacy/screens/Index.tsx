@@ -1,4 +1,3 @@
-import Text from "@/src/components/typograpghy/Text.component";
 import { 
   DrugImage,
   DrugName,
@@ -19,7 +18,8 @@ const PharmacyScreen = ({ navigation }) => {
     {
       name: 'OBH combi',
       image: DrugPic,
-      price: 'N 1000',
+      count: 0,
+      price: 1000,
       rating: '4.0',
       quantity: '7.5ml',
       description: 'OBH COMBI  is a cough medicine containing, Paracetamol, Ephedrine HCl, and Chlorphenamine maleate which is used to relieve coughs accompanied by flu symptoms such as fever, headache, and sneezing',
@@ -27,7 +27,8 @@ const PharmacyScreen = ({ navigation }) => {
     {
       name: 'Ampliclox',
       image: DrugPic,
-      price: 'N 100',
+      count: 0,
+      price: 100,
       rating: '5.0',
       quantity: '17.5ml',
       description: 'OBH COMBI  is a cough medicine containing, Paracetamol, Ephedrine HCl, and Chlorphenamine maleate which is used to relieve coughs accompanied by flu symptoms such as fever, headache, and sneezing',
@@ -35,7 +36,8 @@ const PharmacyScreen = ({ navigation }) => {
     {
       name: 'Vit. C',
       image: DrugPic,
-      price: 'N 100',
+      count: 0,
+      price: 50,
       rating: '2.0',
       quantity: '20ml',
       description: 'OBH COMBI  is a cough medicine containing, Paracetamol, Ephedrine HCl, and Chlorphenamine maleate which is used to relieve coughs accompanied by flu symptoms such as fever, headache, and sneezing',
@@ -57,7 +59,7 @@ const PharmacyScreen = ({ navigation }) => {
             <ItemInfo>
               <DrugName>{ item.name }</DrugName>
               <PriceWrap>
-                <PriceTag>{ item.price }</PriceTag>
+                <PriceTag>₦{ item.price }</PriceTag>
                 <RateWrap>
                   <Ionicons name="star" size={12} color='#1A1F71' />
                   <PriceTag>{ item.rating }</PriceTag>

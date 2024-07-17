@@ -51,8 +51,6 @@ import {
   Title,
 } from "../../article/components/Article.styles";
 
-import * as BackgroundService from "expo-background-fetch";
-
 const Home = ({ navigation }) => {
   const [userData, setUserData] = useState(null);
   const [profileData, setProfileData] = useState(null);

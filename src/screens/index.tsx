@@ -1,5 +1,5 @@
 import WelSVg from '@/assets/icons/WelSVG';
-import { Image, View } from 'react-native';
+import { View } from 'react-native';
 import { styled } from 'styled-components';
 
 import Spacer from '../components/spacer/Spacer.component';

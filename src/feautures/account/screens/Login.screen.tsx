@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { StyleSheet, TouchableOpacity, View, Alert } from "react-native";
+import { useState } from "react";
+import { View, ScrollView } from "react-native";
 import { styled } from "styled-components";
 import Text from "@/src/components/typograpghy/Text.component";
 import Spacer from "@/src/components/spacer/Spacer.component";
@@ -10,8 +10,7 @@ import {
   LogBtn,
   ORstyles as styles,
 } from "../components/account.styles";
-import { ScrollView } from "react-native-gesture-handler";
-import { AntDesign, Ionicons, SimpleLineIcons } from "@expo/vector-icons";
+import { Ionicons, SimpleLineIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 // import {
 //   GoogleSignin,
@@ -164,7 +163,7 @@ const Login = ({ navigation }) => {
           </CenteredText>
         </Spacer>
 
-        <View style={styles.orContainer}>
+        {/* <View style={styles.orContainer}>
           <View style={styles.line}></View>
           <Text style={styles.orText}>OR</Text>
           <View style={styles.line}></View>
@@ -175,7 +174,7 @@ const Login = ({ navigation }) => {
           <Text variant="place" style={styles.btnText}>
             Sign in with Google
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </Container>
     </ScrollView>
   );

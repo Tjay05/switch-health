@@ -1,7 +1,4 @@
-import Text from "@/src/components/typograpghy/Text.component";
-import { Image, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
-import MapView from "react-native-maps";
-import { Searchbar } from "react-native-paper";
+import { TouchableOpacity, View } from "react-native";
 import { styled } from "styled-components";
 
 export const DocNearContainer = styled(View)`

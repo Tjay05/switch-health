@@ -1,7 +1,4 @@
 import { FlatList } from "react-native";
-import DocImg from "../../../../assets/images/doctor.png";
-import CovidImg from "../../../../assets/images/covid.png";
-import LawImg from "../../../../assets/images/law.png";
 import { TouchableFlatlist } from "../../home/components/Home.styles";
 import ArticleInfo from "../components/Article-info-card";
 import { Articlecontainer, ArticleWrapper } from "../components/Article.styles";

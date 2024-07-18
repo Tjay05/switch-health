@@ -1,10 +1,7 @@
 import { useCallback, useState } from "react";
 import {
   Alert,
-  StyleSheet,
-  View,
   Platform,
-  Text,
   TouchableOpacity,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";

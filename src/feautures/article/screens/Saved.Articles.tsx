@@ -35,7 +35,7 @@ const SavedArticles = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [articles, setArticles] = useState([]);
   const [bookmarks, setBookmarks] = useState({});
-  const [filteredArticles, setFilteredArticles] = useState([]); // State to hold filtered articles
+  const [filteredArticles, setFilteredArticles] = useState([]); 
 
   const getData = async () => {
     try {

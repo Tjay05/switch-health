@@ -1,17 +1,14 @@
 import React, { useRef, useState, useEffect } from "react";
 import {
-  Image,
   ScrollView,
   TextInput,
   View,
-  TouchableOpacity,
   Alert,
 } from "react-native";
 import styled from "styled-components/native";
 import Text from "@/src/components/typograpghy/Text.component";
 import Spacer from "@/src/components/spacer/Spacer.component";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import OtpImg from "../../../../assets/images/otpPic.png";
 import { LogBtn, ORstyles as styles } from "../components/account.styles";
 import OtpSVG from "@/assets/icons/OtpSVG";
 

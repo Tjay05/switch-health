@@ -1,10 +1,9 @@
 import { useRef } from 'react';
 import Swiper from 'react-native-swiper';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 import Text from '../components/typograpghy/Text.component';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { styled } from 'styled-components';
 import Spacer from '../components/spacer/Spacer.component';
@@ -130,5 +129,3 @@ const styles = StyleSheet.create({
 })
  
 export default OnboardScreen;
-
-// onPress={() => navigation.navigate('Main')} 

@@ -1,5 +1,5 @@
 import Text from '@/src/components/typograpghy/Text.component';
-import { SafeAreaView, ScrollView, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import styled from 'styled-components';
 
 export const NotContainer = styled(ScrollView)`

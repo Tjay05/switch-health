@@ -7,7 +7,6 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import moment from "moment";
 import * as ImagePicker from "expo-image-picker";
 
-import { EvilIcons } from "@expo/vector-icons";
 import {
   GenoGroup,
   HeaderText,

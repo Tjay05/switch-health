@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { ScrollView, TouchableOpacity, View, Alert } from "react-native";
+import { ScrollView, View } from "react-native";
 import { styled } from "styled-components/native";
 import {
-  AntDesign,
   Feather,
   Ionicons,
   SimpleLineIcons,
@@ -184,12 +183,12 @@ const SignUp = ({ navigation }) => {
           <View style={styles.line}></View>
         </View>
 
-        <TouchableOpacity style={styles.googleBtn}>
+        {/* <TouchableOpacity style={styles.googleBtn}>
           <AntDesign style={styles.icon} name="google" size={24} />
           <Text variant="place" style={styles.btnText}>
             Sign in with Google
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         {error && (
           <Spacer position="top" size="extraLarge">

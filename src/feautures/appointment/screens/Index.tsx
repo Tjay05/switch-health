@@ -27,11 +27,13 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import BadGateWay from "@/src/components/NoNetwork";
 
 const AppointmentScreen = ({ navigation }) => {
   const [appointments, setAppointments] = useState([]);
   const [userData, setUserData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isApiCallFailed, setIsApiCallFailed] = useState(false);
 
   const getData = async () => {
     try {
@@ -53,6 +55,8 @@ const AppointmentScreen = ({ navigation }) => {
   const handleGetDetails = async () => {
     if (!userData) return;
     setIsLoading(true);
+    setIsApiCallFailed(false);
+
     try {
       const response = await fetch(
         `https://switch-health.onrender.com/appointment/get`,
@@ -68,10 +72,13 @@ const AppointmentScreen = ({ navigation }) => {
       if (response.ok) {
         const data = await response.json();
         setAppointments(data.data);
+        setIsApiCallFailed(false);
       } else {
+        setIsApiCallFailed(true);
         console.error("Failed to fetch profile data:", response.statusText);
       }
     } catch (error) {
+      setIsApiCallFailed(true);
     } finally {
       setIsLoading(false);
     }
@@ -120,9 +127,14 @@ const AppointmentScreen = ({ navigation }) => {
 
   const groupedAppointments = groupAppointmentsByDay(appointments);
 
+  const handleRefresh = async () => {
+    await handleGetDetails();
+  };
+
   return (
     <>
-      <AppointmentWrapper showsVerticalScrollIndicator={false}>
+      {isApiCallFailed && <BadGateWay handleRefresh={handleRefresh}/>}
+      {!isApiCallFailed && <AppointmentWrapper showsVerticalScrollIndicator={false}>
         <AppointmentContainer>
           {Object.keys(groupedAppointments).length ? (
             Object.entries(groupedAppointments).map(([day, appointments]) => (
@@ -183,7 +195,7 @@ const AppointmentScreen = ({ navigation }) => {
             </NoAppWrapper>
           )}
         </AppointmentContainer>
-      </AppointmentWrapper>
+      </AppointmentWrapper>}
     </>
   );
 };

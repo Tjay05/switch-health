@@ -10,6 +10,7 @@ import DoctorCard from "../components/Doctor-info-card";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useCallback, useEffect, useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
+import BadGateWay from "@/src/components/NoNetwork";
 
 const DOCTORS = [
   // {
@@ -26,6 +27,7 @@ const TopDoctors = ({ navigation }) => {
   const [userData, setUserData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [doctors, setDoctors] = useState([]);
+  const [isApiCallFailed, setIsApiCallFailed] = useState(false);
 
   const getData = async () => {
     try {
@@ -41,6 +43,8 @@ const TopDoctors = ({ navigation }) => {
   const handleGetDetails = async () => {
     if (!userData) return;
     setIsLoading(true);
+    setIsApiCallFailed(false);
+
     try {
       const response = await fetch(
         `https://switch-health.onrender.com/mock-doctor/all`,
@@ -56,10 +60,12 @@ const TopDoctors = ({ navigation }) => {
       if (response.ok) {
         const data = await response.json();
         setDoctors(data.data);
+        setIsApiCallFailed(false);
       } else {
-        console.error("Failed to fetch profile data:", response.statusText);
+        setIsApiCallFailed(true);
       }
     } catch (error) {
+      setIsApiCallFailed(true);
     } finally {
       setIsLoading(false);
     }
@@ -76,29 +82,37 @@ const TopDoctors = ({ navigation }) => {
       getData();
     }, [])
   );
+
+  const handleRefresh = async () => {
+    await handleGetDetails();
+  };
+
   return (
-    <AppContainer>
-      {isLoading && <Loading />}
-      <TopDoctorsContainer>
-        <FlatList
-          data={doctors.length ? doctors : DOCTORS}
-          renderItem={({ item }) => {
-            return (
-              <TouchableFlatlist
-                onPress={() =>
-                  navigation.navigate("DoctorAppointment", {
-                    doctor: item,
-                  })
-                }
-              >
-                <DoctorCard doctor={item} />
-              </TouchableFlatlist>
-            );
-          }}
-          keyExtractor={(item) => item.docName}
-        />
-      </TopDoctorsContainer>
-    </AppContainer>
+    <>
+      {isApiCallFailed && <BadGateWay handleRefresh={handleRefresh}/>}
+      {!isApiCallFailed && <AppContainer>
+        {isLoading && <Loading />}
+        <TopDoctorsContainer>
+          <FlatList
+            data={doctors.length ? doctors : DOCTORS}
+            renderItem={({ item }) => {
+              return (
+                <TouchableFlatlist
+                  onPress={() =>
+                    navigation.navigate("DoctorAppointment", {
+                      doctor: item,
+                    })
+                  }
+                >
+                  <DoctorCard doctor={item} />
+                </TouchableFlatlist>
+              );
+            }}
+            keyExtractor={(item) => item.docName}
+          />
+        </TopDoctorsContainer>
+      </AppContainer>}
+    </>
   );
 };
 

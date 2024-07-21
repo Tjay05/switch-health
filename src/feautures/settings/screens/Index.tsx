@@ -11,7 +11,7 @@ import {
   SettingWrapper
 } from "../component/Settings.styles";
 
-const SettingsScreen = ({ navigation }) => {
+const SettingsScreen = ({ navigation }: { navigation: any }) => {
   return (
     <SettingWrapper>
       <SettingContainer>
@@ -31,7 +31,7 @@ const SettingsScreen = ({ navigation }) => {
             color="#221F1F99"
           />
         </Menu>
-        <Menu
+        {/* <Menu
           onPress={() => Alert.alert("Only one language available right now!")}
         >
           <MenuItems>
@@ -48,8 +48,8 @@ const SettingsScreen = ({ navigation }) => {
             size={30}
             color="#221F1F99"
           />
-        </Menu>
-        <Menu>
+        </Menu> */}
+        {/* <Menu>
           <MenuItems>
             <MenuIcon>
               <Octicons name="key" size={24} color="#407BFF" />
@@ -64,7 +64,7 @@ const SettingsScreen = ({ navigation }) => {
             size={30}
             color="#221F1F99"
           />
-        </Menu>
+        </Menu> */}
         <Menu onPress={() => navigation.navigate("Notifications Settings")}>
           <MenuItems>
             <MenuIcon>

@@ -73,13 +73,13 @@ const Login = ({ navigation }) => {
       );
       const data = await response.json();
       if (response.ok) {
+        handleSetData(data);
         navigation.dispatch(
           CommonActions.reset({
             index: 0,
             routes: [{ name: 'AppNavigator' }],
           })
         );
-        handleSetData(data);
         // console.error(data);
       } else {
         setError(data.message);

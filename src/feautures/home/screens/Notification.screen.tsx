@@ -18,11 +18,13 @@ import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Loading from "@/src/components/loader";
+import BadGateWay from "@/src/components/NoNetwork";
 
 const NotificationScreen = () => {
   const [notifications, setNotifications] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState(null);
+  const [isApiCallFailed, setIsApiCallFailed] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -49,6 +51,8 @@ const NotificationScreen = () => {
   }, [userData]);
 
   const handleGetDetails = async () => {
+    setIsApiCallFailed(false);
+
     try {
       const response = await fetch(
         `https://switch-health.onrender.com/notification/get`,
@@ -64,11 +68,12 @@ const NotificationScreen = () => {
       if (response.ok) {
         const data = await response.json();
         setNotifications(data.data);
+        setIsApiCallFailed(false);
       } else {
-        console.error("Failed to fetch profile data:", response.statusText);
+        setIsApiCallFailed(true);
       }
     } catch (error) {
-      console.error("Error fetching profile data:", error);
+      setIsApiCallFailed(true);
     } finally {
       setIsLoading(false);
     }
@@ -114,8 +119,6 @@ const NotificationScreen = () => {
     }
   };
 
-
-
   const groupNotificationsByMonth = (notifications) => {
     return notifications.reduce((acc, notification) => {
       const date = new Date(notification.createdAt);
@@ -135,8 +138,14 @@ const NotificationScreen = () => {
 
   const groupedNotifications = groupNotificationsByMonth(notifications);
 
+  const handleRefresh = async () => {
+    await handleGetDetails();
+  };
+
   return (
-    <NotContainer showsVerticalScrollIndicator={false}>
+    <>
+      {isApiCallFailed && <BadGateWay handleRefresh={handleRefresh}/>}
+      {!isApiCallFailed && <NotContainer showsVerticalScrollIndicator={false}>
       {isLoading && <Loading />}
       <NotWrapper>
         {Object.keys(groupedNotifications).length ? (
@@ -184,7 +193,8 @@ const NotificationScreen = () => {
           </NoAppWrapper>
         )}
       </NotWrapper>
-    </NotContainer>
+    </NotContainer>}
+    </>
   );
 };
 

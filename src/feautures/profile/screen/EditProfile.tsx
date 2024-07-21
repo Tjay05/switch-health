@@ -28,6 +28,7 @@ import ProfSVG from "@/assets/icons/ProfileSvg";
 import { LogBtn } from "../../account/components/account.styles";
 import { theme } from "@/src/infrastructure/theme";
 import Loading from "@/src/components/loader";
+import BadGateWay from "@/src/components/NoNetwork";
 
 const ProfileEdit = () => {
   const [name, setName] = useState("");
@@ -47,6 +48,7 @@ const ProfileEdit = () => {
   const [profileimage, setProfileImage] = useState(null);
   const [error, setError] = useState("");
   const [isLoader, setIsLoader] = useState(true);
+  const [isApiCallFailed, setIsApiCallFailed] = useState(false);
 
   const getData = async () => {
     try {
@@ -125,6 +127,8 @@ const ProfileEdit = () => {
   }, [userData]);
 
   const handleGetDetails = async () => {
+    setIsApiCallFailed(false);
+
     try {
       const response = await fetch(
         `https://switch-health.onrender.com/patient/${userData.data.user._id}/profile`,
@@ -150,11 +154,12 @@ const ProfileEdit = () => {
         setGender(data.data.gender || "Select a gender");
         setBloodGroup(data.data.bloodType || "A");
         setProfileImage(data.data.avatar || "A");
+        setIsApiCallFailed(false);
       } else {
-        console.error("Failed to fetch profile data:", response.statusText);
+        setIsApiCallFailed(true);
       }
     } catch (error) {
-      console.error("Error fetching profile data:", error);
+      setIsApiCallFailed(true);
     } finally {
       setIsLoading(false);
     }
@@ -209,155 +214,162 @@ const ProfileEdit = () => {
     setDOB(currentDate);
   };
 
+  const handleRefresh = async () => {
+    await handleGetDetails();
+  };
+
   return (
-    <View style={{ flex: 1 }}>
-      <ProfileOverview contentContainerStyle={styles.contentContainer}>
-        <ProfileHead>
-          <HeaderText variant="main1">Edit Profile</HeaderText>
-          <SetIconWrap>
-            <Ionicons name="settings" size={28} color="white" />
-          </SetIconWrap>
-        </ProfileHead>
-        <SvgWrap onPress={pickImage}>
-          {image ? (
-            <ProfileImg source={{ uri: image }} style={styles.profileImage} />
-          ) : profileimage ? (
-            <ProfileImg
-              source={{ uri: profileimage }}
-              style={styles.profileImage}
-            />
-          ) : (
-            <ProfSVG width={100} height={100} />
-          )}
-          <AddPicIcon>
-            <Ionicons name="camera-outline" size={28} color="#1A1F71" />
-          </AddPicIcon>
-        </SvgWrap>
-        <ProfileContainer>
-          <Spacer position="top" size="XXL">
-            <TextLabel>Enter your full Name</TextLabel>
-            <ProfInputs
-              placeholderTextColor="#262C3D"
-              value={name}
-              textContentType="name"
-              keyboardType="default"
-              autoCapitalize="none"
-              onChangeText={(e) => setName(e)}
-            />
-            {isLoading && <Loading />}
-            <GenoGroup>
-              <View style={styles.viewWidth}>
-                <TextLabel>Gender</TextLabel>
-                <RNPickerSelect
-                  value={gender}
-                  style={pickerSelectStyles}
-                  onValueChange={(e) => setGender(e)}
-                  items={[
-                    { label: "Male", value: "MALE" },
-                    { label: "Female", value: "FEMALE" },
-                  ]}
-                />
-              </View>
-              <View style={styles.viewWidth}>
-                <TextLabel>Blood group</TextLabel>
-                <RNPickerSelect
-                  value={bloodGroup}
-                  style={pickerSelectStyles}
-                  onValueChange={(e) => setBloodGroup(e)}
-                  items={[
-                    { label: "A", value: "a" },
-                    { label: "B", value: "b" },
-                    { label: "AB", value: "ab" },
-                    { label: "O", value: "o" },
-                  ]}
-                />
-              </View>
-            </GenoGroup>
-            <TextLabel>Date of birth</TextLabel>
-            {/* <EvilIcons name="calendar" size={25} color="#757575" /> */}
-            <ProfInputs
-              placeholderTextColor="#262C3D"
-              value={moment(dob).format("YYYY-MM-DD")}
-              textContentType="birthdate"
-              keyboardType="default"
-              autoCapitalize="none"
-              onFocus={() => setShowDatePicker(true)}
-              showSoftInputOnFocus={false}
-            />
-            {showDatePicker && (
-              <DateTimePicker
-                testID="dateTimePicker"
-                value={dob}
-                mode="date"
-                display="default"
-                onChange={onChange}
+    <>
+      {isApiCallFailed && <BadGateWay handleRefresh={handleRefresh}/>}
+      {!isApiCallFailed && <View style={{ flex: 1 }}>
+        <ProfileOverview contentContainerStyle={styles.contentContainer}>
+          <ProfileHead>
+            <HeaderText variant="main1">Edit Profile</HeaderText>
+            <SetIconWrap>
+              <Ionicons name="settings" size={28} color="white" />
+            </SetIconWrap>
+          </ProfileHead>
+          <SvgWrap onPress={pickImage}>
+            {image ? (
+              <ProfileImg source={{ uri: image }} style={styles.profileImage} />
+            ) : profileimage ? (
+              <ProfileImg
+                source={{ uri: profileimage }}
+                style={styles.profileImage}
               />
+            ) : (
+              <ProfSVG width={100} height={100} />
             )}
-            <GenoGroup>
-              <View style={styles.viewWidth}>
-                <TextLabel>Height (cm)</TextLabel>
-                <ProfInputs
-                  placeholderTextColor="#262C3D"
-                  value={height}
-                  textContentType="none"
-                  keyboardType="numeric"
-                  autoCapitalize="none"
-                  onChangeText={(e) => setHeight(e)}
+            <AddPicIcon>
+              <Ionicons name="camera-outline" size={28} color="#1A1F71" />
+            </AddPicIcon>
+          </SvgWrap>
+          <ProfileContainer>
+            <Spacer position="top" size="XXL">
+              <TextLabel>Enter your full Name</TextLabel>
+              <ProfInputs
+                placeholderTextColor="#262C3D"
+                value={name}
+                textContentType="name"
+                keyboardType="default"
+                autoCapitalize="none"
+                onChangeText={(e) => setName(e)}
+              />
+              {isLoading && <Loading />}
+              <GenoGroup>
+                <View style={styles.viewWidth}>
+                  <TextLabel>Gender</TextLabel>
+                  <RNPickerSelect
+                    value={gender}
+                    style={pickerSelectStyles}
+                    onValueChange={(e) => setGender(e)}
+                    items={[
+                      { label: "Male", value: "MALE" },
+                      { label: "Female", value: "FEMALE" },
+                    ]}
+                  />
+                </View>
+                <View style={styles.viewWidth}>
+                  <TextLabel>Blood group</TextLabel>
+                  <RNPickerSelect
+                    value={bloodGroup}
+                    style={pickerSelectStyles}
+                    onValueChange={(e) => setBloodGroup(e)}
+                    items={[
+                      { label: "A", value: "a" },
+                      { label: "B", value: "b" },
+                      { label: "AB", value: "ab" },
+                      { label: "O", value: "o" },
+                    ]}
+                  />
+                </View>
+              </GenoGroup>
+              <TextLabel>Date of birth</TextLabel>
+              {/* <EvilIcons name="calendar" size={25} color="#757575" /> */}
+              <ProfInputs
+                placeholderTextColor="#262C3D"
+                value={moment(dob).format("YYYY-MM-DD")}
+                textContentType="birthdate"
+                keyboardType="default"
+                autoCapitalize="none"
+                onFocus={() => setShowDatePicker(true)}
+                showSoftInputOnFocus={false}
+              />
+              {showDatePicker && (
+                <DateTimePicker
+                  testID="dateTimePicker"
+                  value={dob}
+                  mode="date"
+                  display="default"
+                  onChange={onChange}
                 />
-              </View>
-              <View style={styles.viewWidth}>
-                <TextLabel>Weight (kg)</TextLabel>
-                <ProfInputs
-                  placeholder="0.00"
-                  placeholderTextColor="#262C3D"
-                  value={weight}
-                  textContentType="none"
-                  keyboardType="numeric"
-                  autoCapitalize="none"
-                  onChangeText={(e) => setWeight(e)}
-                />
-              </View>
-            </GenoGroup>
-            <TextLabel>Email</TextLabel>
-            <ProfInputs
-              placeholderTextColor="#262C3D"
-              value={email}
-              editable={false}
-              textContentType="emailAddress"
-              keyboardType="email-address"
-              autoCapitalize="none"
-              onChangeText={(e) => setEmail(e)}
-            />
-            <TextLabel>Phone</TextLabel>
-            <ProfInputs
-              placeholderTextColor="#262C3D"
-              value={number}
-              textContentType="telephoneNumber"
-              keyboardType="number-pad"
-              autoCapitalize="none"
-              onChangeText={(e) => setNumber(e)}
-            />
-            <TextLabel>Address</TextLabel>
-            <ProfInputs
-              placeholderTextColor="#262C3D"
-              value={address}
-              textContentType="addressCityAndState"
-              keyboardType="default"
-              autoCapitalize="none"
-              onChangeText={(e) => setAddress(e)}
-            />
-          </Spacer>
-          {error && (
-            <Spacer position="top" size="extraLarge">
-              <CenteredText variant="error">{error}</CenteredText>
+              )}
+              <GenoGroup>
+                <View style={styles.viewWidth}>
+                  <TextLabel>Height (cm)</TextLabel>
+                  <ProfInputs
+                    placeholderTextColor="#262C3D"
+                    value={height}
+                    textContentType="none"
+                    keyboardType="numeric"
+                    autoCapitalize="none"
+                    onChangeText={(e) => setHeight(e)}
+                  />
+                </View>
+                <View style={styles.viewWidth}>
+                  <TextLabel>Weight (kg)</TextLabel>
+                  <ProfInputs
+                    placeholder="0.00"
+                    placeholderTextColor="#262C3D"
+                    value={weight}
+                    textContentType="none"
+                    keyboardType="numeric"
+                    autoCapitalize="none"
+                    onChangeText={(e) => setWeight(e)}
+                  />
+                </View>
+              </GenoGroup>
+              <TextLabel>Email</TextLabel>
+              <ProfInputs
+                placeholderTextColor="#262C3D"
+                value={email}
+                editable={false}
+                textContentType="emailAddress"
+                keyboardType="email-address"
+                autoCapitalize="none"
+                onChangeText={(e) => setEmail(e)}
+              />
+              <TextLabel>Phone</TextLabel>
+              <ProfInputs
+                placeholderTextColor="#262C3D"
+                value={number}
+                textContentType="telephoneNumber"
+                keyboardType="number-pad"
+                autoCapitalize="none"
+                onChangeText={(e) => setNumber(e)}
+              />
+              <TextLabel>Address</TextLabel>
+              <ProfInputs
+                placeholderTextColor="#262C3D"
+                value={address}
+                textContentType="addressCityAndState"
+                keyboardType="default"
+                autoCapitalize="none"
+                onChangeText={(e) => setAddress(e)}
+              />
             </Spacer>
-          )}
-          <LogBtn onPress={handleSubmit}>
-            {isLoading ? "Saving Changes..." : "Save Changes"}
-          </LogBtn>
-        </ProfileContainer>
-      </ProfileOverview>
-    </View>
+            {error && (
+              <Spacer position="top" size="extraLarge">
+                <CenteredText variant="error">{error}</CenteredText>
+              </Spacer>
+            )}
+            <LogBtn onPress={handleSubmit}>
+              {isLoading ? "Saving Changes..." : "Save Changes"}
+            </LogBtn>
+          </ProfileContainer>
+        </ProfileOverview>
+      </View>}
+    </>
   );
 };
 

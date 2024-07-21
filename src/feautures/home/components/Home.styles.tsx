@@ -30,6 +30,7 @@ export const Header = styled(View)`
 export const ProfileContainer = styled(TouchableOpacity)`
   flex-direction: row;
   align-items: center;
+  width: 70%;
 `;
 
 export const GreetContainer = styled(View)`
@@ -44,6 +45,7 @@ export const HelloText = styled(Text)`
 export const UserNameText = styled(Text)`
   font-size: ${(props) => props.theme.fontSizes.title};
   font-family: ${(props) => props.theme.fonts.spaceGroteskMedium};
+  flex-wrap: wrap;
 `;
 
 export const IndexContainer = styled(View)`
@@ -102,10 +104,7 @@ export const CategoriesContainer = styled(View)`
   width: 100%;
 `;
 
-export const CategoryScroll = styled(ScrollView)`
-  flex-direction: column;
-  width: 100%;
-`;
+export const CategoryScroll = styled(ScrollView)``;
 
 export const TouchableCategory = styled(TouchableOpacity)`
   flex-direction: column;
@@ -302,6 +301,7 @@ export const ConfirmBtnWrap = styled(Text)`
 export const HomeStyles = StyleSheet.create({
   tstyles: {
     justifyContent: "space-between",
+    gap: 10,
   },
   emergency: {
     position: 'absolute',

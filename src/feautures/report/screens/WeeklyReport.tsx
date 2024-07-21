@@ -137,13 +137,13 @@ const WeeklyReport = () => {
     <>
       {isApiCallFailed && <BadGateWay handleRefresh={handleRefresh}/>}
       {!isApiCallFailed && <ReportWrapper contentContainerStyle={ContentStyle.contentContainer}>
-        <ReportHead>
+        {/* <ReportHead>
           <ReportTitle variant="main1">Your Health Report for the week</ReportTitle>
           <CircularProgress value={90} />
           <Spacer position="top" size="large">
             <HeaderNote>*Calculated from recent health and fitness activites</HeaderNote>
           </Spacer>
-        </ReportHead>
+        </ReportHead> */}
         <ReportContainer>
           <VitalParamsSection>
             <ParamsHeader>Vital Parameters</ParamsHeader>

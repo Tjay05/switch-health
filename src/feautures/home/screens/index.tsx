@@ -572,7 +572,9 @@ const Home = ({ navigation }) => {
               <Spacer position="bottom" size="large"></Spacer>
             </AppContainer>
           </AppWrapper>
-          <TouchableOpacity onPress={() => navigation.navigate("Emergency")}>
+          <TouchableOpacity 
+            // onPress={() => navigation.navigate("Emergency")}
+          >
             <CatIcon style={styles.emergency}>
               <MaterialCommunityIcons
                 name="phone-alert-outline"

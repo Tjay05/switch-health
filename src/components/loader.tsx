@@ -13,7 +13,7 @@ const RotatingLoader = ({ size, color }) => {
       Animated.loop(
         Animated.timing(rotateValue, {
           toValue: 1,
-          duration: 2000,
+          duration: 4000,
           easing: Easing.linear,
           useNativeDriver: true,
         })
@@ -53,36 +53,38 @@ const RotatingLoader = ({ size, color }) => {
   const circumference = 2 * Math.PI * radius;
 
   return (
-    <View style={styles.loaderContainer}>
-      <Animated.View style={{ transform: [{ scale: scaleValue }] }}>
-        <LoaderLogo height={60} width={60} />
-      </Animated.View>
-      <Animated.View style={{ transform: [{ rotate }], position: "absolute" }}>
-        <Svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
-          <Defs>
-            <LinearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <Stop offset="0%" stopColor={color} stopOpacity="1" />
-              <Stop offset="100%" stopColor={color} stopOpacity="0" />
-            </LinearGradient>
-          </Defs>
-          <G rotation="-90" origin={`${size / 2}, ${size / 2}`}>
-            <Circle
-              cx={size / 2}
-              cy={size / 2}
-              r={radius}
-              stroke="url(#grad)"
-              strokeWidth={strokeWidth}
-              strokeDasharray={`${circumference / 2.5}, ${circumference}`}
-              fill="none"
-            />
-          </G>
-        </Svg>
-      </Animated.View>
-    </View>
+    <Animated.View style={{ transform: [{ rotate }] }}>
+      <View style={styles.loaderContainer}>
+        <Animated.View style={{ transform: [{ scale: scaleValue }] }}>
+          <LoaderLogo height={60} width={60} />
+        </Animated.View>
+        <View style={{ position: "absolute" }}>
+          <Svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+            <Defs>
+              <LinearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <Stop offset="0%" stopColor={color} stopOpacity="1" />
+                <Stop offset="100%" stopColor={color} stopOpacity="0" />
+              </LinearGradient>
+            </Defs>
+            <G rotation="-90" origin={`${size / 2}, ${size / 2}`}>
+              <Circle
+                cx={size / 2}
+                cy={size / 2}
+                r={radius}
+                stroke="url(#grad)"
+                strokeWidth={strokeWidth}
+                strokeDasharray={`${circumference / 2.5}, ${circumference}`}
+                fill="none"
+              />
+            </G>
+          </Svg>
+        </View>
+      </View>
+    </Animated.View>
   );
 };
 
-const Loading = ({ visible }) => {
+const Loading = ({ visible }: { visible: any }) => {
   return (
     <Modal
       transparent={true}

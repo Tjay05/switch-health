@@ -93,7 +93,7 @@ const OTPage = ({ navigation }) => {
 
   const getEmailFromStorage = async () => {
     try {
-      const storedData = await AsyncStorage.getItem("data");
+      const storedData = await AsyncStorage.getItem("tokenData");
       if (storedData !== null) {
         const emailData = JSON.parse(storedData);
         setEmail(emailData.email);

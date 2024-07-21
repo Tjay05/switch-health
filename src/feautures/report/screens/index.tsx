@@ -205,8 +205,10 @@ const handleRefresh = async () => {
           </BodyMeasurement>
           <ReportList>
             <Text variant="main">Latest report</Text>
-            <ReportInfoWrapper>
-              <TouchableReport onPress={() => navigation.navigate('Weekly Report')}>
+            {/* <ReportInfoWrapper>
+              <TouchableReport 
+                onPress={() => navigation.navigate('Weekly Report')}
+              >
                 <ReportIcon>
                   <MaterialCommunityIcons
                     name="clipboard-pulse-outline"
@@ -223,7 +225,7 @@ const handleRefresh = async () => {
                   </Spacer>
                 </ReportInfo>
               </TouchableReport>
-            </ReportInfoWrapper>
+            </ReportInfoWrapper> */}
           </ReportList>
         </ReportContainer>
       </ReportWrapper>}

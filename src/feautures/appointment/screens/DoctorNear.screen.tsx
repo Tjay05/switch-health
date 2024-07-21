@@ -16,36 +16,38 @@ import { Alert } from "react-native";
 import { Marker } from "react-native-maps";
 
 const DocsNearMe = ({ route, navigation }) => {
-  const [location, setLocation] = useState(null);
+  // const [location, setLocation] = useState(null);
   const { doctor } = route.params;
-  const [region, setRegion] = useState({
-    latitude: 37.78825,
-    longitude: -122.4324,
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421,
-  });
-  useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        Alert.alert("Permission to access location was denied");
-        return;
-      }
+  // const [region, setRegion] = useState({
+  //   latitude: 37.78825,
+  //   longitude: -122.4324,
+  //   latitudeDelta: 0.0922,
+  //   longitudeDelta: 0.0421,
+  // });
+  // useEffect(() => {
+  //   (async () => {
+  //     let { status } = await Location.requestForegroundPermissionsAsync();
+  //     if (status !== "granted") {
+  //       Alert.alert("Permission to access location was denied");
+  //       return;
+  //     }
 
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
-      setRegion({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-        latitudeDelta: 0.005,
-        longitudeDelta: 0.005,
-      });
-    })();
-  }, []);
+  //     let location = await Location.getCurrentPositionAsync({});
+  //     setLocation(location);
+  //     setRegion({
+  //       latitude: location.coords.latitude,
+  //       longitude: location.coords.longitude,
+  //       latitudeDelta: 0.005,
+  //       longitudeDelta: 0.005,
+  //     });
+  //   })();
+  // }, []);
   return (
     <>
-      <Map region={region} showsUserLocation>
-        {location && (
+      <Map 
+        // region={region} showsUserLocation
+      >
+        {/* {location && (
           <Marker
             coordinate={{
               latitude: location.coords.latitude,
@@ -53,7 +55,7 @@ const DocsNearMe = ({ route, navigation }) => {
             }}
             title="My Location"
           />
-        )}
+        )} */}
       </Map>
       <SearchContainer>
         <Search

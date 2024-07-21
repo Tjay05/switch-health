@@ -98,11 +98,11 @@ const TopDoctors = ({ navigation }) => {
             renderItem={({ item }) => {
               return (
                 <TouchableFlatlist
-                  // onPress={() =>
-                  //   navigation.navigate("DoctorAppointment", {
-                  //     doctor: item,
-                  //   })
-                  // }
+                  onPress={() =>
+                    navigation.navigate("DoctorAppointment", {
+                      doctor: item,
+                    })
+                  }
                 >
                   <DoctorCard doctor={item} />
                 </TouchableFlatlist>

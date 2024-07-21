@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack";
-import { TouchableOpacity } from "react-native";
+import { Button, TouchableOpacity } from "react-native";
 import { theme } from "../theme";
 
 // Page Imports
@@ -120,6 +120,7 @@ const HomeNavigator = ({ navigation }) => {
         component={NotificationScreen}
         options={{
           headerShown: true,
+          headerLeft: () => navigation.goBack,
           headerRight: () => (
             <TouchableOpacity
               onPress={() => navigation.navigate('Notifications Settings')}

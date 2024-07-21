@@ -6,6 +6,7 @@ import Loading from "@/src/components/loader";
 import ArticleInfo from "../components/Article-info-card";
 import { Articlecontainer, ArticleWrapper } from "../components/Article.styles";
 import { TouchableFlatlist } from "../../home/components/Home.styles";
+import BadGateWay from "@/src/components/NoNetwork";
 
 const ARTICLES = [
   // {
@@ -36,6 +37,7 @@ const SavedArticles = ({ navigation }) => {
   const [articles, setArticles] = useState([]);
   const [bookmarks, setBookmarks] = useState({});
   const [filteredArticles, setFilteredArticles] = useState([]); 
+  const [isApiCallFailed, setIsApiCallFailed] = useState(false);
 
   const getData = async () => {
     try {
@@ -74,6 +76,8 @@ const SavedArticles = ({ navigation }) => {
   const handleGetDetails = async () => {
     if (!userData) return;
     setIsLoading(true);
+    setIsApiCallFailed(false);
+
     try {
       const response = await fetch(
         `https://switch-health.onrender.com/article/get-articles`,
@@ -89,11 +93,12 @@ const SavedArticles = ({ navigation }) => {
       if (response.ok) {
         const data = await response.json();
         setArticles(data.data);
+        setIsApiCallFailed(false);
       } else {
-        console.error("Failed to fetch articles:", response.statusText);
+        setIsApiCallFailed(true);
       }
     } catch (error) {
-      console.error("Error fetching articles:", error);
+      setIsApiCallFailed(true);
     } finally {
       setIsLoading(false);
     }
@@ -111,28 +116,35 @@ const SavedArticles = ({ navigation }) => {
     }, [])
   );
 
+  const handleRefresh = async () => {
+    await handleGetDetails();
+  };
+
   return (
-    <ArticleWrapper>
-      {isLoading && <Loading />}
-      <Articlecontainer>
-        <FlatList
-          data={filteredArticles.length ? filteredArticles : ARTICLES}
-          showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => (
-            <TouchableFlatlist
-              onPress={() =>
-                navigation.navigate("Article Detail", {
-                  article: item,
-                })
-              }
-            >
-              <ArticleInfo article={item} />
-            </TouchableFlatlist>
-          )}
-          keyExtractor={(item) => item.title}
-        />
-      </Articlecontainer>
-    </ArticleWrapper>
+    <>
+      {isApiCallFailed && <BadGateWay handleRefresh={handleRefresh}/>}
+      {!isApiCallFailed && <ArticleWrapper>
+        {isLoading && <Loading />}
+        <Articlecontainer>
+          <FlatList
+            data={filteredArticles.length ? filteredArticles : ARTICLES}
+            showsVerticalScrollIndicator={false}
+            renderItem={({ item }) => (
+              <TouchableFlatlist
+                onPress={() =>
+                  navigation.navigate("Article Detail", {
+                    article: item,
+                  })
+                }
+              >
+                <ArticleInfo article={item} />
+              </TouchableFlatlist>
+            )}
+            keyExtractor={(item) => item.title}
+          />
+        </Articlecontainer>
+      </ArticleWrapper>}
+    </>
   );
 };
 

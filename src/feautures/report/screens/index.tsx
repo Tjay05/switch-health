@@ -37,6 +37,7 @@ import GradientLine from "./gradient";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
 import Loading from "@/src/components/loader";
+import BadGateWay from "@/src/components/NoNetwork";
 
 const ReportScreen = ({ navigation }) => {
 const [weight, setWeight] = useState("0");
@@ -47,6 +48,7 @@ const [userData, setUserData] = useState(" ");
 const [isLoading, setIsLoading] = useState(false);
 const [statWrapColor, setStatWrapColor] = useState("#1A1F71");
 const [healthMessage, setHealthMessage] = useState("Welcome");
+const [isApiCallFailed, setIsApiCallFailed] = useState(false);
 
 const loadStepCount = async () => {
   try {
@@ -78,6 +80,8 @@ const calculateBMI = (weight, heightCm) => {
 };
 
 const handleGetDetails = async () => {
+  setIsApiCallFailed(false);
+
   try {
     const response = await fetch(
       `https://switch-health.onrender.com/patient/${userData.data.user._id}/profile`,
@@ -95,11 +99,12 @@ const handleGetDetails = async () => {
       setHeight(data.data.height.toString());
       setWeight(data.data.weight.toString());
       calculateBMI(data.data.weight, data.data.height);
+      setIsApiCallFailed(false);
     } else {
-      console.log("Failed to fetch profile data:", response.statusText);
+      setIsApiCallFailed(true);
     }
   } catch (error) {
-    console.log("Error fetching profile data:", error);
+    setIsApiCallFailed(true);
   } finally {
     setIsLoading(false);
   }
@@ -137,10 +142,15 @@ useFocusEffect(
     }
   }, [userData])
 );
+
+const handleRefresh = async () => {
+  await handleGetDetails();
+};
     
   return (
     <>
-      <ReportWrapper>
+      {isApiCallFailed && <BadGateWay handleRefresh={handleRefresh}/>}
+      {!isApiCallFailed && <ReportWrapper>
         {isLoading && <Loading />}
         <ReportContainer>
           <BMIConatiner>
@@ -216,7 +226,7 @@ useFocusEffect(
             </ReportInfoWrapper>
           </ReportList>
         </ReportContainer>
-      </ReportWrapper>
+      </ReportWrapper>}
     </>
   );
 };

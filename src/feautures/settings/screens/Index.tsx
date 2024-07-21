@@ -11,7 +11,7 @@ import {
   SettingWrapper
 } from "../component/Settings.styles";
 
-const SettingsScreen = ({ navigation }) => {
+const SettingsScreen = ({ navigation }: { navigation: any }) => {
   return (
     <SettingWrapper>
       <SettingContainer>

@@ -6,6 +6,7 @@ import { useCallback, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
 import Loading from "@/src/components/loader";
+import BadGateWay from "@/src/components/NoNetwork";
 
 const ARTICLES = [
   // {
@@ -26,6 +27,7 @@ const ArticleScreen = ({ navigation }) => {
   const [userData, setUserData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [articles, setArticles] = useState([]);
+  const [isApiCallFailed, setIsApiCallFailed] = useState(false);
 
   const getData = async () => {
     try {
@@ -41,6 +43,8 @@ const ArticleScreen = ({ navigation }) => {
   const handleGetDetails = async () => {
     if (!userData) return;
     setIsLoading(true);
+    setIsApiCallFailed(false);
+
     try {
       const response = await fetch(
         `https://switch-health.onrender.com/article/get-articles`,
@@ -56,10 +60,12 @@ const ArticleScreen = ({ navigation }) => {
       if (response.ok) {
         const data = await response.json();
         setArticles(data.data);
+        setIsApiCallFailed(false);
       } else {
-        // console.error("Failed to fetch profile data:", response.statusText);
+        setIsApiCallFailed(true);
       }
     } catch (error) {
+      setIsApiCallFailed(true);
     } finally {
       setIsLoading(false);
     }
@@ -77,30 +83,37 @@ const ArticleScreen = ({ navigation }) => {
     }, [])
   );
 
+  const handleRefresh = async () => {
+    await handleGetDetails();
+  };
+
   return (
-    <ArticleWrapper>
-      {isLoading && <Loading />}
-      <Articlecontainer>
-        <FlatList
-          data={articles.length ? articles : ARTICLES}
-          showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => {
-            return (
-              <TouchableFlatlist
-                onPress={() =>
-                  navigation.navigate("Article Detail", {
-                    article: item,
-                  })
-                }
-              >
-                <ArticleInfo article={item} />
-              </TouchableFlatlist>
-            );
-          }}
-          keyExtractor={(item) => item.title}
-        />
-      </Articlecontainer>
-    </ArticleWrapper>
+    <>
+      {isApiCallFailed && <BadGateWay handleRefresh={handleRefresh}/>}
+      {!isApiCallFailed && <ArticleWrapper>
+        {isLoading && <Loading />}
+        <Articlecontainer>
+          <FlatList
+            data={articles.length ? articles : ARTICLES}
+            showsVerticalScrollIndicator={false}
+            renderItem={({ item }) => {
+              return (
+                <TouchableFlatlist
+                  onPress={() =>
+                    navigation.navigate("Article Detail", {
+                      article: item,
+                    })
+                  }
+                >
+                  <ArticleInfo article={item} />
+                </TouchableFlatlist>
+              );
+            }}
+            keyExtractor={(item) => item.title}
+          />
+        </Articlecontainer>
+      </ArticleWrapper>}
+    </>
   );
 };
 

@@ -51,6 +51,7 @@ import {
   Title,
 } from "../../article/components/Article.styles";
 import Loading from "@/src/components/loader";
+import BadGateWay from "@/src/components/NoNetwork";
 
 const Home = ({ navigation }) => {
   const [userData, setUserData] = useState(null);
@@ -64,6 +65,8 @@ const Home = ({ navigation }) => {
   const [caloriesBurnt, setCaloriesBurnt] = useState(0);
   const [distanceTravelled, setDistanceTravelled] = useState(0);
   const [hasUnread, setHasUnread] = useState(false);
+  const [isApiCallFailed, setIsApiCallFailed] = useState(false);
+
 
   useEffect(() => {
     const loadActivityData = async () => {
@@ -167,8 +170,9 @@ const Home = ({ navigation }) => {
 
   const handleGetDetails = async () => {
     if (!userData) return;
-
     setIsLoading(true);
+    setIsApiCallFailed(false);
+
     try {
       const response = await fetch(
         `https://switch-health.onrender.com/patient/${userData.data.user._id}/profile`,
@@ -184,11 +188,12 @@ const Home = ({ navigation }) => {
       if (response.ok) {
         const data = await response.json();
         setProfileData(data);
+        setIsApiCallFailed(false);
       } else {
-        console.log("Failed to fetch profile data:", response.statusText);
+        setIsApiCallFailed(true);
       }
     } catch (error) {
-      console.log("Error fetching profile data:", error);
+      setIsApiCallFailed(true);
     } finally {
       setIsLoading(false);
     }
@@ -370,209 +375,216 @@ const Home = ({ navigation }) => {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
+  const handleRefresh = async () => {
+    await handleGetDetails();
+  };
+
   return (
-    <View>
-      {profileData && <View>
-        <AppWrapper showsVerticalScrollIndicator={false}>
-          <AppContainer>
-            <HeaderContainer>
-              <Spacer>
-                <Header>
-                  <ProfileContainer
-                    onPress={() => navigation.navigate("Profile")}
-                  >
-                    {profileData &&
-                    profileData.data &&
-                    profileData.data.avatar ? (
-                      <ProfileImg
-                        source={{ uri: profileData.data.avatar }}
-                        style={styles.profileImage}
-                      />
-                    ) : (
-                      <AvatarSVG width={50} height={50} />
-                    )}
-                    <GreetContainer>
-                      <HelloText>Hello,</HelloText>
-                      <UserNameText>
-                        {profileData ? profileData.data.fullName : "Guest"}
-                      </UserNameText>
-                    </GreetContainer>
-                  </ProfileContainer>
-                  <TouchableOpacity onPress={() => readAllNOtifiy()}>
-                    <View>
-                      <Ionicons name="notifications" size={28} color="#1A1F71" />
-                      {hasUnread && (
-                        <View
-                          style={{
-                            position: "absolute",
-                            top: 1,
-                            right: 2,
-                            width: 10,
-                            height: 10,
-                            borderRadius: 5,
-                            backgroundColor: "red",
-                          }}
+    <>
+      {isApiCallFailed && <BadGateWay handleRefresh={handleRefresh}/>}
+      {!isApiCallFailed && <View>
+        {profileData && <View>
+          <AppWrapper showsVerticalScrollIndicator={false}>
+            <AppContainer>
+              <HeaderContainer>
+                <Spacer>
+                  <Header>
+                    <ProfileContainer
+                      onPress={() => navigation.navigate("Profile")}
+                    >
+                      {profileData &&
+                      profileData.data &&
+                      profileData.data.avatar ? (
+                        <ProfileImg
+                          source={{ uri: profileData.data.avatar }}
+                          style={styles.profileImage}
                         />
+                      ) : (
+                        <AvatarSVG width={50} height={50} />
                       )}
-                    </View>
-                  </TouchableOpacity>
-                </Header>
-              </Spacer>
-              <Spacer position="top" size="extraLarge">
-                <Text variant="main">Indexes</Text>
-                <Spacer position="bottom" size="large" />
-              </Spacer>
-              <IndexContainer>
-                <IndexBox>
-                  <IndexItem>
-                    <IndexTitle>Calories</IndexTitle>
-                    <IndexTextWrap>
-                      <IndexValue>{caloriesBurnt.toFixed(1)}</IndexValue>
-                      <IndexUnit>cal</IndexUnit>
-                    </IndexTextWrap>
-                  </IndexItem>
-                  <Octicons name="flame" size={20} color="#1E1E1E" />
-                </IndexBox>
-                <IndexBox>
-                  <IndexItem>
-                    <IndexTitle>Activities</IndexTitle>
-                    <IndexTextWrap>
-                      <IndexValue>{stepCount}</IndexValue>
-                      <IndexUnit>steps</IndexUnit>
-                    </IndexTextWrap>
-                  </IndexItem>
-                  <Ionicons name="footsteps-outline" size={20} color="#1E1E1E" />
-                </IndexBox>
-              </IndexContainer>
-            </HeaderContainer>
-            <Spacer position="top" size="extraLarge"></Spacer>
-            <Spacer position="bottom" size="extraLarge">
-              <CategoriesContainer>
-                <Spacer position="bottom" size="medium">
-                  <Text variant="main">Categories</Text>
-                </Spacer>
-                <CategoryScroll
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={styles.tstyles}
-                >
-                  <TouchableCategory
-                    onPress={() => navigation.navigate("Top Doctors")}
-                  >
-                    <CatIcon>
-                      <FontAwesome6
-                        name="user-doctor"
-                        size={20}
-                        color="#1A1F71"
-                      />
-                    </CatIcon>
-                    <CategoryText>Top Doctors</CategoryText>
-                  </TouchableCategory>
-                  <TouchableCategory
-                    onPress={() => navigation.navigate("Pharmacy")}
-                  >
-                    <CatIcon>
-                      <MaterialCommunityIcons
-                        name="pill"
-                        size={20}
-                        color="#1A1F71"
-                      />
-                    </CatIcon>
-                    <CategoryText>Pharmacy</CategoryText>
-                  </TouchableCategory>
-                  <TouchableCategory
-                    onPress={() => navigation.navigate("Appointments")}
-                  >
-                    <CatIcon>
-                      <MaterialCommunityIcons
-                        name="clipboard-text-outline"
-                        size={20}
-                        color="#1A1F71"
-                      />
-                    </CatIcon>
-                    <CategoryText>Appointments</CategoryText>
-                  </TouchableCategory>
-                  <TouchableCategory
-                    onPress={() => navigation.navigate("Ambulance")}
-                  >
-                    <CatIcon>
-                      <FontAwesome5 name="ambulance" size={20} color="#1A1F71" />
-                    </CatIcon>
-                    <CategoryText>Ambulance</CategoryText>
-                  </TouchableCategory>
-                  <TouchableCategory
-                    onPress={() => navigation.navigate("Reports")}
-                  >
-                    <CatIcon>
-                      <Ionicons
-                        name="footsteps-outline"
-                        size={20}
-                        color="#1A1F71"
-                      />
-                    </CatIcon>
-                    <CategoryText>Step metrics</CategoryText>
-                  </TouchableCategory>
-                </CategoryScroll>
-              </CategoriesContainer>
-            </Spacer>
-            <ArticleContainer>
-              <TopicContainer>
-                <Text variant="main">Health articles</Text>
-                <SeeText
-                  variant="body"
-                  onPress={() => navigation.navigate("Health articles")}
-                >
-                  See all
-                </SeeText>
-              </TopicContainer>
-              {articles.map((item) => (
-                <TouchableArticle
-                  key={item.title}
-                  onPress={() =>
-                    navigation.navigate("Article Detail", {
-                      article: item,
-                    })
-                  }
-                >
-                  <ArticleCard>
-                    <CardContainer>
-                      <ArticleImg source={{ uri: item.image }} />
-                      <ArticleTextWrap>
-                        <Title>{item.title}</Title>
-                        <ArtFooter>
-                          <ArticleDate>{formatDate(item.createdAt)}</ArticleDate>
-                          <ArticleDate>{item.readTime}</ArticleDate>
-                        </ArtFooter>
-                      </ArticleTextWrap>
-                    </CardContainer>
-                    <TouchableOpacity onPress={() => toggleBookmark(item.title)}>
-                      <Ionicons
-                        name={
-                          bookmarks[item.title] ? "bookmark" : "bookmark-outline"
-                        }
-                        size={20}
-                        color="#407CE2"
-                      />
+                      <GreetContainer>
+                        <HelloText>Hello,</HelloText>
+                        <UserNameText>
+                          {profileData ? profileData.data.fullName : "Guest"}
+                        </UserNameText>
+                      </GreetContainer>
+                    </ProfileContainer>
+                    <TouchableOpacity onPress={() => readAllNOtifiy()}>
+                      <View>
+                        <Ionicons name="notifications" size={28} color="#1A1F71" />
+                        {hasUnread && (
+                          <View
+                            style={{
+                              position: "absolute",
+                              top: 1,
+                              right: 2,
+                              width: 10,
+                              height: 10,
+                              borderRadius: 5,
+                              backgroundColor: "red",
+                            }}
+                          />
+                        )}
+                      </View>
                     </TouchableOpacity>
-                  </ArticleCard>
-                </TouchableArticle>
-              ))}
-            </ArticleContainer>
-            <Spacer position="bottom" size="large"></Spacer>
-          </AppContainer>
-        </AppWrapper>
-        <TouchableOpacity onPress={() => navigation.navigate("Emergency")}>
-          <CatIcon style={styles.emergency}>
-            <MaterialCommunityIcons
-              name="phone-alert-outline"
-              size={30}
-              color="white"
-            />
-          </CatIcon>
-        </TouchableOpacity>
+                  </Header>
+                </Spacer>
+                <Spacer position="top" size="extraLarge">
+                  <Text variant="main">Indexes</Text>
+                  <Spacer position="bottom" size="large" />
+                </Spacer>
+                <IndexContainer>
+                  <IndexBox>
+                    <IndexItem>
+                      <IndexTitle>Calories</IndexTitle>
+                      <IndexTextWrap>
+                        <IndexValue>{caloriesBurnt.toFixed(1)}</IndexValue>
+                        <IndexUnit>cal</IndexUnit>
+                      </IndexTextWrap>
+                    </IndexItem>
+                    <Octicons name="flame" size={20} color="#1E1E1E" />
+                  </IndexBox>
+                  <IndexBox>
+                    <IndexItem>
+                      <IndexTitle>Activities</IndexTitle>
+                      <IndexTextWrap>
+                        <IndexValue>{stepCount}</IndexValue>
+                        <IndexUnit>steps</IndexUnit>
+                      </IndexTextWrap>
+                    </IndexItem>
+                    <Ionicons name="footsteps-outline" size={20} color="#1E1E1E" />
+                  </IndexBox>
+                </IndexContainer>
+              </HeaderContainer>
+              <Spacer position="top" size="extraLarge"></Spacer>
+              <Spacer position="bottom" size="extraLarge">
+                <CategoriesContainer>
+                  <Spacer position="bottom" size="medium">
+                    <Text variant="main">Categories</Text>
+                  </Spacer>
+                  <CategoryScroll
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={styles.tstyles}
+                  >
+                    <TouchableCategory
+                      onPress={() => navigation.navigate("Top Doctors")}
+                    >
+                      <CatIcon>
+                        <FontAwesome6
+                          name="user-doctor"
+                          size={20}
+                          color="#1A1F71"
+                        />
+                      </CatIcon>
+                      <CategoryText>Top Doctors</CategoryText>
+                    </TouchableCategory>
+                    <TouchableCategory
+                      onPress={() => navigation.navigate("Pharmacy")}
+                    >
+                      <CatIcon>
+                        <MaterialCommunityIcons
+                          name="pill"
+                          size={20}
+                          color="#1A1F71"
+                        />
+                      </CatIcon>
+                      <CategoryText>Pharmacy</CategoryText>
+                    </TouchableCategory>
+                    <TouchableCategory
+                      onPress={() => navigation.navigate("Appointments")}
+                    >
+                      <CatIcon>
+                        <MaterialCommunityIcons
+                          name="clipboard-text-outline"
+                          size={20}
+                          color="#1A1F71"
+                        />
+                      </CatIcon>
+                      <CategoryText>Appointments</CategoryText>
+                    </TouchableCategory>
+                    <TouchableCategory
+                      onPress={() => navigation.navigate("Ambulance")}
+                    >
+                      <CatIcon>
+                        <FontAwesome5 name="ambulance" size={20} color="#1A1F71" />
+                      </CatIcon>
+                      <CategoryText>Ambulance</CategoryText>
+                    </TouchableCategory>
+                    <TouchableCategory
+                      onPress={() => navigation.navigate("Reports")}
+                    >
+                      <CatIcon>
+                        <Ionicons
+                          name="footsteps-outline"
+                          size={20}
+                          color="#1A1F71"
+                        />
+                      </CatIcon>
+                      <CategoryText>Step metrics</CategoryText>
+                    </TouchableCategory>
+                  </CategoryScroll>
+                </CategoriesContainer>
+              </Spacer>
+              <ArticleContainer>
+                <TopicContainer>
+                  <Text variant="main">Health articles</Text>
+                  <SeeText
+                    variant="body"
+                    onPress={() => navigation.navigate("Health articles")}
+                  >
+                    See all
+                  </SeeText>
+                </TopicContainer>
+                {articles.map((item) => (
+                  <TouchableArticle
+                    key={item.title}
+                    onPress={() =>
+                      navigation.navigate("Article Detail", {
+                        article: item,
+                      })
+                    }
+                  >
+                    <ArticleCard>
+                      <CardContainer>
+                        <ArticleImg source={{ uri: item.image }} />
+                        <ArticleTextWrap>
+                          <Title>{item.title}</Title>
+                          <ArtFooter>
+                            <ArticleDate>{formatDate(item.createdAt)}</ArticleDate>
+                            <ArticleDate>{item.readTime}</ArticleDate>
+                          </ArtFooter>
+                        </ArticleTextWrap>
+                      </CardContainer>
+                      <TouchableOpacity onPress={() => toggleBookmark(item.title)}>
+                        <Ionicons
+                          name={
+                            bookmarks[item.title] ? "bookmark" : "bookmark-outline"
+                          }
+                          size={20}
+                          color="#407CE2"
+                        />
+                      </TouchableOpacity>
+                    </ArticleCard>
+                  </TouchableArticle>
+                ))}
+              </ArticleContainer>
+              <Spacer position="bottom" size="large"></Spacer>
+            </AppContainer>
+          </AppWrapper>
+          <TouchableOpacity onPress={() => navigation.navigate("Emergency")}>
+            <CatIcon style={styles.emergency}>
+              <MaterialCommunityIcons
+                name="phone-alert-outline"
+                size={30}
+                color="white"
+              />
+            </CatIcon>
+          </TouchableOpacity>
+        </View>}
+        {!profileData && <Loading/>}
       </View>}
-      {!profileData && <Loading/>}
-    </View>
+    </>
   );
 };
 

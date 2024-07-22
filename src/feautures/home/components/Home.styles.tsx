@@ -7,6 +7,7 @@ import { styled } from "styled-components";
 export const AppWrapper = styled(ScrollView)`
   background-color: #fff;
   width: 100%;
+  height: 100%;
 `;
 
 export const AppContainer = styled(View)`
@@ -301,7 +302,9 @@ export const ConfirmBtnWrap = styled(Text)`
 export const HomeStyles = StyleSheet.create({
   tstyles: {
     justifyContent: "space-between",
-    gap: 10,
+    gap: 15,
+    alignItems: 'center',
+    flexDirection: 'row',
   },
   emergency: {
     position: 'absolute',

@@ -94,7 +94,7 @@ const HomeNavigator = ({ navigation }) => {
         component={SavedArticles}
         options={{headerShown: true}}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="DoctorAppointment"
         component={DocsNearMe}
         options={{
@@ -102,7 +102,7 @@ const HomeNavigator = ({ navigation }) => {
           headerTitle: 'Doctors near me',
           headerShown: true,
         }}
-      />
+      /> */}
       <Stack.Screen
         name="Book Appointment"
         component={BookAppointment}
@@ -120,7 +120,6 @@ const HomeNavigator = ({ navigation }) => {
         component={NotificationScreen}
         options={{
           headerShown: true,
-          headerLeft: () => navigation.goBack,
           headerRight: () => (
             <TouchableOpacity
               onPress={() => navigation.navigate('Notifications Settings')}
@@ -136,11 +135,11 @@ const HomeNavigator = ({ navigation }) => {
         component={NotificationSettings}
         options={{headerShown: true}}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Emergency"
         component={Emergency}
         options={{headerShown: true}}
-      />
+      /> */}
       <Stack.Screen
         name="Ambulance"
         component={Ambulance}

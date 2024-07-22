@@ -8,6 +8,7 @@ export const ReportWrapper = styled(ScrollView)`
   width: 100%;
   background-color: #fff;
   flex: 1;
+  height: 100%;
 `;
 
 export const ReportContainer = styled(View)`

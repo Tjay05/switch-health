@@ -6,6 +6,7 @@ export const AppointmentWrapper = styled(ScrollView)`
   background-color: #fff;
   flex: 1;
   width: 100%;
+  height: 100%;
 `;
 
 export const AppointmentContainer = styled(View)`

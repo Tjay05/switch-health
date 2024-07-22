@@ -573,7 +573,7 @@ const Home = ({ navigation }) => {
             </AppContainer>
           </AppWrapper>
           <TouchableOpacity 
-            onPress={() => navigation.navigate("Emergency")}
+            // onPress={() => navigation.navigate("Emergency")}
           >
             <CatIcon style={styles.emergency}>
               <MaterialCommunityIcons

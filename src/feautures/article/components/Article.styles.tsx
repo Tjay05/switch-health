@@ -5,6 +5,7 @@ import { styled } from "styled-components";
 export const ArticleWrapper = styled(View)`
   background-color: #FAFBFC;
   flex: 1;
+  height: 100%;
 `;
 
 export const Articlecontainer = styled(View)`

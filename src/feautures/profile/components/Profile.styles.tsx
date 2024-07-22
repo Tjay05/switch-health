@@ -15,6 +15,7 @@ const { height } = Dimensions.get("window");
 export const ProfileOverview = styled(ScrollView)`
   flex: 1;
   background-color: #fafbfc;
+  height: 100%;
 `;
 
 export const HeaderText = styled(Text)`

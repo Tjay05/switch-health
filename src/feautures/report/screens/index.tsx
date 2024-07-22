@@ -38,6 +38,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
 import Loading from "@/src/components/loader";
 import BadGateWay from "@/src/components/NoNetwork";
+import moment from "moment";
 
 const ReportScreen = ({ navigation }) => {
 const [weight, setWeight] = useState("0");
@@ -49,6 +50,7 @@ const [isLoading, setIsLoading] = useState(false);
 const [statWrapColor, setStatWrapColor] = useState("#1A1F71");
 const [healthMessage, setHealthMessage] = useState("Welcome");
 const [isApiCallFailed, setIsApiCallFailed] = useState(false);
+const today = moment().format('MMMM, DD, YYYY')
 
 const loadStepCount = async () => {
   try {
@@ -181,7 +183,7 @@ const handleRefresh = async () => {
           </BMIConatiner>
           <BodyMeasurement>
             <BodyText>Body Measurements</BodyText>
-            <CheckedText>Last checked 12/07/2024</CheckedText>
+            <CheckedText>Checked {today} </CheckedText>
             <ReportContainer>
               <CaloriesBox>
                 <CalorieItem>
@@ -203,9 +205,9 @@ const handleRefresh = async () => {
               </CaloriesBox>
             </ReportContainer>
           </BodyMeasurement>
-          <ReportList>
+          {/* <ReportList>
             <Text variant="main">Latest report</Text>
-            {/* <ReportInfoWrapper>
+            <ReportInfoWrapper>
               <TouchableReport 
                 onPress={() => navigation.navigate('Weekly Report')}
               >
@@ -225,8 +227,8 @@ const handleRefresh = async () => {
                   </Spacer>
                 </ReportInfo>
               </TouchableReport>
-            </ReportInfoWrapper> */}
-          </ReportList>
+            </ReportInfoWrapper>
+          </ReportList> */}
         </ReportContainer>
       </ReportWrapper>}
     </>

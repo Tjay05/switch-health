@@ -99,7 +99,7 @@ const TopDoctors = ({ navigation }) => {
               return (
                 <TouchableFlatlist
                   onPress={() =>
-                    navigation.navigate("DoctorAppointment", {
+                    navigation.navigate("Book Appointment", {
                       doctor: item,
                     })
                   }

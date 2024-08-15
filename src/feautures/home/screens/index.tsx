@@ -36,6 +36,7 @@ import {
   IndexUnit,
   CategoryText,
   IndexTextWrap,
+  SearchInput,
 } from "../components/Home.styles";
 import Text from "@/src/components/typograpghy/Text.component";
 import Spacer from "@/src/components/spacer/Spacer.component";
@@ -457,6 +458,13 @@ const Home = ({ navigation }) => {
                 </IndexContainer>
               </HeaderContainer>
               <Spacer position="top" size="extraLarge"></Spacer>
+              <Spacer position="bottom" size="extraLarge">
+                <SearchInput
+                  placeholderTextColor={"#221F1F99"}
+                  iconColor={"#221F1F99"}
+                  placeholder="Search doctor, drugs, articles..."
+                />
+              </Spacer>
               <Spacer position="bottom" size="extraLarge">
                 <CategoriesContainer>
                   <Spacer position="bottom" size="medium">

@@ -93,9 +93,8 @@ export const IndexUnit = styled(Text)`
 
 export const SearchInput = styled(Searchbar)`
   width: 100%;
-  background: #FBFBFB; 
-  border-radius: 35px;
-  font-family: ${(props) => props.theme.fonts.poppinsRegular};
+  background: #fff; 
+  border-radius: 50px;
   color: #757575;
   font-size: 6px;
   border: 1px solid #CBCBCB

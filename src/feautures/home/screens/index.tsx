@@ -458,13 +458,13 @@ const Home = ({ navigation }) => {
                 </IndexContainer>
               </HeaderContainer>
               <Spacer position="top" size="extraLarge"></Spacer>
-              <Spacer position="bottom" size="extraLarge">
+              {/* <Spacer position="bottom" size="extraLarge">
                 <SearchInput
                   placeholderTextColor={"#221F1F99"}
                   iconColor={"#221F1F99"}
                   placeholder="Search doctor, drugs, articles..."
                 />
-              </Spacer>
+              </Spacer> */}
               <Spacer position="bottom" size="extraLarge">
                 <CategoriesContainer>
                   <Spacer position="bottom" size="medium">
@@ -476,7 +476,7 @@ const Home = ({ navigation }) => {
                     contentContainerStyle={styles.tstyles}
                   >
                     <TouchableCategory
-                      onPress={() => navigation.navigate("Top Doctors")}
+                      onPress={() => navigation.navigate("Specialist Section")}
                     >
                       <CatIcon>
                         <FontAwesome6

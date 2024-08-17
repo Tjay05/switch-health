@@ -4,26 +4,17 @@ import {
   TouchableFlatlist,
 } from "../components/Home.styles";
 import Loading from "@/src/components/loader";
-
 import { FlatList } from "react-native";
 import DoctorCard from "../components/Doctor-info-card";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useCallback, useEffect, useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import BadGateWay from "@/src/components/NoNetwork";
+import Text from "@/src/components/typograpghy/Text.component";
 
-const DOCTORS = [
-  // {
-  //   image:
-  //     "https://res.cloudinary.com/dba1aezsn/image/upload/v1720109367/Heng_asavarid_i7ypbf.jpg",
-  //   docName: "Dr. Alfa",
-  //   AOS: "Gynaecologist",
-  //   ratings: "3.7",
-  //   distanceAway: "800m away",
-  // },
-];
+const TopDoctors = ({ navigation, route }) => {
+  const { specialization } = route.params;
 
-const TopDoctors = ({ navigation }) => {
   const [userData, setUserData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [doctors, setDoctors] = useState([]);
@@ -32,11 +23,11 @@ const TopDoctors = ({ navigation }) => {
   const getData = async () => {
     try {
       const storedData = await AsyncStorage.getItem("data");
-      if (storedData !== null) {
+      if (storedData) {
         setUserData(JSON.parse(storedData));
       }
     } catch (error) {
-      console.error(error);
+      console.error("Error retrieving user data", error);
     }
   };
 
@@ -59,12 +50,18 @@ const TopDoctors = ({ navigation }) => {
 
       if (response.ok) {
         const data = await response.json();
-        setDoctors(data.data);
+        // Filter doctors based on the passed specialization
+        const filteredDoctors = data.data.filter(
+          (doctor: any) => doctor.AOS === specialization
+        );
+        setDoctors(filteredDoctors);
         setIsApiCallFailed(false);
       } else {
+        console.error(`API call failed: ${response.status}`);
         setIsApiCallFailed(true);
       }
     } catch (error) {
+      console.error("Network or server error", error);
       setIsApiCallFailed(true);
     } finally {
       setIsLoading(false);
@@ -89,29 +86,35 @@ const TopDoctors = ({ navigation }) => {
 
   return (
     <>
-      {isApiCallFailed && <BadGateWay handleRefresh={handleRefresh}/>}
-      {!isApiCallFailed && <AppContainer>
-        {isLoading && <Loading />}
-        <TopDoctorsContainer>
-          <FlatList
-            data={doctors.length ? doctors : DOCTORS}
-            renderItem={({ item }) => {
-              return (
-                <TouchableFlatlist
-                  onPress={() =>
-                    navigation.navigate("Book Appointment", {
-                      doctor: item,
-                    })
-                  }
-                >
-                  <DoctorCard doctor={item} />
-                </TouchableFlatlist>
-              );
-            }}
-            keyExtractor={(item) => item.docName}
-          />
-        </TopDoctorsContainer>
-      </AppContainer>}
+      {isApiCallFailed ? (
+        <BadGateWay handleRefresh={handleRefresh} />
+      ) : (
+        <AppContainer>
+          {isLoading && <Loading />}
+          {!isLoading && doctors.length === 0 && (
+            <Text>No doctors available at the moment</Text>
+          )}
+          {!isLoading && doctors.length > 0 && (
+            <TopDoctorsContainer>
+              <FlatList
+                data={doctors}
+                renderItem={({ item }) => (
+                  <TouchableFlatlist
+                    onPress={() =>
+                      navigation.navigate("Book Appointment", {
+                        doctor: item,
+                      })
+                    }
+                  >
+                    <DoctorCard doctor={item} />
+                  </TouchableFlatlist>
+                )}
+                keyExtractor={(item) => item.docName}
+              />
+            </TopDoctorsContainer>
+          )}
+        </AppContainer>
+      )}
     </>
   );
 };

@@ -19,6 +19,7 @@ import NotificationSettings from "@/src/feautures/home/screens/Notification.Sett
 import CartScreen from "@/src/feautures/pharmacy/screens/Cart";
 import PharmacyScreen from "@/src/feautures/pharmacy/screens/Index";
 import PharmDetails from "@/src/feautures/pharmacy/screens/Pharmacy.Details";
+import SpecialistsScreen from "@/src/feautures/home/screens/Specialist.Screen";
 
 const Stack = createStackNavigator();
 
@@ -40,9 +41,17 @@ const HomeNavigator = ({ navigation }) => {
         component={Home}
       />
       <Stack.Screen
+        name="Specialist Section"
+        component={SpecialistsScreen}
+        options={{headerShown: true}}
+      />
+      <Stack.Screen
         name="Top Doctors"
         component={TopDoctors}
-        options={{headerShown: true}}
+        options={{
+          headerTitle: 'Top Specialists',
+          headerShown: true,
+        }}
       />
       <Stack.Screen
         name="Pharmacy"

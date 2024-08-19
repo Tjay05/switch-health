@@ -189,7 +189,7 @@ const AppointmentScreen = ({ navigation }) => {
               <Spacer position="bottom" size="large">
                 <Text variant="place">You don't have any appointments</Text>
               </Spacer>
-              <LogBtn onPress={() => navigation.navigate("Top Doctors")}>
+              <LogBtn onPress={() => navigation.navigate("Specialist Section")}>
                 Book Now
               </LogBtn>
             </NoAppWrapper>

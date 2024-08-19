@@ -5,7 +5,7 @@ import Text from "@/src/components/typograpghy/Text.component";
 
 import Spacer from "@/src/components/spacer/Spacer.component";
 import { LogBtn, ORstyles as styles } from "../components/account.styles";
-import LogoSVG from "@/assets/icons/LogoSVG";
+import NewLogoSVG from "@/assets/icons/NewLogo";
 
 const Container = styled(View)`
   flex: 1;
@@ -30,7 +30,7 @@ const SignBtn = styled(Button).attrs((props) => ({
 const AccountScreen = ({ navigation }) => {
   return (
     <Container>
-      <LogoSVG/>
+      <NewLogoSVG/>
       <Spacer position="bottom" size="extraLarge">
         <Text variant='head'>Switch Health</Text>
       </Spacer>

@@ -66,7 +66,7 @@ const main1 = (theme:any) =>`
 `;
 
 const head = (theme:any) =>`
-  color: ${theme.Colors.brand.tetiary};
+  color: ${theme.Colors.bg.dark};
   font-size: ${theme.fontSizes.title};
   font-family: ${theme.fonts.poppinsBold};
 `;

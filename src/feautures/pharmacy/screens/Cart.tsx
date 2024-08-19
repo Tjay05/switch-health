@@ -12,6 +12,8 @@ import { CartDescription, CartDetailWrap, CartFooter, CartImg, CartItemBox, Cart
 
 import EmptyCartSVG from "@/assets/icons/EmptyCartSvg";
 import { theme } from "@/src/infrastructure/theme";
+import Loading from "@/src/components/loader";
+import BadGateWay from "@/src/components/NoNetwork";
 
 const CartScreen = ({ navigation }) => {
   const paystackWebViewRef = useRef<paystackProps.PayStackRef>();
@@ -21,6 +23,8 @@ const CartScreen = ({ navigation }) => {
   const [userData, setUserData] = useState(null);
   const [email, setEmail] = useState("");
   const [number, setNumber] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [isApiCallFailed, setIsApiCallFailed] = useState(false);
 
   const getData = async () => {
     try {
@@ -32,18 +36,11 @@ const CartScreen = ({ navigation }) => {
       console.error("Error retrieving stored data:", error);
     }
   };
-
-  useEffect(() => {
-    getData();
-  }, []);
-
-  useEffect(() => {
-    if (userData) {
-      handleGetDetails();
-    }
-  }, [userData]);
-
+  
   const handleGetDetails = async () => {
+    setIsLoading(true);
+    setIsApiCallFailed(false);
+
     try {
       const response = await fetch(
         `https://switch-health.onrender.com/patient/${userData.data.user._id}/profile`,
@@ -60,13 +57,28 @@ const CartScreen = ({ navigation }) => {
         const data = await response.json();
         setEmail(data.data.email || "");
         setNumber(data.data.phone || "");
+        setIsApiCallFailed(false);
       } else {
         console.error("Failed to fetch profile data:", response.statusText);
+        setIsApiCallFailed(true);
       }
     } catch (error) {
       console.error("Error fetching profile data:", error);
+      setIsApiCallFailed(true);
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  useEffect(() => {
+    if (userData) {
+      handleGetDetails();
+    }
+  }, [userData]);
 
   useEffect(() => {
     const fetchCart = async () => {
@@ -79,6 +91,10 @@ const CartScreen = ({ navigation }) => {
     };
     fetchCart();
   }, []);
+
+  const handleRefresh = async () => {
+    await handleGetDetails();
+  };
 
   const add = (index) => {
     const newCart = [...cart];
@@ -109,123 +125,131 @@ const CartScreen = ({ navigation }) => {
   const totalAmount = calculateTotal();
 
   return (
-    <PharmacyWrapper showsVerticalScrollIndicator={false}>
-      <PharmacyContainer>
-        { cart.length ? (
-          <CartWrapper>
-            <CartItems>
-              {cart.map((item, index) => (
-                <CartItemBox key={index}>
-                  <CartImg source={item.image} />
-                  <CartDetailWrap>
-                    <CartItemDetails>
-                      <CartDescription>
-                        <ItemName>{item.name}</ItemName>
-                        <ItemSize>{item.quantity}</ItemSize>
-                      </CartDescription>
-                      <TouchableOpacity onPress={() => removeItem(index)}>
-                        <SimpleLineIcons name="trash" size={20} color='#221F1F99'/>
-                      </TouchableOpacity>
-                    </CartItemDetails>
-                    <CartQtyWrap>
-                      <QtySelector>
-                        <TouchableOpacity onPress={() => subtract(index)}>
-                          <FontAwesome6 name='minus' size={18} />
-                        </TouchableOpacity>
-                        <Text variant='main1' >{item.count}</Text>
-                        <PlusWrap  onPress={() => add(index)} >
-                          <Ionicons name="add" size={18} color='white' />
-                        </PlusWrap>
-                      </QtySelector>
-                      <CartItemPrice>₦{item.price}</CartItemPrice>
-                    </CartQtyWrap>
-                  </CartDetailWrap>
-                </CartItemBox>
-              ))}
-            </CartItems>
-            <CartPaymentWrapper>
-              <Spacer position="bottom" size="large">
-                <PayTextHead>Payment Detail</PayTextHead>
-              </Spacer>
-              <PayItems>
-                <PayTexts>SubTotal</PayTexts>
-                <PayTexts>₦{totalAmount}</PayTexts>
-              </PayItems>
-              <PayItems>
-                <PayTexts>Taxes</PayTexts>
-                <PayTexts>₦0.00</PayTexts>
-              </PayItems>
-              <PayItems>
-                <TotalText>Total</TotalText>
-                <TotalText>₦{totalAmount}</TotalText>
-              </PayItems>
-            </CartPaymentWrapper>
-            <CartFooter>
-              <SummaryWrap>
-                <PayTexts>Total</PayTexts>
-                <TotalText>₦{totalAmount}</TotalText>
-              </SummaryWrap>
-              <Paystack
-                paystackKey="pk_live_12c52b7e3887c200b19a101a9273313807053282"
-                billingEmail={email}
-                amount={totalAmount}
-                activityIndicatorColor='red'
-                onCancel={(e) => {
-                  console.log(e);
-                }}
-                onSuccess={(res) => {
-                  Alert.alert(`succesful: ${res}`)
-                }}
-                ref={paystackWebViewRef}
-              />
-              <LogBtn onPress={() => setModalVisible(true)}>Checkout</LogBtn>
-            </CartFooter>
+    <>
+      {isLoading && <Loading />}
+      {isApiCallFailed ? (
+        <BadGateWay handleRefresh={handleRefresh} />
+      ) : (
+        <PharmacyWrapper showsVerticalScrollIndicator={false}>
+          <PharmacyContainer>
+            { cart.length ? (
+              <CartWrapper>
+                <CartItems>
+                  {cart.map((item, index) => (
+                    <CartItemBox key={index}>
+                      <CartImg source={item.image} />
+                      <CartDetailWrap>
+                        <CartItemDetails>
+                          <CartDescription>
+                            <ItemName>{item.name}</ItemName>
+                            <ItemSize>{item.quantity}</ItemSize>
+                          </CartDescription>
+                          <TouchableOpacity onPress={() => removeItem(index)}>
+                            <SimpleLineIcons name="trash" size={20} color='#221F1F99'/>
+                          </TouchableOpacity>
+                        </CartItemDetails>
+                        <CartQtyWrap>
+                          <QtySelector>
+                            <TouchableOpacity onPress={() => subtract(index)}>
+                              <FontAwesome6 name='minus' size={18} />
+                            </TouchableOpacity>
+                            <Text variant='main1' >{item.count}</Text>
+                            <PlusWrap  onPress={() => add(index)} >
+                              <Ionicons name="add" size={18} color='white' />
+                            </PlusWrap>
+                          </QtySelector>
+                          <CartItemPrice>₦{item.price}</CartItemPrice>
+                        </CartQtyWrap>
+                      </CartDetailWrap>
+                    </CartItemBox>
+                  ))}
+                </CartItems>
+                <CartPaymentWrapper>
+                  <Spacer position="bottom" size="large">
+                    <PayTextHead>Payment Detail</PayTextHead>
+                  </Spacer>
+                  <PayItems>
+                    <PayTexts>SubTotal</PayTexts>
+                    <PayTexts>₦{totalAmount}</PayTexts>
+                  </PayItems>
+                  <PayItems>
+                    <PayTexts>Taxes</PayTexts>
+                    <PayTexts>₦0.00</PayTexts>
+                  </PayItems>
+                  <PayItems>
+                    <TotalText>Total</TotalText>
+                    <TotalText>₦{totalAmount}</TotalText>
+                  </PayItems>
+                </CartPaymentWrapper>
+                <CartFooter>
+                  <SummaryWrap>
+                    <PayTexts>Total</PayTexts>
+                    <TotalText>₦{totalAmount}</TotalText>
+                  </SummaryWrap>
+                  <Paystack
+                    paystackKey="pk_live_12c52b7e3887c200b19a101a9273313807053282"
+                    billingEmail={email}
+                    amount={totalAmount}
+                    activityIndicatorColor='red'
+                    onCancel={(e) => {
+                      console.log(e);
+                      setModalVisible(false);
+                    }}
+                    onSuccess={(res) => {
+                      Alert.alert(`succesful: ${res}`)
+                    }}
+                    ref={paystackWebViewRef}
+                  />
+                  <LogBtn onPress={() => setModalVisible(true)}>Checkout</LogBtn>
+                </CartFooter>
 
-            <Modal
-              transparent={true}
-              visible={modalVisible}
-              onRequestClose={() => setModalVisible(false)}
-            >
-              <View style={styls.modalBackground}>
-                <View style={styls.modalContainer}>
-                  <Text variant='place'>Confirm details to make payment</Text>
-                  <Text style={styls.labbel}>Email</Text>
-                  <TextInput
-                    value={email}
-                    style={styls.inputfield}
-                  />
-                  {/* <Text style={styls.labbel}>Phone number</Text>
-                  <TextInput
-                    value={number}
-                    style={styls.inputfield}
-                  /> */}
-                  <Text style={styls.labbel}>Amount</Text>
-                  <TextInput
-                    value={`₦${totalAmount}`}
-                    style={styls.inputfield}
-                  />
-                  <View style={styls.buttonContainer}>
-                    <Button title="Cancel" onPress={() => setModalVisible(false)} />
-                    <Button title="Confirm Payment" onPress={() => paystackWebViewRef.current?.startTransaction()} />
+                <Modal
+                  transparent={true}
+                  visible={modalVisible}
+                  onRequestClose={() => setModalVisible(false)}
+                >
+                  <View style={styls.modalBackground}>
+                    <View style={styls.modalContainer}>
+                      <Text variant='place'>Confirm details to make payment</Text>
+                      <Text style={styls.labbel}>Email</Text>
+                      <TextInput
+                        value={email}
+                        style={styls.inputfield}
+                      />
+                      {/* <Text style={styls.labbel}>Phone number</Text>
+                      <TextInput
+                        value={number}
+                        style={styls.inputfield}
+                      /> */}
+                      <Text style={styls.labbel}>Amount</Text>
+                      <TextInput
+                        value={`₦${totalAmount}`}
+                        style={styls.inputfield}
+                      />
+                      <View style={styls.buttonContainer}>
+                        <Button title="Cancel" onPress={() => setModalVisible(false)} />
+                        <Button title="Confirm Payment" onPress={() => paystackWebViewRef.current?.startTransaction()} />
+                      </View>
+                    </View>
                   </View>
-                </View>
-              </View>
-            </Modal>
+                </Modal>
 
-          </CartWrapper>
-        ) : (
-          <NoAppWrapper>
-            <Spacer position="bottom" size="extraLarge">
-              <EmptyCartSVG/>
-            </Spacer>
-            <Spacer position="bottom" size="large">
-              <Text variant='place'>Oops! Your cart is empty</Text>
-            </Spacer>
-            <LogBtn onPress={() => navigation.navigate('Pharmacy')}>Shop Now</LogBtn>
-          </NoAppWrapper>
-        ) }
-      </PharmacyContainer>
-    </PharmacyWrapper>
+              </CartWrapper>
+            ) : (
+              <NoAppWrapper>
+                <Spacer position="bottom" size="extraLarge">
+                  <EmptyCartSVG/>
+                </Spacer>
+                <Spacer position="bottom" size="large">
+                  <Text variant='place'>Oops! Your cart is empty</Text>
+                </Spacer>
+                <LogBtn onPress={() => navigation.navigate('Pharmacy')}>Shop Now</LogBtn>
+              </NoAppWrapper>
+            ) }
+          </PharmacyContainer>
+        </PharmacyWrapper>
+      )}
+    </>
   );
 }
 

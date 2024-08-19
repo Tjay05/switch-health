@@ -190,11 +190,13 @@ const Home = ({ navigation }) => {
         const data = await response.json();
         setProfileData(data);
         setIsApiCallFailed(false);
+        setIsLoading(false);
       } else {
         setIsApiCallFailed(true);
       }
     } catch (error) {
       setIsApiCallFailed(true);
+      setIsLoading(false);
     } finally {
       setIsLoading(false);
     }
@@ -592,8 +594,8 @@ const Home = ({ navigation }) => {
             </CatIcon>
           </TouchableOpacity>
         </View>}
-        {!profileData && <Loading/>}
       </View>}
+      {isLoading && <Loading/>}
     </>
   );
 };

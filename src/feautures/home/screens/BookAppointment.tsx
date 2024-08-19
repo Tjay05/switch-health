@@ -15,6 +15,7 @@ import Spacer from "@/src/components/spacer/Spacer.component";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
 import BadGateWay from "@/src/components/NoNetwork";
+import Loading from "@/src/components/loader";
 
 const BookAppointment = ({ route, navigation }) => {
   const { doctor } = route.params;
@@ -65,6 +66,7 @@ const BookAppointment = ({ route, navigation }) => {
       appointmentDate,
     };
     setIsApiCallFailed(false);
+    setIsLoading(false);
 
     try {
       const response = await fetch(
@@ -100,6 +102,7 @@ const BookAppointment = ({ route, navigation }) => {
   return (
     <>
       {isApiCallFailed && <BadGateWay handleRefresh={handleRefresh}/>}
+      {isLoading && <Loading/>}
       {!isApiCallFailed && <BookAppWrap>
         <AppContainer>
           <DoctorCard doctor={doctor} />

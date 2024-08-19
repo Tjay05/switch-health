@@ -95,128 +95,130 @@ const SignUp = ({ navigation }) => {
   };
 
   return (
-    <ScrollView>
-      <Container>
-        <Spacer position="top" size="large">
-          <CenteredText variant="main">Sign Up</CenteredText>
-        </Spacer>
-        <Spacer position="top" size="extraLarge" />
-        {isLoading && <Loading />}
-        <InputContainer>
-          <IconContainer>
-            <Feather name="user" size={24} color="#757575" />
-          </IconContainer>
-          <InputField
-            placeholder="Enter your name"
-            placeholderTextColor="#757575"
-            value={name}
-            textContentType="name"
-            keyboardType="default"
-            autoCapitalize="none"
-            onChangeText={(e) => setName(e)}
-          />
-        </InputContainer>
-        <Spacer position="top" size="large" />
-        <Spacer position="top" size="small" />
-        <InputContainer>
-          <IconContainer>
-            <Ionicons name="mail-outline" size={24} color="#757575" />
-          </IconContainer>
-          <InputField
-            placeholder="Enter your email"
-            placeholderTextColor="#757575"
-            value={email}
-            textContentType="emailAddress"
-            keyboardType="email-address"
-            autoCapitalize="none"
-            onChangeText={(e) => setEmail(e)}
-          />
-        </InputContainer>
-        <Spacer position="top" size="large" />
-        <Spacer position="top" size="small" />
-        <InputContainer>
-          <IconContainer>
-            <Feather name="phone" size={24} color="#757575" />
-          </IconContainer>
-          <InputField
-            placeholder="Enter your phone number"
-            placeholderTextColor="#757575"
-            value={phone}
-            textContentType="telephoneNumber"
-            keyboardType="number-pad"
-            onChangeText={(e) => setPhone(e)}
-          />
-        </InputContainer>
-        <Spacer position="top" size="large" />
-        <Spacer position="top" size="small" />
-        <InputContainer>
-          <IconContainer>
-            <SimpleLineIcons name="lock" size={24} color="#757575" />
-          </IconContainer>
-          <InputField
-            placeholder="Enter your password"
-            placeholderTextColor="#757575"
-            value={password}
-            textContentType="password"
-            secureTextEntry
-            autoCapitalize="none"
-            onChangeText={(e) => setPassword(e)}
-          />
-        </InputContainer>
-        <Spacer position="top" size="large" />
-        <Spacer position="top" size="small" />
-        <View style={styles.checkboxContainer}>
-          <Checkbox
-            status={isChecked ? "checked" : "unchecked"}
-            onPress={() => setIsChecked(!isChecked)}
-            color="#6200ee"
-          />
-          <Text style={styles.checkboxLabel} variant="place">
-            I agree to the healthcare <BluText>Terms of Service</BluText> and{" "}
-            <BluText>Privacy Policy</BluText>
-          </Text>
-        </View>
-
-        <View style={styles.orContainer}>
-          <View style={styles.line}></View>
-          <Text style={styles.orText}>OR</Text>
-          <View style={styles.line}></View>
-        </View>
-
-        {/* <TouchableOpacity style={styles.googleBtn}>
-          <AntDesign style={styles.icon} name="google" size={24} />
-          <Text variant="place" style={styles.btnText}>
-            Sign in with Google
-          </Text>
-        </TouchableOpacity> */}
-
-        {error && (
-          <Spacer position="top" size="extraLarge">
-            <CenteredText variant="error">{error}</CenteredText>
+    <>
+      {isLoading && <Loading />}
+      <ScrollView>
+        <Container>
+          <Spacer position="top" size="large">
+            <CenteredText variant="main">Sign Up</CenteredText>
           </Spacer>
-        )}
+          <Spacer position="top" size="extraLarge" />
+          <InputContainer>
+            <IconContainer>
+              <Feather name="user" size={24} color="#757575" />
+            </IconContainer>
+            <InputField
+              placeholder="Enter your name"
+              placeholderTextColor="#757575"
+              value={name}
+              textContentType="name"
+              keyboardType="default"
+              autoCapitalize="none"
+              onChangeText={(e) => setName(e)}
+            />
+          </InputContainer>
+          <Spacer position="top" size="large" />
+          <Spacer position="top" size="small" />
+          <InputContainer>
+            <IconContainer>
+              <Ionicons name="mail-outline" size={24} color="#757575" />
+            </IconContainer>
+            <InputField
+              placeholder="Enter your email"
+              placeholderTextColor="#757575"
+              value={email}
+              textContentType="emailAddress"
+              keyboardType="email-address"
+              autoCapitalize="none"
+              onChangeText={(e) => setEmail(e)}
+            />
+          </InputContainer>
+          <Spacer position="top" size="large" />
+          <Spacer position="top" size="small" />
+          <InputContainer>
+            <IconContainer>
+              <Feather name="phone" size={24} color="#757575" />
+            </IconContainer>
+            <InputField
+              placeholder="Enter your phone number"
+              placeholderTextColor="#757575"
+              value={phone}
+              textContentType="telephoneNumber"
+              keyboardType="number-pad"
+              onChangeText={(e) => setPhone(e)}
+            />
+          </InputContainer>
+          <Spacer position="top" size="large" />
+          <Spacer position="top" size="small" />
+          <InputContainer>
+            <IconContainer>
+              <SimpleLineIcons name="lock" size={24} color="#757575" />
+            </IconContainer>
+            <InputField
+              placeholder="Enter your password"
+              placeholderTextColor="#757575"
+              value={password}
+              textContentType="password"
+              secureTextEntry
+              autoCapitalize="none"
+              onChangeText={(e) => setPassword(e)}
+            />
+          </InputContainer>
+          <Spacer position="top" size="large" />
+          <Spacer position="top" size="small" />
+          <View style={styles.checkboxContainer}>
+            <Checkbox
+              status={isChecked ? "checked" : "unchecked"}
+              onPress={() => setIsChecked(!isChecked)}
+              color="#6200ee"
+            />
+            <Text style={styles.checkboxLabel} variant="place">
+              I agree to the healthcare <BluText>Terms of Service</BluText> and{" "}
+              <BluText>Privacy Policy</BluText>
+            </Text>
+          </View>
 
-        <Spacer position="top" size="large">
-          <LogBtn
-            labelStyle={styles.buttonText}
-            contentStyle={styles.buttonContent}
-            onPress={handleSubmit}
-            disabled={isLoading}
-          >
-            {isLoading ? "Signing Up..." : "Sign Up"}
-          </LogBtn>
-        </Spacer>
-        <Spacer position="top" size="medium">
-          <CenteredText
-            variant="place"
-            onPress={() => navigation.navigate("Login")}
-          >
-            Already have an account? <BluText>Signin</BluText>
-          </CenteredText>
-        </Spacer>
-        <Spacer position="bottom" size="large" />
-      </Container>
-    </ScrollView>
+          <View style={styles.orContainer}>
+            <View style={styles.line}></View>
+            <Text style={styles.orText}>OR</Text>
+            <View style={styles.line}></View>
+          </View>
+
+          {/* <TouchableOpacity style={styles.googleBtn}>
+            <AntDesign style={styles.icon} name="google" size={24} />
+            <Text variant="place" style={styles.btnText}>
+              Sign in with Google
+            </Text>
+          </TouchableOpacity> */}
+
+          {error && (
+            <Spacer position="top" size="extraLarge">
+              <CenteredText variant="error">{error}</CenteredText>
+            </Spacer>
+          )}
+
+          <Spacer position="top" size="large">
+            <LogBtn
+              labelStyle={styles.buttonText}
+              contentStyle={styles.buttonContent}
+              onPress={handleSubmit}
+              disabled={isLoading}
+            >
+              {isLoading ? "Signing Up..." : "Sign Up"}
+            </LogBtn>
+          </Spacer>
+          <Spacer position="top" size="medium">
+            <CenteredText
+              variant="place"
+              onPress={() => navigation.navigate("Login")}
+            >
+              Already have an account? <BluText>Signin</BluText>
+            </CenteredText>
+          </Spacer>
+          <Spacer position="bottom" size="large" />
+        </Container>
+      </ScrollView>
+    </>
   );
 };
 

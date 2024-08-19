@@ -123,8 +123,8 @@ const SavedArticles = ({ navigation }) => {
   return (
     <>
       {isApiCallFailed && <BadGateWay handleRefresh={handleRefresh}/>}
+      {isLoading && <Loading />}
       {!isApiCallFailed && <ArticleWrapper>
-        {isLoading && <Loading />}
         <Articlecontainer>
           <FlatList
             data={filteredArticles.length ? filteredArticles : ARTICLES}

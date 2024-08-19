@@ -145,8 +145,8 @@ const NotificationScreen = () => {
   return (
     <>
       {isApiCallFailed && <BadGateWay handleRefresh={handleRefresh}/>}
-      {!isApiCallFailed && <NotContainer showsVerticalScrollIndicator={false}>
       {isLoading && <Loading />}
+      {!isApiCallFailed && <NotContainer showsVerticalScrollIndicator={false}>
       <NotWrapper>
         {Object.keys(groupedNotifications).length ? (
           Object.entries(groupedNotifications).map(

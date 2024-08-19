@@ -93,90 +93,92 @@ const Login = ({ navigation }) => {
   };
 
   return (
-    <ScrollView>
-      <Container>
-        <Spacer position="top" size="large">
-          <CenteredText variant="main">Sign In</CenteredText>
-        </Spacer>
-        <Spacer position="top" size="extraLarge" />
-        <Spacer position="top" size="large" />
-        {isLoading && <Loading />}
-        <InputContainer>
-          <IconContainer>
-            <Ionicons name="mail-outline" size={25} color="#757575" />
-          </IconContainer>
-          <InputField
-            placeholder="Enter your email"
-            placeholderTextColor="#757575"
-            value={email}
-            textContentType="emailAddress"
-            keyboardType="email-address"
-            autoCapitalize="none"
-            onChangeText={(e) => setEmail(e)}
-          />
-        </InputContainer>
-        <Spacer position="top" size="extraLarge" />
-        <InputContainer>
-          <IconContainer>
-            <SimpleLineIcons name="lock" size={25} color="#757575" />
-          </IconContainer>
-          <InputField
-            placeholder="Enter your password"
-            placeholderTextColor="#757575"
-            value={password}
-            textContentType="password"
-            secureTextEntry
-            autoCapitalize="none"
-            onChangeText={(e) => setPassword(e)}
-          />
-        </InputContainer>
-        <Spacer position="top" size="large">
-          <RighText
-            variant="label"
-            onPress={() => navigation.navigate("Forgot Password")}
-          >
-            Forgot password?
-          </RighText>
-        </Spacer>
-        {/* ERROR */}
-        {error && (
-          <Spacer position="top" size="extraLarge">
-            <CenteredText variant="error">{error}</CenteredText>
+    <>
+      {isLoading && <Loading />}
+      <ScrollView>
+        <Container>
+          <Spacer position="top" size="large">
+            <CenteredText variant="main">Sign In</CenteredText>
           </Spacer>
-        )}
-        <Spacer position="top" size="large">
-          <LogBtn
-            labelStyle={styles.buttonText}
-            contentStyle={styles.buttonContent}
-            onPress={handleSubmit}
-          >
-            {isLoading ? "Signing in..." : "Sign in"}
-          </LogBtn>
-        </Spacer>
+          <Spacer position="top" size="extraLarge" />
+          <Spacer position="top" size="large" />
+          <InputContainer>
+            <IconContainer>
+              <Ionicons name="mail-outline" size={25} color="#757575" />
+            </IconContainer>
+            <InputField
+              placeholder="Enter your email"
+              placeholderTextColor="#757575"
+              value={email}
+              textContentType="emailAddress"
+              keyboardType="email-address"
+              autoCapitalize="none"
+              onChangeText={(e) => setEmail(e)}
+            />
+          </InputContainer>
+          <Spacer position="top" size="extraLarge" />
+          <InputContainer>
+            <IconContainer>
+              <SimpleLineIcons name="lock" size={25} color="#757575" />
+            </IconContainer>
+            <InputField
+              placeholder="Enter your password"
+              placeholderTextColor="#757575"
+              value={password}
+              textContentType="password"
+              secureTextEntry
+              autoCapitalize="none"
+              onChangeText={(e) => setPassword(e)}
+            />
+          </InputContainer>
+          <Spacer position="top" size="large">
+            <RighText
+              variant="label"
+              onPress={() => navigation.navigate("Forgot Password")}
+            >
+              Forgot password?
+            </RighText>
+          </Spacer>
+          {/* ERROR */}
+          {error && (
+            <Spacer position="top" size="extraLarge">
+              <CenteredText variant="error">{error}</CenteredText>
+            </Spacer>
+          )}
+          <Spacer position="top" size="large">
+            <LogBtn
+              labelStyle={styles.buttonText}
+              contentStyle={styles.buttonContent}
+              onPress={handleSubmit}
+            >
+              {isLoading ? "Signing in..." : "Sign in"}
+            </LogBtn>
+          </Spacer>
 
-        <Spacer position="top" size="medium">
-          <CenteredText
-            variant="place"
-            onPress={() => navigation.navigate("Sign Up")}
-          >
-            Don't have an account? <BluText>Signup</BluText>
-          </CenteredText>
-        </Spacer>
+          <Spacer position="top" size="medium">
+            <CenteredText
+              variant="place"
+              onPress={() => navigation.navigate("Sign Up")}
+            >
+              Don't have an account? <BluText>Signup</BluText>
+            </CenteredText>
+          </Spacer>
 
-        {/* <View style={styles.orContainer}>
-          <View style={styles.line}></View>
-          <Text style={styles.orText}>OR</Text>
-          <View style={styles.line}></View>
-        </View>
+          {/* <View style={styles.orContainer}>
+            <View style={styles.line}></View>
+            <Text style={styles.orText}>OR</Text>
+            <View style={styles.line}></View>
+          </View>
 
-        <TouchableOpacity style={styles.googleBtn}>
-          <AntDesign style={styles.icon} name="google" size={24} />
-          <Text variant="place" style={styles.btnText}>
-            Sign in with Google
-          </Text>
-        </TouchableOpacity> */}
-      </Container>
-    </ScrollView>
+          <TouchableOpacity style={styles.googleBtn}>
+            <AntDesign style={styles.icon} name="google" size={24} />
+            <Text variant="place" style={styles.btnText}>
+              Sign in with Google
+            </Text>
+          </TouchableOpacity> */}
+        </Container>
+      </ScrollView>
+    </>
   );
 };
 

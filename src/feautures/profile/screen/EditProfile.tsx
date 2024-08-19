@@ -220,6 +220,7 @@ const ProfileEdit = () => {
 
   return (
     <>
+      {isLoading && <Loading />}
       {isApiCallFailed && <BadGateWay handleRefresh={handleRefresh}/>}
       {!isApiCallFailed && <View style={{ flex: 1 }}>
         <ProfileOverview contentContainerStyle={styles.contentContainer}>
@@ -255,7 +256,6 @@ const ProfileEdit = () => {
                 autoCapitalize="none"
                 onChangeText={(e) => setName(e)}
               />
-              {isLoading && <Loading />}
               <GenoGroup>
                 <View style={styles.viewWidth}>
                   <TextLabel>Gender</TextLabel>

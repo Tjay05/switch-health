@@ -151,9 +151,9 @@ const handleRefresh = async () => {
     
   return (
     <>
+      {isLoading && <Loading />}
       {isApiCallFailed && <BadGateWay handleRefresh={handleRefresh}/>}
       {!isApiCallFailed && <ReportWrapper>
-        {isLoading && <Loading />}
         <ReportContainer>
           <BMIConatiner>
             <RulerContainer>

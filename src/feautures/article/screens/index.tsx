@@ -90,8 +90,8 @@ const ArticleScreen = ({ navigation }) => {
   return (
     <>
       {isApiCallFailed && <BadGateWay handleRefresh={handleRefresh}/>}
+      {isLoading && <Loading />}
       {!isApiCallFailed && <ArticleWrapper>
-        {isLoading && <Loading />}
         <Articlecontainer>
           <FlatList
             data={articles.length ? articles : ARTICLES}

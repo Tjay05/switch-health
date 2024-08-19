@@ -86,11 +86,11 @@ const TopDoctors = ({ navigation, route }) => {
 
   return (
     <>
+      {isLoading && <Loading />}
       {isApiCallFailed ? (
         <BadGateWay handleRefresh={handleRefresh} />
       ) : (
         <AppContainer>
-          {isLoading && <Loading />}
           {!isLoading && doctors.length === 0 && (
             <Text>No doctors available at the moment</Text>
           )}

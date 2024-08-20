@@ -65,12 +65,17 @@ const main1 = (theme:any) =>`
   text-align: left;
 `;
 
+const main2 = (theme:any) =>`
+  font-family: ${theme.fonts.poppinsBold};
+  font-size: ${theme.fontSizes.caption};
+  text-align: left;
+`;
+
 const head = (theme:any) =>`
   color: ${theme.Colors.bg.dark};
   font-size: ${theme.fontSizes.title};
   font-family: ${theme.fonts.poppinsBold};
 `;
-
 
 const variants = {
   body,
@@ -82,6 +87,7 @@ const variants = {
   shade,
   main,
   main1,
+  main2,
   headText,
   head
 };

@@ -226,7 +226,7 @@ const ProfileEdit = () => {
         <ProfileOverview contentContainerStyle={styles.contentContainer}>
           <ProfileHead>
             <HeaderText variant="main1">Edit Profile</HeaderText>
-            <SetIconWrap>
+            <SetIconWrap onPress={() => navigation.navigate("Settings")}>
               <Ionicons name="settings" size={28} color="white" />
             </SetIconWrap>
           </ProfileHead>

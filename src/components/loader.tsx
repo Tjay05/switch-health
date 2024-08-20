@@ -9,6 +9,7 @@ const Loading = () => {
         source={{ uri: 'https://lottie.host/246f358f-b241-4127-9024-f603d494cb1a/uWpW72wg0r.json' }}
         autoPlay
         loop
+        speed={4}
         style={styles.animation}
       />
     </View>
